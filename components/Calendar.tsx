@@ -34,7 +34,15 @@ const Navigate: React.FC<{ date: Date, navigate: (date: Date) => void }> = ({ da
 }
 
 const Weekday: React.FC = () => {
-    return <div>Mon Tue Wed Thu Fri Sat Sun</div>
+    return (<div className="grid grid-cols-7">
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+        <div>Sun</div>
+    </div>);
 }
 
 const Calendar: React.FC<{
@@ -59,32 +67,32 @@ const Calendar: React.FC<{
 }
 
 const Days: React.FC<{ date: Date }> = ({ date }) => {
-    const dates: Date[] = [];
-    //const startDate: Date = new Date(date.getFullYear(), date.getMonth(), 1)
+    const dates: { date: Date, current: boolean }[] = [];
 
     let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
-
+    let current: boolean = false;
 
     for (let index = 0; index < 42; index++) {
         let tempDate = new Date(startDate);
         tempDate.setDate(tempDate.getDate() + index);
-        dates.push(tempDate);
+        current = tempDate.getDate() == 1 ? !current : current;
+        dates.push({date:tempDate, current:current});
     }
 
 
     return <div className="grid grid-cols-7">
         {dates.map((item, key) =>
-            <Day key={key} date={item}></Day>)}
+            <Day key={key} date={item.date} current={item.current}></Day>)}
 
 
     </div>
 }
 
-const Day: React.FC<{ date: Date }> = ({ date }) => {
-    return (<div className="border-2 border-blue-900 rounded">
+const Day: React.FC<{ date: Date, current:boolean }> = ({ date, current }) => {
+    return current? <div className="border-2 border-blue-900 rounded">
         {date.toLocaleDateString('en-IN', { day: '2-digit' })}
-    </div>);
+    </div> : <div> {date.toLocaleDateString('en-IN', { day: '2-digit' })}</div>;
 }
 
 const Footer: React.FC = () => {
