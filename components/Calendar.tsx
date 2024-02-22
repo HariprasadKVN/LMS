@@ -88,8 +88,14 @@ const Calendar: React.FC<{
 };
 
 const Days: React.FC<{ date: Date }> = ({ date }) => {
-  const dates: { date: Date; current: boolean }[] = [];
-
+  let emidsHolidays = getHolidays();
+  console.log(emidsHolidays);
+  const dates: {
+    date: Date;
+    current: boolean;
+    eventType?: "Fixed" | "Optional";
+    desc?: string;
+  }[] = [];
   let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
   startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
   let current: boolean = false;
@@ -98,27 +104,47 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
     let tempDate = new Date(startDate);
     tempDate.setDate(tempDate.getDate() + index);
     current = tempDate.getDate() == 1 ? !current : current;
-    dates.push({ date: tempDate, current: current });
+    let holiday = emidsHolidays.find(
+      (item) => item.date.toDateString() === tempDate.toDateString()
+    );
+    dates.push({
+      date: tempDate,
+      current: current,
+      eventType: holiday?.type,
+      desc: holiday?.desc,
+    });
   }
 
   return (
     <div className="grid grid-cols-7">
       {dates.map((item, key) => (
-        <Day key={key} date={item.date} current={item.current}></Day>
+        <Day
+          key={key}
+          date={item.date}
+          current={item.current}
+          eventType={item.eventType}
+          desc={item.desc}
+        ></Day>
       ))}
     </div>
   );
 };
 
-const Day: React.FC<{ date: Date; current: boolean }> = ({ date, current }) => {
-  const today: boolean = new Date().getDate() === date.getDate();
-
+const Day: React.FC<{
+  date: Date;
+  current: boolean;
+  eventType?: "Fixed" | "Optional";
+  desc?: string;
+}> = ({ date, current, eventType, desc }) => {
+  const today: boolean = new Date().toDateString() === date.toDateString();
   return (
     <div
       className={clsx("text-center", {
         "bg-yellow-300": today,
         "hover:bg-blue-300": current,
         "text-slate-700/50": !current,
+        "bg-green-500/50": eventType === "Fixed",
+        "bg-green-700/50": eventType === "Optional",
       })}
     >
       {date.toLocaleDateString("en-IN", { day: "2-digit" })}
@@ -129,5 +155,16 @@ const Day: React.FC<{ date: Date; current: boolean }> = ({ date, current }) => {
 const Footer: React.FC = () => {
   return <div>Footer</div>;
 };
+
+function getHolidays() {
+  /*  const holidays = await fs.readFile(process.cwd() + "mock-data/holidays.json", "utf8");
+  return holidays; */
+  const holidays: { type: "Fixed" | "Optional"; date: Date; desc: string }[] = [
+    { type: "Fixed", date: new Date(2024, 0, 1), desc: "New Year" },
+    { type: "Fixed", date: new Date(2024, 0, 26), desc: "Republic Day" },
+    { type: "Optional", date: new Date(2024, 1, 26), desc: "Rest Day" },
+  ];
+  return holidays;
+}
 
 export default Calendar;

@@ -1,0 +1,46 @@
+{
+  "2024": {
+    "01": {
+      "Fixed": [
+        { "Day": "01", "Description": "New Year" },
+        { "Day": "26", "Description": "Republic Day" }
+      ],
+      "Optional": []
+    },
+    "03": {
+      "Fixed": [],
+      "Optional": [
+        { "Day": "25", "Description": "Holi" },
+        { "Day": "29", "Description": "Good Friday" }
+      ]
+    },
+    "04": {
+      "Fixed": [{ "Day": "09", "Description": "Ugadi" }],
+      "Optional": []
+    },
+    "05": {
+      "Fixed": [{ "Day": "01", "Description": "May Day" }],
+      "Optional": []
+    },
+    "06": {
+      "Fixed": [],
+      "Optional": [{ "Day": "17", "Description": "Eid al-Adha/Bakrid" }]
+    },
+    "08": {
+      "Fixed": [{ "Day": "15", "Description": "Independence Day" }],
+      "Optional": [{ "Day": "26", "Description": "Janmashtami" }]
+    },
+    "10": {
+      "Fixed": [{ "Day": "02", "Description": "Gandhi Jayanti" }],
+      "Optional": [{ "Day": "31", "Description": "Diwali" }]
+    },
+    "11": {
+      "Fixed": [{ "Day": "01", "Description": "Karnataka Rajyotsava" }],
+      "Optional": []
+    },
+    "12": {
+      "Fixed": [],
+      "Optional": [{ "Day": "25", "Description": "Christmas" }]
+    }
+  }
+}
