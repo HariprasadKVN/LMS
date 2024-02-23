@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   const date = new Date();
 
   return (
-    <div>
+    <div className="p-2">
       {date.toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
@@ -34,7 +34,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row p-2">
       <div
         className="hover:bg-white 
         hover:text-black"
@@ -42,7 +42,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
       >
         {"<"}
       </div>
-      <div className="flex-grow text-center">
+      <div className="flex-grow text-center font-bold">
         {date.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
       </div>
       <div onClick={next}>{">"}</div>
@@ -58,8 +58,8 @@ const Weekday: React.FC = () => {
       <div>Wed</div>
       <div>Thu</div>
       <div>Fri</div>
-      <div>Sat</div>
-      <div>Sun</div>
+      <div className="bg-red-500/50">Sat</div>
+      <div className="bg-red-500/50">Sun</div>
     </div>
   );
 };
@@ -89,7 +89,6 @@ const Calendar: React.FC<{
 
 const Days: React.FC<{ date: Date }> = ({ date }) => {
   let emidsHolidays = getHolidays();
-  console.log(emidsHolidays);
   const dates: {
     date: Date;
     current: boolean;
@@ -137,6 +136,7 @@ const Day: React.FC<{
   desc?: string;
 }> = ({ date, current, eventType, desc }) => {
   const today: boolean = new Date().toDateString() === date.toDateString();
+  const isWeekend: boolean = date.getDay() === 0 || date.getDay() === 6;
   return (
     <div
       className={clsx("text-center", {
@@ -145,6 +145,7 @@ const Day: React.FC<{
         "text-slate-700/50": !current,
         "bg-green-500/50": eventType === "Fixed",
         "bg-green-700/50": eventType === "Optional",
+        "bg-red-500/50": isWeekend,
       })}
     >
       {date.toLocaleDateString("en-IN", { day: "2-digit" })}
@@ -153,7 +154,7 @@ const Day: React.FC<{
 };
 
 const Footer: React.FC = () => {
-  return <div>Footer</div>;
+  return <div className="p-2">Footer</div>;
 };
 
 function getHolidays() {
