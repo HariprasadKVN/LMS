@@ -94,6 +94,8 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
     current: boolean;
     eventType?: "Fixed" | "Optional";
     desc?: string;
+    currentDayState?: number;
+    applyLeave?: () => void;
   }[] = [];
   let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
   startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
@@ -106,11 +108,17 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
     let holiday = emidsHolidays.find(
       (item) => item.date.toDateString() === tempDate.toDateString()
     );
+    const [currentDayState, setCurrentDayState] = useState(0);
+    const applyLeave = () => {
+      setCurrentDayState((currentDayState + 1) % 5);
+    };
     dates.push({
       date: tempDate,
       current: current,
       eventType: holiday?.type,
       desc: holiday?.desc,
+      currentDayState: currentDayState,
+      applyLeave: applyLeave,
     });
   }
 
@@ -123,6 +131,8 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
           current={item.current}
           eventType={item.eventType}
           desc={item.desc}
+          currentDayState={item.currentDayState}
+          applyLeave={item.applyLeave}
         ></Day>
       ))}
     </div>
@@ -134,9 +144,12 @@ const Day: React.FC<{
   current: boolean;
   eventType?: "Fixed" | "Optional";
   desc?: string;
-}> = ({ date, current, eventType, desc }) => {
+  currentDayState?: number;
+  applyLeave?: () => void;
+}> = ({ date, current, eventType, desc, currentDayState, applyLeave }) => {
   const today: boolean = new Date().toDateString() === date.toDateString();
   const isWeekend: boolean = date.getDay() === 0 || date.getDay() === 6;
+
   return (
     <div
       className={clsx("text-center", {
@@ -146,7 +159,11 @@ const Day: React.FC<{
         "bg-green-500/50": eventType === "Fixed",
         "bg-green-700/50": eventType === "Optional",
         "bg-red-500/50": isWeekend,
+        "bg-orange-500/50": currentDayState === 1,
+        "bg-teal-500/50": currentDayState === 2,
+        "bg-purple-500/50": currentDayState === 3,
       })}
+      onClick={applyLeave}
     >
       {date.toLocaleDateString("en-IN", { day: "2-digit" })}
     </div>
