@@ -105,12 +105,16 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
     let tempDate = new Date(startDate);
     tempDate.setDate(tempDate.getDate() + index);
     current = tempDate.getDate() == 1 ? !current : current;
+    const isWeekend: boolean =
+      tempDate.getDay() === 0 || tempDate.getDay() === 6;
     let holiday = emidsHolidays.find(
       (item) => item.date.toDateString() === tempDate.toDateString()
     );
     const [currentDayState, setCurrentDayState] = useState(0);
     const applyLeave = () => {
-      setCurrentDayState((currentDayState + 1) % 5);
+      if (!isWeekend) {
+        setCurrentDayState((currentDayState + 1) % 5);
+      }
     };
     dates.push({
       date: tempDate,
