@@ -188,6 +188,7 @@ const Day: React.FC<{
         "dark:bg-teal-300/70 bg-green-700/50": eventType === "optional",
         "dark:bg-sky-500/50 bg-sky-500/50": eventType === "leave",
         "dark:bg-violet-500/50 bg-violet-500/50": eventType === "special",
+        "dark:bg-indigo-500/50 bg-indigo-500/50": eventType === "optionalApplied",
         "dark:bg-slate-700/50 bg-red-500/50": isWeekend,
       })}
       onClick={onClick}
