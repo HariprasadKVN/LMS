@@ -1,47 +1,25 @@
-'use client'
 import Calendar from "@/components/Calendar";
-import Associate from "@/components/associate";
-
-import Image from "next/image";
-const onte=(date:Date)=>{
-
-}
-const Day: React.FC<{ children: Date }> =
-  ({ children }) => {
-    return <div className="rounded-full hover:bg-blue-300 w-10 h-10 flex items-center justify-center">
-      <p className="text-center" onMouseOver={()=>{
-        onte(new Date());
-      }}>{children.toLocaleDateString('en-IN', { day: 'numeric' })}</p>
-    </div>
-  }
 
 export default function Home() {
-  const date: Date = new Date();
-  const dates: Date[] = [];
-  let text: string = '';
-
-  for (let index = 0; index < 41; index++) {
-    const tempDate = new Date(date);
-    tempDate.setDate(tempDate.getDate() + index);
-    dates.push(tempDate);
-  }
-
+  const events: {
+    date: Date;
+    description: string;
+    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
+  }[] = [
+    { date: new Date(2024, 0, 1), description: "New Year", type: "fixed" },
+    { date: new Date(2024, 0, 26), description: "Republic Day", type: "fixed" },
+    { date: new Date(2024, 2, 6), description: "New Year", type: "leave" },
+  ];
 
   return (
-    <>
-      <Calendar></Calendar>
-      {/* <div className="flex flex-row">
-        <div>
-          test
-        </div>
-        <div className="grid grid-cols-7 w-auto">
-          {dates.map((item, key) => <Day key={key} >{item}</Day>)}
-          <Day>{new Date()}</Day>
+    <div className="flex flex-col">
+      <div className="flex flex-row p-2">
+        <div className="flex-none">Panel Overview</div>
+        <div className="flex-grow">
+          <Calendar events={events}></Calendar>
         </div>
       </div>
-      <div>
-        {text}
-      </div> */}
-    </>
+      <div>Panel Task</div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 import clsx from "clsx";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
@@ -6,7 +7,7 @@ const Header: React.FC = () => {
   const date = new Date();
 
   return (
-    <div className="dark:bg-slate-800/70 rounded-t-lg p-2">
+    <div className="select-none dark:bg-slate-800/70 rounded-t-lg p-2">
       {date.toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
@@ -48,7 +49,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
       >
         <ChevronLeftIcon className="h-6 w-6"></ChevronLeftIcon>
       </div>
-      <div className="flex-grow text-center font-bold">
+      <div className="flex-grow select-none text-center font-bold">
         {date.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
       </div>
       <div
@@ -69,7 +70,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
 
 const Weekday: React.FC = () => {
   return (
-    <div className="grid grid-cols-7 text-center text-sm font-bold">
+    <div className="grid grid-cols-7 select-none text-center text-sm font-bold">
       <div>Mon</div>
       <div>Tue</div>
       <div>Wed</div>
@@ -82,7 +83,7 @@ const Weekday: React.FC = () => {
 };
 
 const Calendar: React.FC<{
-  events?: { date: Date; description: string }[];
+  events?: { date: Date; description: string; type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave" }[];
   weekstart?: string;
   weekend?: string;
 }> = ({ events, weekstart, weekend }) => {
@@ -101,18 +102,21 @@ const Calendar: React.FC<{
       <Header></Header>
       <Navigate date={x} navigate={dateChanged}></Navigate>
       <Weekday></Weekday>
-      <Days date={x} />
+      <Days date={x} events={events} />
       <Footer />
     </div>
   );
 };
 
-const Days: React.FC<{ date: Date }> = ({ date }) => {
-  let emidsHolidays = getHolidays();
+const Days: React.FC<{
+  date: Date;
+  events?: { date: Date; description: string;type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave" }[];
+}> = ({ date, events }) => {
+  
   const dates: {
     date: Date;
     current: boolean;
-    eventType?: "Fixed" | "Optional";
+    eventType?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
     desc?: string;
   }[] = [];
   let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -120,17 +124,17 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
   let current: boolean = false;
 
   for (let index = 0; index < 42; index++) {
-    let tempDate = new Date(startDate);
+    const tempDate = new Date(startDate);
     tempDate.setDate(tempDate.getDate() + index);
     current = tempDate.getDate() == 1 ? !current : current;
-    let holiday = emidsHolidays.find(
+    const holiday = events?.find(
       (item) => item.date.toDateString() === tempDate.toDateString()
     );
     dates.push({
       date: tempDate,
       current: current,
       eventType: holiday?.type,
-      desc: holiday?.desc,
+      desc: holiday?.description,
     });
   }
 
@@ -152,21 +156,23 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
 const Day: React.FC<{
   date: Date;
   current: boolean;
-  eventType?: "Fixed" | "Optional";
+  eventType?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
   desc?: string;
 }> = ({ date, current, eventType, desc }) => {
   const today: boolean = new Date().toDateString() === date.toDateString();
   const isWeekend: boolean = date.getDay() === 0 || date.getDay() === 6;
   return (
     <div
-      className={clsx("text-center", {
+      className={clsx("text-center select-none", {
         "dark:bg-indigo-300/75 bg-yellow-300 outline dark:outline-indigo-700 outline-2":
           today,
         "dark:hover:bg-slate-500/50": current && !isWeekend,
-        "hover:bg-blue-300": current,
-        "dark:text-slate-500/50 text-slate-700/50": !current,
-        "dark:bg-teal-300/50 bg-green-500/50": eventType === "Fixed",
-        "dark:bg-teal-300/70 bg-green-700/50": eventType === "Optional",
+        "hover:bg-blue-300 hover:cursor-pointer": current,
+        "dark:text-slate-500/50 text-slate-700/50 hover:cursor-default":
+          !current,
+        "dark:bg-teal-300/50 bg-green-500/50": eventType === "fixed",
+        "dark:bg-teal-300/70 bg-green-700/50": eventType === "optional",
+        "dark:bg-sky-500/50 bg-sky-500/50": eventType === "leave",
         "dark:bg-slate-700/50 bg-red-500/50": isWeekend,
       })}
     >
@@ -176,7 +182,7 @@ const Day: React.FC<{
 };
 
 const Footer: React.FC = () => {
-  return <div className="p-2">Footer</div>;
+  return <div className="select-none p-2">Footer</div>;
 };
 
 function getHolidays() {
