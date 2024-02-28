@@ -1,4 +1,3 @@
-"use client";
 import clsx from "clsx";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
@@ -22,7 +21,6 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
   date,
   navigate,
 }) => {
-  console.log("component created");
   const next = (event: React.MouseEvent<HTMLDivElement>) => {
     const tempDate = new Date(date);
     tempDate.setMonth(tempDate.getMonth() + 1);
@@ -83,10 +81,15 @@ const Weekday: React.FC = () => {
 };
 
 const Calendar: React.FC<{
-  events?: { date: Date; description: string; type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave" }[];
+  events?: {
+    date: Date;
+    description: string;
+    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
+  }[];
   weekstart?: string;
   weekend?: string;
-}> = ({ events, weekstart, weekend }) => {
+  onDateClicked?: (date: Date) => void;
+}> = ({ events, weekstart, weekend, onDateClicked }) => {
   const today = new Date();
   const [x, setX] = useState<Date>(today);
 
@@ -102,7 +105,7 @@ const Calendar: React.FC<{
       <Header></Header>
       <Navigate date={x} navigate={dateChanged}></Navigate>
       <Weekday></Weekday>
-      <Days date={x} events={events} />
+      <Days date={x} events={events} onDateClicked={onDateClicked} />
       <Footer />
     </div>
   );
@@ -110,9 +113,13 @@ const Calendar: React.FC<{
 
 const Days: React.FC<{
   date: Date;
-  events?: { date: Date; description: string;type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave" }[];
-}> = ({ date, events }) => {
-  
+  events?: {
+    date: Date;
+    description: string;
+    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
+  }[];
+  onDateClicked?: (date: Date) => void;
+}> = ({ date, events, onDateClicked }) => {
   const dates: {
     date: Date;
     current: boolean;
@@ -147,6 +154,7 @@ const Days: React.FC<{
           current={item.current}
           eventType={item.eventType}
           desc={item.desc}
+          onDateClicked={onDateClicked}
         ></Day>
       ))}
     </div>
@@ -158,9 +166,15 @@ const Day: React.FC<{
   current: boolean;
   eventType?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
   desc?: string;
-}> = ({ date, current, eventType, desc }) => {
+  onDateClicked?: (date: Date) => void;
+}> = ({ date, current, eventType, desc, onDateClicked }) => {
   const today: boolean = new Date().toDateString() === date.toDateString();
   const isWeekend: boolean = date.getDay() === 0 || date.getDay() === 6;
+
+  const onClick = () => {
+    onDateClicked && onDateClicked(date);
+  };
+
   return (
     <div
       className={clsx("text-center select-none", {
@@ -173,8 +187,10 @@ const Day: React.FC<{
         "dark:bg-teal-300/50 bg-green-500/50": eventType === "fixed",
         "dark:bg-teal-300/70 bg-green-700/50": eventType === "optional",
         "dark:bg-sky-500/50 bg-sky-500/50": eventType === "leave",
+        "dark:bg-violet-500/50 bg-violet-500/50": eventType === "special",
         "dark:bg-slate-700/50 bg-red-500/50": isWeekend,
       })}
+      onClick={onClick}
     >
       {date.toLocaleDateString("en-IN", { day: "2-digit" })}
     </div>
