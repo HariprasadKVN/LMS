@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 
 const Header: React.FC = () => {
   const date = new Date();
@@ -36,16 +37,32 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
   return (
     <div className=" flex flex-row p-2">
       <div
-        className="hover:bg-white 
-        hover:text-black"
+        className="rounded-md
+          dark:hover:bg-blue-300/50 
+          dark:hover:text-blue-300
+          hover:bg-white
+          hover:text-black
+          dark:active:bg-blue-600/50 
+          dark:active:text-blue-100"
         onClick={previous}
       >
-        {"<"}
+        <ChevronLeftIcon className="h-6 w-6"></ChevronLeftIcon>
       </div>
       <div className="flex-grow text-center font-bold">
         {date.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
       </div>
-      <div onClick={next}>{">"}</div>
+      <div
+        className="rounded-md
+          dark:hover:bg-blue-300/50 
+          dark:hover:text-blue-300
+          hover:bg-white
+          hover:text-black
+          dark:active:bg-blue-600/50 
+          dark:active:text-blue-100"
+        onClick={next}
+      >
+        <ChevronRightIcon className="h-6 w-6"></ChevronRightIcon>
+      </div>
     </div>
   );
 };
@@ -58,8 +75,8 @@ const Weekday: React.FC = () => {
       <div>Wed</div>
       <div>Thu</div>
       <div>Fri</div>
-      <div className="bg-red-500/50">Sat</div>
-      <div className="bg-red-500/50">Sun</div>
+      <div className="dark:bg-slate-700/50 bg-red-500/50">Sat</div>
+      <div className="dark:bg-slate-700/50 bg-red-500/50">Sun</div>
     </div>
   );
 };
@@ -143,7 +160,8 @@ const Day: React.FC<{
   return (
     <div
       className={clsx("text-center", {
-        "dark:bg-indigo-300/75 bg-yellow-300 outline outline-offset-2 outline-1": today,
+        "dark:bg-indigo-300/75 bg-yellow-300 outline dark:outline-indigo-700 outline-2":
+          today,
         "dark:hover:bg-slate-500/50": current && !isWeekend,
         "hover:bg-blue-300": current,
         "dark:text-slate-500/50 text-slate-700/50": !current,
