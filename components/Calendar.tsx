@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   const date = new Date();
 
   return (
-    <div className="p-2">
+    <div className="dark:bg-slate-800/70 rounded-t-lg p-2">
       {date.toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
@@ -34,7 +34,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
   };
 
   return (
-    <div className="flex flex-row p-2">
+    <div className=" flex flex-row p-2">
       <div
         className="hover:bg-white 
         hover:text-black"
@@ -52,7 +52,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
 
 const Weekday: React.FC = () => {
   return (
-    <div className="grid grid-cols-7 text-center font-bold">
+    <div className="grid grid-cols-7 text-center text-sm font-bold">
       <div>Mon</div>
       <div>Tue</div>
       <div>Wed</div>
@@ -77,7 +77,10 @@ const Calendar: React.FC<{
   };
 
   return (
-    <div className="border rounded">
+    <div
+      className="border dark: border-slate-900 rounded-lg m-1
+      bg-gradient-to-b dark:from-slate-800/50 dark:to-slate-900/70 dark:divide-y dark:divide-slate-600/50"
+    >
       <Header></Header>
       <Navigate date={x} navigate={dateChanged}></Navigate>
       <Weekday></Weekday>
@@ -115,7 +118,7 @@ const Days: React.FC<{ date: Date }> = ({ date }) => {
   }
 
   return (
-    <div className="grid grid-cols-7">
+    <div className="grid grid-cols-7 text-sm">
       {dates.map((item, key) => (
         <Day
           key={key}
@@ -140,12 +143,13 @@ const Day: React.FC<{
   return (
     <div
       className={clsx("text-center", {
-        "bg-yellow-300": today,
+        "dark:bg-indigo-300/75 bg-yellow-300 outline outline-offset-2 outline-1": today,
+        "dark:hover:bg-slate-500/50": current && !isWeekend,
         "hover:bg-blue-300": current,
-        "text-slate-700/50": !current,
-        "bg-green-500/50": eventType === "Fixed",
-        "bg-green-700/50": eventType === "Optional",
-        "bg-red-500/50": isWeekend,
+        "dark:text-slate-500/50 text-slate-700/50": !current,
+        "dark:bg-teal-300/50 bg-green-500/50": eventType === "Fixed",
+        "dark:bg-teal-300/70 bg-green-700/50": eventType === "Optional",
+        "dark:bg-slate-700/50 bg-red-500/50": isWeekend,
       })}
     >
       {date.toLocaleDateString("en-IN", { day: "2-digit" })}
