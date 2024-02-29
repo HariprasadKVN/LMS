@@ -185,17 +185,17 @@ const Day: React.FC<{
   return (
     <div
       className={clsx("text-center ", {
-        "bg-yellow-300 outline outline-2 dark:bg-indigo-300/75 dark:outline-indigo-700":
+        "bg-yellow-300/50 shadow-md shadow-violet-700/50 outline outline-2 outline-yellow-400/50 dark:bg-indigo-300/75 dark:outline-indigo-700":
           today,
-        "bg-cyan-500 shadow-lg shadow-cyan-500/50": today,
+        "text-violet-900/70": today,
         "dark:hover:bg-slate-500/50": current && !isWeekend,
         "hover:cursor-pointer hover:bg-blue-300": current,
         "text-slate-500/70 dark:text-slate-500/75": !current,
-        "bg-green-500/50 dark:bg-teal-300/50": eventType === "fixed",
-        "bg-green-700/50 dark:bg-teal-300/70": eventType === "optional",
-        "bg-sky-500/50 dark:bg-sky-500/50": eventType === "leave",
-        "bg-violet-500/50 dark:bg-violet-500/50": eventType === "special",
-        "bg-indigo-500/50 dark:bg-indigo-500/50":
+        "rounded-md bg-green-700/75 dark:bg-teal-300/50": eventType === "fixed",
+        "rounded-md bg-teal-300/75 dark:bg-teal-300/70": eventType === "optional",
+        "rounded-md bg-sky-500/50 dark:bg-sky-500/50": eventType === "leave",
+        "rounded-md bg-violet-500/50 dark:bg-violet-500/50": eventType === "special",
+        "rounded-md bg-fuchsia-500/50 dark:bg-indigo-500/50":
           eventType === "optionalApplied",
         "bg-slate-300/70 dark:bg-slate-700/50": isWeekend,
       })}
