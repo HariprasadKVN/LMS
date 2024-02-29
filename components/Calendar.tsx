@@ -6,7 +6,7 @@ const Header: React.FC = () => {
   const date = new Date();
 
   return (
-    <div className="select-none dark:bg-slate-800/70 rounded-t-lg p-2">
+    <div className="rounded-t-md bg-slate-300/70 p-2 dark:bg-slate-800/70">
       {date.toLocaleDateString("en-IN", {
         year: "numeric",
         month: "long",
@@ -34,29 +34,35 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
   };
 
   return (
-    <div className=" flex flex-row p-2">
+    <div className="flex flex-row p-1">
       <div
         className="rounded-md
-          dark:hover:bg-blue-300/50 
+          text-black/50
+          hover:bg-slate-400/50
+          hover:text-slate-800/75
+          active:bg-slate-600/50
+          active:text-slate-100
+          dark:hover:bg-blue-300/50
           dark:hover:text-blue-300
-          hover:bg-white
-          hover:text-black
-          dark:active:bg-blue-600/50 
+          dark:active:bg-blue-600/50
           dark:active:text-blue-100"
         onClick={previous}
       >
         <ChevronLeftIcon className="h-6 w-6"></ChevronLeftIcon>
       </div>
-      <div className="flex-grow select-none text-center font-bold">
+      <div className="flex-grow  text-center font-bold">
         {date.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
       </div>
       <div
         className="rounded-md
-          dark:hover:bg-blue-300/50 
+          text-black/50
+          hover:bg-slate-400/50
+          hover:text-slate-800/75
+          active:bg-slate-600/50
+          active:text-slate-100
+          dark:hover:bg-blue-300/50
           dark:hover:text-blue-300
-          hover:bg-white
-          hover:text-black
-          dark:active:bg-blue-600/50 
+          dark:active:bg-blue-600/50
           dark:active:text-blue-100"
         onClick={next}
       >
@@ -68,14 +74,14 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
 
 const Weekday: React.FC = () => {
   return (
-    <div className="grid grid-cols-7 select-none text-center text-sm font-bold">
+    <div className="grid grid-cols-7  text-center text-sm font-bold">
       <div>Mon</div>
       <div>Tue</div>
       <div>Wed</div>
       <div>Thu</div>
       <div>Fri</div>
-      <div className="dark:bg-slate-700/50 bg-red-500/50">Sat</div>
-      <div className="dark:bg-slate-700/50 bg-red-500/50">Sun</div>
+      <div className="bg-slate-300/70 dark:bg-slate-700/50">Sat</div>
+      <div className="bg-slate-300/70 dark:bg-slate-700/50">Sun</div>
     </div>
   );
 };
@@ -99,8 +105,9 @@ const Calendar: React.FC<{
 
   return (
     <div
-      className="border dark: border-slate-900 rounded-lg m-1
-      bg-gradient-to-b dark:from-slate-800/50 dark:to-slate-900/70 dark:divide-y dark:divide-slate-600/50"
+      className="m-1 select-none divide-y divide-slate-600/50 rounded-lg  border 
+      border-slate-400 bg-gradient-to-b dark:border-slate-900       
+      dark:from-slate-800/50 dark:to-slate-900/70"
     >
       <Header></Header>
       <Navigate date={x} navigate={dateChanged}></Navigate>
@@ -135,7 +142,7 @@ const Days: React.FC<{
     tempDate.setDate(tempDate.getDate() + index);
     current = tempDate.getDate() == 1 ? !current : current;
     const holiday = events?.find(
-      (item) => item.date.toDateString() === tempDate.toDateString()
+      (item) => item.date.toDateString() === tempDate.toDateString(),
     );
     dates.push({
       date: tempDate,
@@ -177,19 +184,20 @@ const Day: React.FC<{
 
   return (
     <div
-      className={clsx("text-center select-none", {
-        "dark:bg-indigo-300/75 bg-yellow-300 outline dark:outline-indigo-700 outline-2":
+      className={clsx("text-center ", {
+        "bg-yellow-300 outline outline-2 dark:bg-indigo-300/75 dark:outline-indigo-700":
           today,
+        "bg-cyan-500 shadow-lg shadow-cyan-500/50": today,
         "dark:hover:bg-slate-500/50": current && !isWeekend,
-        "hover:bg-blue-300 hover:cursor-pointer": current,
-        "dark:text-slate-500/50 text-slate-700/50 hover:cursor-default":
-          !current,
-        "dark:bg-teal-300/50 bg-green-500/50": eventType === "fixed",
-        "dark:bg-teal-300/70 bg-green-700/50": eventType === "optional",
-        "dark:bg-sky-500/50 bg-sky-500/50": eventType === "leave",
-        "dark:bg-violet-500/50 bg-violet-500/50": eventType === "special",
-        "dark:bg-indigo-500/50 bg-indigo-500/50": eventType === "optionalApplied",
-        "dark:bg-slate-700/50 bg-red-500/50": isWeekend,
+        "hover:cursor-pointer hover:bg-blue-300": current,
+        "text-slate-500/70 dark:text-slate-500/75": !current,
+        "bg-green-500/50 dark:bg-teal-300/50": eventType === "fixed",
+        "bg-green-700/50 dark:bg-teal-300/70": eventType === "optional",
+        "bg-sky-500/50 dark:bg-sky-500/50": eventType === "leave",
+        "bg-violet-500/50 dark:bg-violet-500/50": eventType === "special",
+        "bg-indigo-500/50 dark:bg-indigo-500/50":
+          eventType === "optionalApplied",
+        "bg-slate-300/70 dark:bg-slate-700/50": isWeekend,
       })}
       onClick={onClick}
     >
@@ -199,7 +207,7 @@ const Day: React.FC<{
 };
 
 const Footer: React.FC = () => {
-  return <div className="select-none p-2">Footer</div>;
+  return <div className=" p-2">Footer</div>;
 };
 
 function getHolidays() {
