@@ -1,15 +1,10 @@
 "use client";
 import Calendar from "@/components/Calendar";
+import { event } from "@/model/event";
 import { useState } from "react";
 
 export default function Home() {
-  const [events, setEvents] = useState<
-    {
-      date: Date;
-      description: string;
-      type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
-    }[]
-  >([
+  const [events, setEvents] = useState<event[]>([
     { date: new Date(2024, 0, 1), description: "New Year", type: "fixed" },
     { date: new Date(2024, 0, 26), description: "Republic Day", type: "fixed" },
     { date: new Date(2024, 3, 9), description: "Ugadi", type: "fixed" },
@@ -59,11 +54,7 @@ export default function Home() {
     type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
     specialAllowed: boolean;
     optionalAllowed: boolean;
-  }): {
-    date: Date;
-    description: string;
-    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
-  } => {
+  }): event => {
     switch (event.type) {
       case undefined:
         event.type = "leave";
@@ -86,7 +77,7 @@ export default function Home() {
 
   const onDateClicked = (date: Date) => {
     const event = events.find(
-      (n) => n.date.toDateString() === date.toDateString()
+      (n) => n.date.toDateString() === date.toDateString(),
     );
 
     if (event) {
@@ -100,14 +91,25 @@ export default function Home() {
 
       if (
         (event.type === "leave" && !(specialAllowed || optionalAllowed)) ||
-        (event.type === "special" && !optionalAllowed) ||
-        event.type === "optionalApplied"
+        (event.type === "special" && !optionalAllowed)
       ) {
         const updatedArray = events.filter(
-          (item, index) => item.date.toDateString() !== date.toDateString()
+          (item, index) => item.date.toDateString() !== date.toDateString(),
         );
 
         setEvents(updatedArray);
+      } else if (event.type === "optionalApplied") {
+        const updateEvents = events.map((item, index) =>
+          item.date.toDateString() === date.toDateString()
+            ? {
+              date:item.date,
+              description:item.description,
+              type:"optional" as "fixed" | "optional" | "optionalApplied" | "special" | "leave"
+            }
+            : item,
+        );
+
+        setEvents(updateEvents);
       } else if (event.type === "optional" && !optionalAllowed) {
       } else {
         const updateArray = events.map((item, index) =>
@@ -119,7 +121,7 @@ export default function Home() {
                 specialAllowed: specialAllowed,
                 optionalAllowed: optionalAllowed,
               })
-            : item
+            : item,
         );
 
         setEvents(updateArray);
