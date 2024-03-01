@@ -141,13 +141,7 @@ export default function Home() {
   return (
     <EventContext.Provider
       value={{
-        events: [
-          {
-            date: new Date(2024, 0, 1),
-            description: "New Year",
-            type: "fixed",
-          },
-        ],
+        events: events,
         onDateClicked: onDateClicked,
       }}
     >
