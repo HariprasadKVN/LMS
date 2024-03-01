@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import EventContext from "@/store/eventContext";
 
 const Header: React.FC = () => {
   const date = new Date();
@@ -87,15 +88,10 @@ const Weekday: React.FC = () => {
 };
 
 const Calendar: React.FC<{
-  events?: {
-    date: Date;
-    description: string;
-    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
-  }[];
   weekstart?: string;
   weekend?: string;
-  onDateClicked?: (date: Date) => void;
-}> = ({ events, weekstart, weekend, onDateClicked }) => {
+}> = ({ weekstart, weekend}) => {
+  
   const today = new Date();
   const [x, setX] = useState<Date>(today);
 
@@ -112,7 +108,7 @@ const Calendar: React.FC<{
       <Header></Header>
       <Navigate date={x} navigate={dateChanged}></Navigate>
       <Weekday></Weekday>
-      <Days date={x} events={events} onDateClicked={onDateClicked} />
+      <Days date={x}  />
       <Footer />
     </div>
   );
@@ -120,13 +116,10 @@ const Calendar: React.FC<{
 
 const Days: React.FC<{
   date: Date;
-  events?: {
-    date: Date;
-    description: string;
-    type?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
-  }[];
-  onDateClicked?: (date: Date) => void;
-}> = ({ date, events, onDateClicked }) => {
+}> = ({ date}) => {
+  
+  const {events} = useContext(EventContext);
+  
   const dates: {
     date: Date;
     current: boolean;
@@ -160,8 +153,7 @@ const Days: React.FC<{
           date={item.date}
           current={item.current}
           eventType={item.eventType}
-          desc={item.desc}
-          onDateClicked={onDateClicked}
+          desc={item.desc}          
         ></Day>
       ))}
     </div>
@@ -172,9 +164,11 @@ const Day: React.FC<{
   date: Date;
   current: boolean;
   eventType?: "fixed" | "optional" | "optionalApplied" | "special" | "leave";
-  desc?: string;
-  onDateClicked?: (date: Date) => void;
-}> = ({ date, current, eventType, desc, onDateClicked }) => {
+  desc?: string;  
+}> = ({ date, current, eventType, desc }) => {
+  const {onDateClicked} = useContext(EventContext);
+
+
   const today: boolean = new Date().toDateString() === date.toDateString();
   const isWeekend: boolean = date.getDay() === 0 || date.getDay() === 6;
 
