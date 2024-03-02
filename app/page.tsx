@@ -1,5 +1,6 @@
 "use client";
 import Calendar from "@/components/Calendar";
+import LeaveInfo from "@/components/LeaveInfo";
 import { event } from "@/model/event";
 import { useState } from "react";
 
@@ -102,9 +103,9 @@ export default function Home() {
         const updateEvents = events.map((item, index) =>
           item.date.toDateString() === date.toDateString()
             ? {
-              date:item.date,
-              description:item.description,
-              type:"optional" as "fixed" | "optional" | "optionalApplied" | "special" | "leave"
+              date: item.date,
+              description: item.description,
+              type: "optional" as "fixed" | "optional" | "optionalApplied" | "special" | "leave"
             }
             : item,
         );
@@ -115,12 +116,12 @@ export default function Home() {
         const updateArray = events.map((item, index) =>
           item.date.toDateString() === date.toDateString()
             ? getUpdateElement({
-                date: item.date,
-                description: item.description,
-                type: item.type,
-                specialAllowed: specialAllowed,
-                optionalAllowed: optionalAllowed,
-              })
+              date: item.date,
+              description: item.description,
+              type: item.type,
+              specialAllowed: specialAllowed,
+              optionalAllowed: optionalAllowed,
+            })
             : item,
         );
 
@@ -136,42 +137,7 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="flex flex-row p-2">
         <div className="flex-none">
-          <table>
-            <tbody>
-              <tr>
-                <td>Fixed</td>
-                <td>{events.filter((item) => item.type === "fixed").length}</td>
-              </tr>
-              <tr>
-                <td>Optional</td>
-                <td>
-                  {events.filter((item) => item.type === "optional").length +
-                    events.filter((item) => item.type === "optionalApplied")
-                      .length}
-                </td>
-              </tr>
-              <tr>
-                <td>Leave</td>
-                <td>{events.filter((item) => item.type === "leave").length}</td>
-              </tr>
-              <tr>
-                <td>Special</td>
-                <td>
-                  {events.filter((item) => item.type === "special").length}
-                </td>
-              </tr>
-
-              <tr>
-                <td>Optional Applied</td>
-                <td>
-                  {
-                    events.filter((item) => item.type === "optionalApplied")
-                      .length
-                  }
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <LeaveInfo></LeaveInfo>
         </div>
         <div className="flex-grow">
           <Calendar events={events} onDateClicked={onDateClicked}></Calendar>
