@@ -2,6 +2,7 @@
 import Calendar from "@/components/Calendar";
 import LeaveInfo from "@/components/LeaveInfo";
 import { event } from "@/model/event";
+import EventContext from "@/store/eventContext";
 import { useState } from "react";
 
 export default function Home() {
@@ -134,16 +135,23 @@ export default function Home() {
   };
 
   return (
+    <EventContext.Provider
+      value={{
+        events: events,
+        onDateClicked: onDateClicked,
+      }}
+    >      
     <div className="flex flex-col">
       <div className="flex flex-row p-2">
         <div className="flex-none">
           <LeaveInfo></LeaveInfo>
-        </div>
+        </div>        
         <div className="flex-grow">
-          <Calendar events={events} onDateClicked={onDateClicked}></Calendar>
+            <Calendar></Calendar>
+          </div>
         </div>
+        <div>Panel Task</div>
       </div>
-      <div>Panel Task</div>
-    </div>
+    </EventContext.Provider>
   );
 }
