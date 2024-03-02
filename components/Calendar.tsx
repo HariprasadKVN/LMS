@@ -39,6 +39,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
       <div
         className="rounded-md
           text-black/50
+          dark:text-white/50
           hover:bg-slate-400/50
           hover:text-slate-800/75
           active:bg-slate-600/50
@@ -57,6 +58,7 @@ const Navigate: React.FC<{ date: Date; navigate: (date: Date) => void }> = ({
       <div
         className="rounded-md
           text-black/50
+          dark:text-white/50
           hover:bg-slate-400/50
           hover:text-slate-800/75
           active:bg-slate-600/50
