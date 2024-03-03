@@ -1,3 +1,4 @@
+"use client"
 import clsx from "clsx";
 import { useState, useContext } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
@@ -121,7 +122,7 @@ const Days: React.FC<{
 }> = ({ date}) => {
   
   const {events} = useContext(EventContext);
-  
+
   const dates: {
     date: Date;
     current: boolean;
