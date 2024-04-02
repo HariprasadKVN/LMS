@@ -1,0 +1,108 @@
+const tasks = [
+  {
+    id: 1,
+    task_id: "US0541263",
+    task_desc: "POC Extract CMC payment table",
+    estimate: 3,
+    status: "not started",
+    planned_start_date: new Date("03-29-2024"),
+    actuall_start_date: undefined,
+  },
+  {
+    id: 2,
+    task_id: "US0541264",
+    task_desc: "POC Extract MEME payment table",
+    estimate: 5,
+    status: "not started",
+    planned_start_date: new Date("03-30-2024"),
+    actuall_start_date: undefined,
+  },
+  {
+    id: 3,
+    task_id: "US0541261",
+    task_desc: "POC Extract PROV payment table",
+    estimate: 3,
+    status: "in progress",
+    planned_start_date: new Date("03-27-2024"),
+    actuall_start_date: new Date("03-28-2024"),
+  },
+  {
+    id: 4,
+    task_id: "US0541260",
+    task_desc: "POC Extract CER payment table",
+    estimate: 3,
+    status: "in progress",
+    planned_start_date: new Date("03-29-2024"),
+    actuall_start_date: new Date("03-26-2024"),
+  },
+  {
+    id: 5,
+    task_id: "US0541240",
+    task_desc: "POC Extract EDR payment table",
+    estimate: 3,
+    status: "completed",
+    planned_start_date: new Date("03-10-2024"),
+    actuall_start_date: new Date("03-10-2024"),
+  },
+  {
+    id: 6,
+    task_id: "US0541241",
+    task_desc: "POC Extract KIJ payment table",
+    estimate: 3,
+    status: "completed",
+    planned_start_date: new Date("03-12-2024"),
+    actuall_start_date: new Date("03-13-2024"),
+  },
+  {
+    id: 7,
+    task_id: "US0541242",
+    task_desc: "POC Extract CMD payment table",
+    estimate: 5,
+    status: "completed",
+    planned_start_date: new Date("03-15-2024"),
+    actuall_start_date: new Date("03-14-2024"),
+  },
+  {
+    id: 8,
+    task_id: "US0541243",
+    task_desc: "POC Extract OLM payment table",
+    estimate: 5,
+    status: "completed",
+    planned_start_date: new Date("03-16-2024"),
+    actuall_start_date: new Date("03-16-2024"),
+  },
+  {
+    id: 9,
+    task_id: "US0541244",
+    task_desc: "POC Extract OLK payment table",
+    estimate: 3,
+    status: "completed",
+    planned_start_date: new Date("03-17-2024"),
+    actuall_start_date: new Date("03-17-2024"),
+  },
+  {
+    id: 10,
+    task_id: "US0541246",
+    task_desc: "POC Extract HYB payment table",
+    estimate: 2,
+    status: "completed",
+    planned_start_date: new Date("03-17-2024"),
+    actuall_start_date: new Date("03-17-2024"),
+  },
+  {
+    id: 11,
+    task_id: "US0541247",
+    task_desc: "POC Extract WSX payment table",
+    estimate: 3,
+    status: "completed",
+    planned_start_date: new Date("03-18-2024"),
+    actuall_start_date: new Date("03-18-2024"),
+  },
+];
+
+export function getTasks() {
+  return Promise.resolve(Object.values(tasks.filter((a) => a.status!=="completed").sort((a,b) => (a.planned_start_date >  b.planned_start_date) ? 1 : -1)));
+}
+export function getTaskById(id:number) {
+  return Promise.resolve(Object.values(tasks.filter((task) => task.id === id)));
+}
