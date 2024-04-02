@@ -1,5 +1,7 @@
 import Calendar from "@/components/Calendar";
 import LeaveInfo from "@/components/LeaveInfo";
+import WorkAllocation from "@/components/dashboard/work-allocation";
+import AddTask from "@/components/tasks/AddTask";
 import { EventContextProvider } from "@/store/eventContext";
 
 export default function Home() {
@@ -11,7 +13,9 @@ export default function Home() {
             <LeaveInfo></LeaveInfo>
           </div>
           <div className="flex-grow">
-            <Calendar></Calendar>
+            {/*  <Calendar></Calendar> */}
+            {/* <WorkAllocation /> */}
+            <AddTask />
           </div>
         </div>
         <div>Panel Task</div>
