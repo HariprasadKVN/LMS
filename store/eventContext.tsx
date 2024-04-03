@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useState } from "react";
-import { event } from "@/model/event";
+import { event } from "@/models/event";
 
 const EventContext = createContext<{
   events: {

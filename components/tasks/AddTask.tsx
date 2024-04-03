@@ -12,19 +12,50 @@ function AddTask() {
   const [taskAdded, setTaskAdded] = useState(false);
 
   const handleSubmit = async (e: any) => {
-    setTaskAdded(false);
-    e.preventDefault();
-    const response = await axios.post(
-      "http://localhost:5000/api/users/EMPIN3035/work/allocations",
-      {
-        taskId: taskId,
-        description: description,
-        start: startDate,
-        end: endDate,
-      },
-    );
-    console.log(response.data);
-    setTaskAdded(true);
+    // setTaskAdded(false);
+    // e.preventDefault();
+    // const response = await axios.post(
+    //   "http://localhost:5000/api/users/EMPIN3035/work/allocations",
+    //   {
+    //     taskId: taskId,
+    //     description: description,
+    //     start: startDate,
+    //     end: endDate,
+    //   },
+    // );
+    // console.log(response.data);
+    // setTaskAdded(true);
+
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          created_by: "Hari",
+          assigned_to: 'Gajanan',
+          task_id: taskId,
+          task_desc: description,
+          estimate: 23,
+          status: 'assigned',
+          start_date: startDate,
+          end_date: endDate
+        }),
+      });
+
+      // Throw error with status code in case Fetch API req failed
+      if (!res.ok) {
+        throw new Error(res.status.toString());
+      }
+
+      //router.push("/");
+    } catch (error) {
+      //setMessage("Failed to add pet");
+    }
+
+
   };
   return (
     <>

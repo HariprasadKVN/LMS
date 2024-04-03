@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PencilSquare from "@/svg/PencilSquare";
 import DeleteSvg from "@/svg/DeleteSvg";
 import axios from "axios";
-import IAllocation from "@/model/allocation";
+import IAllocation from "@/models/allocation";
 import AddTask from "../tasks/AddTask";
 
 interface Props {
@@ -14,11 +14,8 @@ const WorkAllocation: React.FC<Props> = ({ isNewTaskAdded }) => {
   const [tasks, setTasks] = useState<IAllocation[]>([]);
   useEffect(() => {
     const getAllocations = async () => {
-      const response = await axios({
-        url: "http://localhost:5000/api/users/EMPIN3035/work/allocations",
-        method: "GET",
-      });
-      setTasks(response.data);
+      const response = await axios.get("/api/tasks");
+      setTasks(response.data.data);
     };
     getAllocations().then();
   }, [isNewTaskAdded]);
