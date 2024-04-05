@@ -1,65 +1,19 @@
-"use client";
-import axios from "axios";
-import { json } from "node:stream/consumers";
 import React, { useState } from "react";
-import WorkAllocation from "../dashboard/work-allocation";
 
-function AddTask() {
+interface Props {  
+  handleSubmit: (data: any) => void
+}
+
+const AddTask: React.FC<Props> = ({ handleSubmit}) => { 
   const [taskId, setTaskId] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [taskAdded, setTaskAdded] = useState(false);
-
-  const handleSubmit = async (e: any) => {
-    // setTaskAdded(false);
-    // e.preventDefault();
-    // const response = await axios.post(
-    //   "http://localhost:5000/api/users/EMPIN3035/work/allocations",
-    //   {
-    //     taskId: taskId,
-    //     description: description,
-    //     start: startDate,
-    //     end: endDate,
-    //   },
-    // );
-    // console.log(response.data);
-    // setTaskAdded(true);
-
-    try {
-      const res = await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          created_by: "Hari",
-          assigned_to: 'Gajanan',
-          task_id: taskId,
-          task_desc: description,
-          estimate: 23,
-          status: 'assigned',
-          start_date: startDate,
-          end_date: endDate
-        }),
-      });
-
-      // Throw error with status code in case Fetch API req failed
-      if (!res.ok) {
-        throw new Error(res.status.toString());
-      }
-
-      //router.push("/");
-    } catch (error) {
-      //setMessage("Failed to add pet");
-    }
 
 
-  };
   return (
     <>
-      <div className="m-5">Work Allocation</div>
+      <div className="m-5 text-sm">Work Allocation</div>
       <div className="m-5">
         <form className="w-full max-w-lg">
           <div className="-mx-3 mb-6 flex flex-wrap">
@@ -136,15 +90,21 @@ function AddTask() {
             <button
               className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
               type="button"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit({
+                created_by: "Hari",
+                assigned_to: 'Gajanan',
+                task_id: taskId,
+                task_desc: description,
+                estimate: 23,
+                status: 'assigned',
+                start_date: startDate,
+                end_date: endDate
+              })}
             >
               Add Task
             </button>
           </div>
         </form>
-      </div>
-      <div className="m-5">
-        <WorkAllocation isNewTaskAdded={taskAdded} />
       </div>
     </>
   );

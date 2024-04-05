@@ -1,10 +1,8 @@
 'use client'
-import Calendar from "@/components/Calendar";
-import LeaveInfo from "@/components/LeaveInfo";
-import WorkAllocation from "@/components/dashboard/work-allocation";
-import AddTask from "@/components/tasks/AddTask";
-import { EventContextProvider } from "@/store/eventContext";
 import { useState } from "react";
+import { EventContextProvider } from "@/store/eventContext";
+import Task from "./components/task/Task";
+
 
 export default function Home() {
   const [date, setDate] = useState<string>("");
@@ -25,9 +23,17 @@ export default function Home() {
 
   }
 
+  
+
+  // const getAllocations = async () => {
+  //   return await axios.get("/api/tasks");
+
+  // };
+
   return (
     <>
-      <div className="flex flex-row">
+      <Task></Task>
+      {/* <div className="flex flex-row">
         <div className="flex flex-col">
           <label className="text-xs">Project</label>
           <div className="content-center">
@@ -61,17 +67,15 @@ export default function Home() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <EventContextProvider>
         <div className="flex flex-col">
           <div className="flex flex-row p-2">
             <div className="flex-none">
-              <LeaveInfo></LeaveInfo>
+              {/* <LeaveInfo></LeaveInfo> */}
             </div>
             <div className="flex-grow">
-              {/*  <Calendar></Calendar> */}
-            {/* <WorkAllocation /> */}
-            <AddTask />
+              {/*  <Calendar></Calendar> */}              
             </div>
           </div>
           <div>Panel Task</div>
