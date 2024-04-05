@@ -18,11 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <main className="min-h-screen bg-gray-100">
-        <Header />
-        <div className="container mx-auto px-4 py-8">{children}</div>
-        <Footer />
-      </main>
+      <body>
+        <main className="min-h-screen bg-gray-100">
+          <Header />
+          <div className="container mx-auto px-4 py-8">{children}</div>
+          <Footer />
+        </main>
+      </body>
     </html>
   );
 }
