@@ -17,11 +17,31 @@ const LoginPage: React.FC = () => {
                 <h1>Login to Arena</h1>
                 <div className="mb-2">
                     <label htmlFor="userid" className="block text-xs">User ID</label>
-                    <input id="userid" className="border border-slate-300 rounded-md px-2 py-1" />
+                    <input
+                        id="userid"
+                        type="text"
+                        name="email"
+                        className="
+                            appearance-none
+                            border 
+                            border-slate-400/50                            
+                            bg-inherit
+                            text-inherit
+                            rounded-md px-2 py-1"/>
                 </div>
                 <div>
                     <label htmlFor="password" className="block text-xs">Password</label>
-                    <input id="password" className="border border-slate-300 rounded-md px-2 py-1" type="password" />
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        className="
+                            appearance-none
+                            border 
+                            border-slate-400/50                            
+                            bg-inherit
+                            text-inherit
+                            rounded-md px-2 py-1" />
                 </div>
                 <button className="border border-green-300 bg-green-500 m-1 px-2 py-1 rounded-md">
                     Login
