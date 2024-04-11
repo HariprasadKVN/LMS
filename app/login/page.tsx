@@ -6,42 +6,26 @@ import {
     KeyIcon,
     ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
+import Input from '../components/input';
+import Password from '../components/password';
 // import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 const LoginPage: React.FC = () => {
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
     return (
-        <main className="flex items-center justify-center md:h-screen">
+        <main className="h-screen flex justify-center items-center">
             <form action={dispatch}>
                 <h1>Login to Arena</h1>
                 <div className="mb-2">
-                    <label htmlFor="userid" className="block text-xs">User ID</label>
-                    <input
-                        id="userid"
-                        type="text"
-                        name="email"
-                        className="
-                            appearance-none
-                            border 
-                            border-slate-400/50                            
-                            bg-inherit
-                            text-inherit
-                            rounded-md px-2 py-1"/>
+
+                    <label htmlFor="email" className="block text-xs">User ID</label>
+                    <Input id="email" name="email"/>
                 </div>
                 <div>
                     <label htmlFor="password" className="block text-xs">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        className="
-                            appearance-none
-                            border 
-                            border-slate-400/50                            
-                            bg-inherit
-                            text-inherit
-                            rounded-md px-2 py-1" />
+                    <Password ></Password>
+
                 </div>
                 <button className="border border-green-300 bg-green-500 m-1 px-2 py-1 rounded-md">
                     Login
