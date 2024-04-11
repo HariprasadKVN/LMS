@@ -18,12 +18,14 @@ const LoginPage: React.FC = () => {
             <form action={dispatch}>
                 <h1>Login to Arena</h1>
                 <div className="mb-2">
+
                     <label htmlFor="email" className="block text-xs">User ID</label>
                     <Input id="email" name="email"/>
                 </div>
                 <div>
                     <label htmlFor="password" className="block text-xs">Password</label>
                     <Password ></Password>
+
                 </div>
                 <button className="border border-green-300 bg-green-500 m-1 px-2 py-1 rounded-md">
                     Login

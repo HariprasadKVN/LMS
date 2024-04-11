@@ -1,5 +1,6 @@
 'use client'
 import { useFormState } from "react-dom";
+
 import Password from "../components/password";
 import { register } from "../lib/actions";
 import Input from "../components/input";
@@ -31,6 +32,7 @@ const Register: React.FC = () => {
                 </form>
             </div>
         </main>)
+
 }
 
 export default Register;
