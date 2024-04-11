@@ -31,31 +31,31 @@ export async function authenticate(
   }
 }
 
+const getValue = (data: FormDataEntryValue | null): string => {
+  if (!data) return "";
+  else return data.toString();
+};
+
 export async function register(
   prevState: string | undefined,
   formData: FormData,
 ) {
   try {
-
     await dbConnect();
-    const password = formData.get("password")?.toString();
     const userAuth = {
       name: formData.get("name"),
-      email: formData.get("email"),
-      password: await hashPassword(password ? password : ""),
+      email: await hashPassword(getValue(formData.get("email"))),
+      password: await hashPassword(getValue(formData.get("password"))),
     };
-    console.log(userAuth);
-    const x = await Auth.create(userAuth);
+    const email = await hashPassword(getValue(formData.get("email")));
+    const x = await Auth.findOne({ email: email });
     console.log(x);
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
+
+    if (await Auth.findOne({ email: email })) {
+    } else {
+      const x = await Auth.create(userAuth);
     }
+  } catch (error) {
     throw error;
   }
 }
