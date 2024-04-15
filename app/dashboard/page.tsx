@@ -1,4 +1,4 @@
-import { signOut } from '@/auth';
+import { signIn, signOut } from '../lib/actions';
 
 const Dashboard: React.FC = () => {
     return <>This is your Dashboard

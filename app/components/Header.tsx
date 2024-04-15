@@ -3,10 +3,11 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="bg-blue-950/90 dark:bg-gray-600/50">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="font-bold text-white">
-
+        <div className="font-bold text-white/80 text-3xl p-2 pl-1">
+          REALM
+          <p className="text-xs font-thin tracking-wide">your playground...!</p>
         </div>
         <div>
           <Link href="/">
