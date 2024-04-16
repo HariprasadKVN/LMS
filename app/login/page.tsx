@@ -16,15 +16,16 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="flex justify-center content-center">
-            <div className="border border-blue-950/90 rounded my-1 px-2 py-1 dark:bg-slate-300 dark:text-slate-700">
+            <div className="border border-blue-950/90 dark:border-teal-300 
+                rounded my-1 px-2 py-1">
                 <form action={dispatch}>
                     <div className="text-lg font-bold text-center">Enter the REALM</div>
                     <div className="mb-2">
-                        <label htmlFor="email" className="block text-xs">Email/User ID</label>
+                        <label htmlFor="email" className="block text-xs mb-1 mt-2">Email/User ID</label>
                         <Input id="email" name="email" />
                     </div>
                     <div>
-                        <label htmlFor="password" className="block text-xs">Password</label>
+                        <label htmlFor="password" className="block text-xs mb-1 mt-2">Password</label>
                         <Password ></Password>
                     </div>
                     <div
@@ -40,15 +41,17 @@ const LoginPage: React.FC = () => {
                         )}
                     </div>
                     <div className="flex flex-row-reverse">
-                        <button className="border
-                            border-blue-950/90 
+                        <button className="border                             
                             dark:border-teal-300 
                             dark:bg-teal-500 
                             dark:hover:bg-teal-700 
                             dark:active:bg-teal-500
-                            bg-teal-500 
-                            hover:bg-teal-700 
-                            active:bg-teal-500 
+                            border-blue-950/90
+                            bg-blue-700/50 
+                            hover:bg-blue-700 
+                            hover:text-white/50
+                            active:bg-blue-700/50
+                            active:text-inherit 
                             m-1 px-2 py-1 rounded-md">
                             Login
                         </button>

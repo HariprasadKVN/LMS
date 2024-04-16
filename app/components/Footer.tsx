@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-blue-950/90 p-4 text-center text-white">
+    <footer className="bg-blue-950/90 dark:bg-teal-600 p-4 text-center text-white">
       <div className="container mx-auto">
         <p>&copy; {new Date().getFullYear()} LMS</p>
        {/*  <div className="mt-2">
