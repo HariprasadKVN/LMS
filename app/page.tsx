@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { EventContextProvider } from "@/store/eventContext";
 import Task from "./components/task/Task";
+import Effort from "./components/effort/effort";
  
  
 export default function Home() {
@@ -32,7 +33,8 @@ export default function Home() {
  
   return (
     <>
-      <Task></Task>
+    <Effort></Effort>
+      {/* <Task></Task> */}
       {/* <div className="flex flex-row">
         <div className="flex flex-col">
           <label className="text-xs">Project</label>
@@ -68,19 +70,19 @@ export default function Home() {
           </div>
         </div>
       </div> */}
-      <EventContextProvider>
+      {/* <EventContextProvider>
         <div className="flex flex-col">
           <div className="flex flex-row p-2">
             <div className="flex-none">
               {/* <LeaveInfo></LeaveInfo> */}
-            </div>
+          {/*  </div>
             <div className="flex-grow">
               {/*  <Calendar></Calendar> */}              
-            </div>
+          {/*  </div>
           </div>
           <div>Panel Task</div>
         </div>
-      </EventContextProvider>
+      </EventContextProvider> */}
     </>
   );
 }
