@@ -3,6 +3,7 @@ import { useState } from "react";
 import { EventContextProvider } from "@/store/eventContext";
 import Task from "./components/task/Task";
 import Effort from "./components/effort/effort";
+import LeaveDetails from "./components/leave/LeaveDetails";
  
  
 export default function Home() {
@@ -33,8 +34,8 @@ export default function Home() {
  
   return (
     <>
-    <Effort></Effort>
-      {/* <Task></Task> */}
+      <Task></Task>
+      <LeaveDetails></LeaveDetails>
       {/* <div className="flex flex-row">
         <div className="flex flex-col">
           <label className="text-xs">Project</label>
