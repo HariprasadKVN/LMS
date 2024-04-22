@@ -3,7 +3,7 @@ declare global {
   var mongoose: any; // This must be a `var` and not a `let / const`
 }
 
-const MONGODB_URI = "mongodb+srv://reactuser:welcome123@financecluster.qhjl565.mongodb.net/?retryWrites=true&w=majority"!;
+const MONGODB_URI = "mongodb+srv://reactuser:welcome123@financecluster.qhjl565.mongodb.net/lms?retryWrites=true&w=majority"!;
 
 if (!MONGODB_URI) {
   throw new Error(

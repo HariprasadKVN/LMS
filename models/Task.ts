@@ -8,7 +8,7 @@ export interface Tasks extends mongoose.Document {
   estimate?: number;
   status?: string;
   start_date?: Date;
-  end_date?: Date;
+  end_date?: Date;  
 }
 
 /* TaskSchema will correspond to a collection in your MongoDB database. */
