@@ -7,6 +7,7 @@ import {
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import Table from "../Table";
 
 interface Props {
   tasks: allocation[];
@@ -17,13 +18,28 @@ interface allocation extends IAllocation {
   current?: boolean;
 }
 
-const TaskList: React.FC<Props> = ({
-  tasks,
-  setStatus,
-}) => {
+const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
   const [selected, setSelected] = useState(false);
+  const columns = [
+    { header: "TaskId", key: "task_id"},
+    { header: "Description", key: "task_desc"},
+    { header: "Assigned to", key: "assigned_to" },
+    { header: "Estimate", key: "estimate"},
+    { header: "Start by", key: "start_date"},
+    { header: "End Before", key: "end_date"},
+    { header: "Status", key: "status"},
+    { header: "Action", key: "status"},
+  ];
+
+  /* const data = [
+    { name: "John Doe", age: 30, email: "john@example.com" },
+    { name: "Jane Smith", age: 25, email: "jane@example.com" },
+    // Add more rows as needed
+  ]; */
+
   return (
     <>
+     {/*  <Table columns={columns} data={tasks} /> */}
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b">
@@ -68,19 +84,13 @@ const TaskList: React.FC<Props> = ({
                       <CheckIcon
                         className="h-4 w-4 hover:text-green-700"
                         onClick={() =>
-                            setStatus(
-                            task._id ? task._id : "",
-                            "completed",
-                          )
+                          setStatus(task._id ? task._id : "", "completed")
                         }
                       ></CheckIcon>
                       <XMarkIcon
                         className="h-4 w-4 hover:text-red-700"
                         onClick={() =>
-                            setStatus(
-                            task._id ? task._id : "",
-                            "aborted",
-                          )
+                          setStatus(task._id ? task._id : "", "aborted")
                         }
                       ></XMarkIcon>
                     </>
