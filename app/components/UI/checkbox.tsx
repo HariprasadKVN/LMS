@@ -1,27 +1,30 @@
-import clsx from 'clsx';
+import clsx from "clsx";
+import Label from "./label";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    caption?:string
+  caption?: string;
 }
 
-const Checkbox: React.FC<InputProps> = ({caption, className, ...rest }: InputProps) => {
-    const {name} = {...rest};
-    return <>
-        <label
-            className="block 
-                text-xs font-semibold uppercase 
-                tracking-wide text-gray-700/80
-                pl-1"
-            htmlFor={name}>
-            {caption?caption:name}
-        </label>
-        <input
-            autoComplete='off'
-            {...rest}
-            type="checkbox"
-            className={clsx("dark:bg-inherit border border-slate-400/50 rounded-md px-4 py-4 my-2 content-center", className)} >
-        </input>
+const Checkbox: React.FC<InputProps> = ({
+  caption,
+  className,
+  ...rest
+}: InputProps) => {
+  const { name } = { ...rest };
+  return (
+    <>
+      <Label caption={caption ? caption : name}></Label>
+      <input
+        autoComplete="off"
+        {...rest}
+        type="checkbox"
+        className={clsx(
+          "my-2 content-center rounded-md border border-slate-400/50 px-4 py-4 dark:bg-inherit",
+          className,
+        )}
+      ></input>
     </>
-}
+  );
+};
 
-export default Checkbox
+export default Checkbox;
