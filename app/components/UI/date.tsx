@@ -10,8 +10,9 @@ const Date: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
     return <>
         <label
             className="block 
-                text-xs font-semibold uppercase 
-                tracking-wide text-gray-700/80
+                text-xs font-semibold capitalize 
+                tracking-wide text-slate-900/80
+                dark:text-slate-200/80
                 pl-1"
             htmlFor={name}> 
             {name}           
