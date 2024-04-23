@@ -2,22 +2,21 @@ import UCInput from "./input";
 import UCLabel from "./label";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  caption?: string;
+  label?: string;
 }
 
 const UCCheckbox: React.FC<InputProps> = ({
-  caption,
+  label,
   className,
   ...rest
 }: InputProps) => {
-  const { name } = { ...rest };
+  
   return (
     <>
-      <UCLabel caption={caption ? caption : name}></UCLabel>
-      <UCInput        
+      <UCInput
         {...rest}
-        type="checkbox"        
-      ></UCInput>
+        type="checkbox"
+      /><label>{label}</label>
     </>
   );
 };

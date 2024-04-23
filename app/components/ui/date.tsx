@@ -17,6 +17,7 @@ const UCDate: React.FC<InputProps> = ({ label, className, ...rest }: InputProps)
             {...rest}
             type="date"
             className={clsx("appearance-none dark:bg-inherit border border-slate-400/50 rounded-md px-2 pt-1 content-center", className)} />
+            
     </>
 }
 

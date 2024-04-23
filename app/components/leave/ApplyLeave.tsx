@@ -48,88 +48,71 @@ const ApplyLeave: React.FC = ({ }) => {
     }
   };
   return (
-    <>
+    <div className="p-2">
       <form>
-        <div className="grid grid-cols-6  gap-1">
-          <div>
-            {/* <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="Leave type"
-            >
-              Leave Type
-            </label>
-            <select onChange={(e) => setType(e.target.value)}>
-              <option value="Casual">Casual</option>
-              <option value="Optional">Optional</option>
-              <option value="Special">Special</option>
-            </select> */}
-            <UCSelect
-              options={['Casual', 'Optional', 'Special']}
-              label="Leave Type"
-              onChange={(e) => setType(e.target.value)}>
-            </UCSelect>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex flex-row items-end">
+            <div className="pr-1">
+              <UCSelect
+                options={['Casual', 'Optional', 'Special']}
+                label="Leave Type"
+                onChange={(e) => setType(e.target.value)}>
+              </UCSelect>
+            </div>
 
-          </div>
-
-          <div>
-            <UCDate
-              name="Start Date"
-              onChange={(e) => setStartDate(new Date(e.target.value))}>
-            </UCDate>
-          </div>
-          <div>
-          <UCDate
-              name="End Date"
-              onChange={(e) => setEndDate(new Date(e.target.value))}>
-            </UCDate>
-            {/* <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="End Date"
-            >
-              End Date
-            </label>
-            <input
-              name="End Date"
-              type="date"
-              onChange={(e) => setEndDate(new Date(e.target.value))}
-            ></input> */}
-          </div>
-          <div>
-            <UCInput label="Reason" onChange={(e) => setReason(e.target.value)}></UCInput>
+            <div className="pr-1">
+              <UCDate
+                name="Start Date"
+                onChange={(e) => setStartDate(new Date(e.target.value))}>
+              </UCDate>
+            </div>
+            <div className="pr-1">
+              <UCDate
+                name="End Date"
+                onChange={(e) => setEndDate(new Date(e.target.value))}>
+              </UCDate>
+            </div>
+            <div className="items-center justify-center">
+              <UCCheckbox
+                value="Half"
+                name="Halfday"
+                label="Apply for Half a Day"
+                onChange={() => setDuration("half")}
+              />
+              
+            </div>
           </div>
 
-          <div>
-            <UCCheckbox
-              value="Half"
-              name="Halfday"
-              caption="Duration"
-              onChange={() => setDuration("half")}
-            />{" "}
-            Half Day
+          <div className="flex flex-row">
+            <div>
+              <UCInput label="Reason" onChange={(e) => setReason(e.target.value)}></UCInput>
+            </div>
+
+            <div className="col-span-1 content-around">
+              <button
+                className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
+                type="button"
+                onClick={() => {
+                  applyLeave("Hari", [
+                    {
+                      type: type,
+                      start: startDate,
+                      end: endDate,
+                      duration: duration,
+                      description: reason,
+                    },
+                  ]);
+                }}
+              >
+                Apply Leave
+              </button>
+            </div>
           </div>
 
-          <div className="col-span-1 content-around">
-            <button
-              className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
-              type="button"
-              onClick={() => {
-                applyLeave("Hari", [
-                  {
-                    type: type,
-                    start: startDate,
-                    end: endDate,
-                    duration: duration,
-                    description: reason,
-                  },
-                ]);
-              }}
-            >
-              Apply Leave
-            </button>
-          </div>
         </div>
       </form>
-    </>
+    </div>
+
   );
 };
 

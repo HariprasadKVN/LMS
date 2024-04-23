@@ -10,7 +10,7 @@ const UCInput: React.FC<InputProps> = ({ label, className, ...rest }: InputProps
     const display = label ? label : name;
 
     return <>
-        <UCLabel caption={display}></UCLabel>
+        {type!="checkbox" && <UCLabel caption={display}></UCLabel>}
         <input autoComplete="off"
             {...rest}
             className={clsx({
