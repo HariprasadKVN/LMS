@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { EventContextProvider } from "@/store/eventContext";
 import Task from "./components/task/Task";
+import LeaveDetails from "./components/leave/LeaveDetails"
+
 
 export default function Home() {
   const [date, setDate] = useState<string>("");
