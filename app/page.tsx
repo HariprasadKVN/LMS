@@ -34,9 +34,7 @@ export default function Home() {
  
   return (
     <>
-      {/* <Task></Task> */}
-    <TimeSheet></TimeSheet>
-      {/* <TimeSheet userId={0}></TimeSheet> */}
+      <Task></Task>
       {/* <div className="flex flex-row">
         <div className="flex flex-col">
           <label className="text-xs">Project</label>
