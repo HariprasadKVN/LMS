@@ -6,8 +6,8 @@ import {
     KeyIcon,
     ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
-import Input from '../components/input';
-import Password from '../components/password';
+import Input from '../components/ui/input';
+import Password from '../components/ui/password';
 import Link from 'next/link';
 // import { ArrowRightIcon } from '@heroicons/react/20/solid';
 

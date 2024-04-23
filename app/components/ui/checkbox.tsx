@@ -1,12 +1,11 @@
-import clsx from "clsx";
 import Label from "./label";
-import Input from "../input";
+import Input from "./input";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   caption?: string;
 }
 
-const Checkbox: React.FC<InputProps> = ({
+const UCCheckbox: React.FC<InputProps> = ({
   caption,
   className,
   ...rest
@@ -23,4 +22,4 @@ const Checkbox: React.FC<InputProps> = ({
   );
 };
 
-export default Checkbox;
+export default UCCheckbox;

@@ -1,11 +1,11 @@
 'use client'
 import { useFormState } from "react-dom";
 
-import Password from "../components/password";
+import Password from "../components/ui/password";
 import { register } from "../lib/actions";
-import Input from "../components/input";
-import Button from "../components/button";
-import Email from "../components/email";
+import Input from "../components/ui/input";
+import Button from "../components/ui/button";
+import Email from "../components/ui/email";
 import { useRouter } from "next/navigation";
 
 

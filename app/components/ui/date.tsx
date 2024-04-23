@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import Label from './label';
-import Input from '../input';
+import Input from './input';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string
 }
 
-const DateUI: React.FC<InputProps> = ({ label, className, ...rest }: InputProps) => {
+const UCDate: React.FC<InputProps> = ({ label, className, ...rest }: InputProps) => {
     const { name } = { ...rest };
     const display = label ? label : name;
 
@@ -20,4 +20,4 @@ const DateUI: React.FC<InputProps> = ({ label, className, ...rest }: InputProps)
     </>
 }
 
-export default DateUI
+export default UCDate

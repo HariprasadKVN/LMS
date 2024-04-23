@@ -5,7 +5,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 }
 
-const Email: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
+const UCEmail: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
     const specific = {
         ...rest, autoComplete: 'off', type: "email",
         name: "email",
@@ -19,4 +19,4 @@ const Email: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
 
 }
 
-export default Email;
+export default UCEmail;

@@ -2,7 +2,7 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   caption?: string;
 }
 
-const Label: React.FC<LabelProps> = ({
+const UCLabel: React.FC<LabelProps> = ({
   caption,
   className,
   ...rest
@@ -23,4 +23,4 @@ const Label: React.FC<LabelProps> = ({
   );
 };
 
-export default Label;
+export default UCLabel;
