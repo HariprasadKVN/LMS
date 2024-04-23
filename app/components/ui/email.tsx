@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Input from "./input";
+import UCInput from "./input";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
@@ -12,7 +12,7 @@ const UCEmail: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
         id: "email"
     }
 
-    return <Input
+    return <UCInput
         {...specific}
         placeholder="id@domain.com"
         className={clsx(className, "appearance-none dark:bg-inherit border border-slate-400/50 rounded-md px-2 py-1")} />

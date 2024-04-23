@@ -1,10 +1,11 @@
 import { applyLeave } from "@/app/lib/employeeAction";
 import { useState } from "react";
-import Checkbox from "../ui/checkbox";
-import Label from "../ui/label";
-import DateUI from "../ui/date";
+import UCDate from "../ui/date";
+import UCCheckbox from "../ui/checkbox";
+import UCSelect from "../ui/select";
+import UCInput from "../ui/input";
 
-const ApplyLeave: React.FC = ({}) => {
+const ApplyLeave: React.FC = ({ }) => {
   const [type, setType] = useState("Casual");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -48,12 +49,10 @@ const ApplyLeave: React.FC = ({}) => {
   };
   return (
     <>
-      {" "}
-      This is Apply leave Page
       <form>
         <div className="grid grid-cols-6  gap-1">
           <div>
-            <label
+            {/* <label
               className="block text-xs font-bold uppercase tracking-wide text-gray-700"
               htmlFor="Leave type"
             >
@@ -63,26 +62,27 @@ const ApplyLeave: React.FC = ({}) => {
               <option value="Casual">Casual</option>
               <option value="Optional">Optional</option>
               <option value="Special">Special</option>
-            </select>
+            </select> */}
+            <UCSelect
+              options={['Casual', 'Optional', 'Special']}
+              label="Leave Type"
+              onChange={(e) => setType(e.target.value)}>
+            </UCSelect>
+
           </div>
-          {/* <div>
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="Start Date"
-            >
-              Start Date
-            </label>
-            <input
-              name="Start Date"
-              type="date"
-              onChange={(e) => setStartDate(new Date(e.target.value))}
-            ></input>
-          </div> */}
-          <div>                
-                <DateUI name="End Date"></DateUI>
-              </div>
+
           <div>
-            <label
+            <UCDate
+              name="Start Date"
+              onChange={(e) => setStartDate(new Date(e.target.value))}>
+            </UCDate>
+          </div>
+          <div>
+          <UCDate
+              name="End Date"
+              onChange={(e) => setEndDate(new Date(e.target.value))}>
+            </UCDate>
+            {/* <label
               className="block text-xs font-bold uppercase tracking-wide text-gray-700"
               htmlFor="End Date"
             >
@@ -92,25 +92,14 @@ const ApplyLeave: React.FC = ({}) => {
               name="End Date"
               type="date"
               onChange={(e) => setEndDate(new Date(e.target.value))}
-            ></input>
+            ></input> */}
           </div>
           <div>
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor=" Leave Reason"
-            >
-              Leave Reason
-            </label>
-            <input
-              name="Reason"
-              type="text"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            ></input>
+            <UCInput label="Reason" onChange={(e) => setReason(e.target.value)}></UCInput>
           </div>
 
           <div>
-            <Checkbox
+            <UCCheckbox
               value="Half"
               name="Halfday"
               caption="Duration"

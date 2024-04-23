@@ -1,5 +1,5 @@
-import Label from "./label";
-import Input from "./input";
+import UCInput from "./input";
+import UCLabel from "./label";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   caption?: string;
@@ -13,11 +13,11 @@ const UCCheckbox: React.FC<InputProps> = ({
   const { name } = { ...rest };
   return (
     <>
-      <Label caption={caption ? caption : name}></Label>
-      <Input        
+      <UCLabel caption={caption ? caption : name}></UCLabel>
+      <UCInput        
         {...rest}
         type="checkbox"        
-      ></Input>
+      ></UCInput>
     </>
   );
 };

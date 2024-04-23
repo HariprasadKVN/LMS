@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import Label from './label';
-import Input from './input';
+import UCLabel from './label';
+import UCInput from './input';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string
@@ -11,8 +11,8 @@ const UCDate: React.FC<InputProps> = ({ label, className, ...rest }: InputProps)
     const display = label ? label : name;
 
     return <>
-        <Label caption={display}></Label>        
-        <Input
+        <UCInput
+            label={display}
             autoComplete='off'
             {...rest}
             type="date"
