@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LogTime from "./logtime";
-import Button from "../button";
+import Button from "../ui/button";
  
 interface Props {
   handleDateChange: (newCurrentDate: Date) => void;
