@@ -72,7 +72,7 @@ const ApplyLeave: React.FC = ({ }) => {
                 onChange={(e) => setEndDate(new Date(e.target.value))}>
               </UCDate>
             </div>
-            <div className="items-center justify-center">
+            {/* <div className="items-center justify-center">
               <UCCheckbox
                 value="Half"
                 name="Halfday"
@@ -80,10 +80,10 @@ const ApplyLeave: React.FC = ({ }) => {
                 onChange={() => setDuration("half")}
               />
               
-            </div>
+            </div> */}
           </div>
 
-          <div className="flex flex-row">
+          <div className="flex flex-row items-end">
             <div>
               <UCInput label="Reason" onChange={(e) => setReason(e.target.value)}></UCInput>
             </div>
