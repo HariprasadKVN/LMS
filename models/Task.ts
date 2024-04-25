@@ -10,7 +10,7 @@ export interface Tasks extends mongoose.Document {
   status?: string;
   start_date?: Date;
   end_date?: Date;
-  efforts?: Effort[];
+  efforts: {};
 }
 
 /* TaskSchema will correspond to a collection in your MongoDB database. */
@@ -61,7 +61,7 @@ const TaskSchema = new mongoose.Schema<Tasks>({
     type: Date,
   },
   efforts: {
-    type: [],
+    type: mongoose.Schema.Types.Mixed,
   },
 });
 
