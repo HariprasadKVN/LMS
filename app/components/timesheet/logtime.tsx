@@ -147,8 +147,12 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
     // setTasks(updatedTasks);
     // Here you can send the updated tasks to your backend API if needed
     console.log(tasks); // Log updated tasks with hours
-    
-    //let updatedTasks = await logTime(tasks);
+    let updatedTasks = await logTime([
+      {
+        taskId: "662a022366286d4dd27131bb",status:"in progress",
+        effort: [{ date: new Date(2024,3,25), effort: 6 }],
+      },
+    ]);
   };
 
   // Function to render column headings
