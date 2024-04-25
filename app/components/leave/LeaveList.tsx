@@ -41,7 +41,6 @@ const LeaveList: React.FC = ({}) => {
 
   return (
     <>
-      This is LeaveList Page
       {mockData.map((item, index) => (
         <div className="rounded-lg border border-blue-700" key={index}>
           <div className=" font-thick rounded-lg bg-blue-300 p-2 text-xl">

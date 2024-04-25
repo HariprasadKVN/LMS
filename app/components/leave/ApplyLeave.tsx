@@ -4,6 +4,7 @@ import UCDate from "../ui/date";
 import UCCheckbox from "../ui/checkbox";
 import UCSelect from "../ui/select";
 import UCInput from "../ui/input";
+import UCCard from "../ui/card";
 
 const ApplyLeave: React.FC = ({ }) => {
   const [type, setType] = useState("Casual");
@@ -50,6 +51,7 @@ const ApplyLeave: React.FC = ({ }) => {
   return (
     <div className="p-2">
       <form>
+        <UCCard title="test">
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-row items-end">
             <div className="pr-1">
@@ -110,6 +112,7 @@ const ApplyLeave: React.FC = ({ }) => {
           </div>
 
         </div>
+        </UCCard>
       </form>
     </div>
 
