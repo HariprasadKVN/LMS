@@ -6,16 +6,29 @@ export async function logTime(timeSheets: TimeSheet[]) {
   try {
     timeSheets.forEach(async (timeSheet) => {
       let taskToUpdate = await Task.findById(timeSheet.taskId);
-      const efforts = {
-        ...taskToUpdate?.efforts!,
-        [convertDatetoKey(timeSheet.effort[0].date)]:
-          timeSheet.effort[0].effort,
-      };
-      const task = await Task.findByIdAndUpdate(timeSheet.taskId, {
-        $set: { status: timeSheet.status, efforts: efforts },
-      }); 
+      if (taskToUpdate) {
+        let newEfforts = {};
+        timeSheet.effort.forEach((time) => {
+          newEfforts = {
+            ...newEfforts,
+            [convertDatetoKey(time.date)]: time.effort,
+          };
+        });
+
+        const efforts = {
+          ...taskToUpdate?.efforts!,
+          ...newEfforts,
+        };
+        const task = await Task.findByIdAndUpdate(timeSheet.taskId, {
+          $set: { status: timeSheet.status, efforts: efforts },
+        });
+        if (!task) {
+          console.log(`Failed to update task : ${timeSheet.taskId}`);
+        }
+      }
     });
-    return { success: true };
+    const tasks = await Task.find();
+    return { success: true, data: tasks };
   } catch (error) {
     if (error instanceof Error) {
       return "Something went wrong.";
