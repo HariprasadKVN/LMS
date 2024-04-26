@@ -44,7 +44,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
   const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
   const [hours, setHours] = useState<number[][]>([]);
   const [dayindexnew, setDayindexnew] = useState<number>(1); // State to store hours for each task
-
+  let timeSheets: TimeSheet[]=[];
   useEffect(() => {
     const getAllocations = async () => {
       try {
@@ -135,24 +135,15 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
 
   // Function to submit logs
   const submitLog = async () => {
-    // const updatedTasks = tasks.map((task, taskIndex) => ({
-    //   ...task,
-    //   efforts: task.efforts.concat(
-    //     getWeekdays().map((day, dayIndex) => ({
-    //       date: day,
-    //       effort: hours[taskIndex]?.[dayIndex] ?? 0,
-    //     })),
-    //   ),
-    // }));
-    // setTasks(updatedTasks);
-    // Here you can send the updated tasks to your backend API if needed
-    console.log(tasks); // Log updated tasks with hours
-    let updatedTasks = await logTime([
-      {
-        taskId: "662a022366286d4dd27131bb",status:"in progress",
-        effort: [{ date: new Date(2024,3,25), effort: 6 }],
-      },
-    ]);
+    tasks.forEach((task) => {
+      timeSheets.push({
+        taskId: task.taskId,
+        status: task.status === true ? "completed" : "in progress",
+        effort: task.efforts,
+      });
+    });
+    const updatedTasks = await logTime(timeSheets);
+    console.log(updatedTasks);
   };
 
   // Function to render column headings
