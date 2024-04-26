@@ -31,7 +31,7 @@ const UCCard: React.FC<DivProps> = ({
           <ChevronDoubleDownIcon className="h-4 w-4"></ChevronDoubleDownIcon>{" "}
         </div>
       </div>
-      <div className="p-1 border border-blue-950/90 dark:border-teal-600/90" >{children}</div>
+      <div className="p-2 border border-blue-950/90 dark:border-teal-600/90" >{children}</div>
     </div>
   );
 };

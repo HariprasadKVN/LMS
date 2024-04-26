@@ -51,7 +51,7 @@ const ApplyLeave: React.FC = ({ }) => {
   return (
     <div className="p-2">
       <form>
-        <UCCard title="test">
+
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-row items-end">
             <div className="pr-1">
@@ -112,7 +112,7 @@ const ApplyLeave: React.FC = ({ }) => {
           </div>
 
         </div>
-        </UCCard>
+
       </form>
     </div>
 
