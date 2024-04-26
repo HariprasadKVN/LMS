@@ -1,10 +1,10 @@
 "use server";
 import { AuthError } from "next-auth";
 import bcrypt from "bcrypt";
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/store/dbConnect";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { User } from "@/lib/definitions";
+import { User } from "@/store/definitions";
 import Auth from "@/models/userAuth";
 import NextAuth from "next-auth";
 import { authConfig } from "@/app/../auth.config";

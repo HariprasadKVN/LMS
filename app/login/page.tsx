@@ -1,15 +1,14 @@
 'use client'
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/lib/actions';
+import { authenticate } from '@/lib/actions';
 import {
     AtSymbolIcon,
     KeyIcon,
     ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
-import Input from '../components/ui/input';
-import Password from '../components/ui/password';
+import Input from '@/components/ui/input';
+import Password from '@/components/ui/input';
 import Link from 'next/link';
-// import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 const LoginPage: React.FC = () => {
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);

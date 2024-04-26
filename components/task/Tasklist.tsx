@@ -7,7 +7,7 @@ import {
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import Table from "../Table";
+import Table from "../../../components/Table";
 
 interface Props {
   tasks: allocation[];
