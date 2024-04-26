@@ -7,8 +7,9 @@ import {
     ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
 import Input from '@/components/ui/input';
-import Password from '@/components/ui/input';
+import UCPassword from '@/components/ui/password';
 import Link from 'next/link';
+import UCEmail from '@/components/ui/email';
 
 const LoginPage: React.FC = () => {
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);
@@ -19,13 +20,11 @@ const LoginPage: React.FC = () => {
                 rounded my-1 px-2 py-1">
                 <form action={dispatch}>
                     <div className="text-lg font-bold text-center">Enter the REALM</div>
-                    <div className="mb-2">
-                        <label htmlFor="email" className="block text-xs mb-1 mt-2">Email/User ID</label>
-                        <Input id="email" name="email" />
+                    <div className="mb-2">                        
+                        <UCEmail></UCEmail>
                     </div>
-                    <div>
-                        <label htmlFor="password" className="block text-xs mb-1 mt-2">Password</label>
-                        <Password ></Password>
+                    <div>                        
+                        <UCPassword></UCPassword>
                     </div>
                     <div
                         className="flex h-8 items-end space-x-1"

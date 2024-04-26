@@ -15,7 +15,7 @@ const UCEmail: React.FC<InputProps> = ({ className, ...rest }: InputProps) => {
     return <UCInput
         {...specific}
         placeholder="id@domain.com"
-        className={clsx(className, "appearance-none dark:bg-inherit border border-slate-400/50 rounded-md px-2 py-1")} />
+        className={className} />
 
 }
 
