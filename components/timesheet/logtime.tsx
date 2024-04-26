@@ -4,7 +4,7 @@ import IAllocation from "@/models/allocation"; // Import the interface for alloc
 import Button from "@/app/components/ui/button";
 import { getDate } from "date-fns";
 import { date } from "zod";
-import { logTime } from "@/app/lib/timesheetActions";
+import { logTime } from "@/lib/timesheetActions";
 import { TimeSheet } from "@/models/TimeSheet";
 
 interface effort {

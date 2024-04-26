@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/store/dbConnect";
 import Task from "@/models/Task";
 
 export async function GET(request: Request) {

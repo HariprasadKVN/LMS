@@ -1,6 +1,6 @@
 "use server";
 
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/store/dbConnect";
 import Employee from "@/models/Employee";
 
 export async function create(formData: {

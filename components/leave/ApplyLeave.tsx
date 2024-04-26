@@ -1,4 +1,4 @@
-import { applyLeave } from "@/app/lib/employeeAction";
+import { applyLeave } from "@/lib/employeeAction";
 import { useState } from "react";
 import UCDate from "../ui/date";
 import UCCheckbox from "../ui/checkbox";
