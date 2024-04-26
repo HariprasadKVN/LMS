@@ -1,42 +1,46 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { EventContextProvider } from "@/store/eventContext";
 import Task from "./components/task/Task";
-import LeaveDetails from "./components/leave/LeaveDetails"
+import LeaveDetails from "./components/leave/LeaveDetails";
 import TimeSheet from "./components/timesheet/timesheet";
-
+import { ChevronDoubleDownIcon } from "@heroicons/react/24/outline";
+import UCCard from "./components/ui/card";
 
 export default function Home() {
   const [date, setDate] = useState<string>("");
- 
+
   const getDate = (date: Date | undefined): string => {
- 
     if (date) {
       const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero indexed
-      const day = date.getDate().toString().padStart(2, '0');
- 
+      const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero indexed
+      const day = date.getDate().toString().padStart(2, "0");
+
       return `${year}-${month}-${day}`;
+    } else {
+      return "";
     }
-    else {
-      return ""
-    }
- 
- 
-  }
- 
- 
- 
+  };
+
   // const getAllocations = async () => {
   //   return await axios.get("/api/tasks");
- 
+
   // };
- 
+
   return (
     <>
-      <Task></Task>
-      {/* <LeaveDetails></LeaveDetails> */}
-      <TimeSheet/>
+      <div className="flex flex-col m-3">
+        <UCCard title="Task(s)">
+          <Task></Task>
+        </UCCard>
+        <UCCard title="Leaves">
+          <LeaveDetails></LeaveDetails>
+        </UCCard>
+        <UCCard title="Timesheet">
+          <TimeSheet />
+        </UCCard>
+      </div>
+
       {/* <div className="flex flex-row">
         <div className="flex flex-col">
           <label className="text-xs">Project</label>
@@ -77,10 +81,10 @@ export default function Home() {
           <div className="flex flex-row p-2">
             <div className="flex-none">
               {/* <LeaveInfo></LeaveInfo> */}
-          {/*  </div>
+      {/*  </div>
             <div className="flex-grow">
-              {/*  <Calendar></Calendar> */}              
-          {/*  </div>
+              {/*  <Calendar></Calendar> */}
+      {/*  </div>
           </div>
           <div>Panel Task</div>
         </div>
