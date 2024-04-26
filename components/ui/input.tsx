@@ -16,6 +16,7 @@ const UCInput: React.FC<InputProps> = ({ label, className, ...rest }: InputProps
             className={clsx("dark:bg-inherit border border-slate-400/50 rounded-md px-2",
                 {
                     "appearance-none": type === "text",
+                    "py-0":type==="date",                    
                 }, className)} />
     </>
 }
