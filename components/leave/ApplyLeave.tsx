@@ -52,7 +52,6 @@ const ApplyLeave: React.FC = ({ }) => {
   return (
 
     <form>
-
       <div className="md:hidden flex flex-col">
         <div className="flex flex-row">
           <div>
@@ -87,7 +86,7 @@ const ApplyLeave: React.FC = ({ }) => {
           <div className="grow">
             <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
           </div>
-          <div>
+          <div className="content-end">
             <UCButton
               type="button"
               onClick={() => {
