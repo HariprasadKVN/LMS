@@ -8,11 +8,13 @@ export interface DivProps
   > {
   children: React.ReactNode;
   title: string;
+  subTitle?: string;
 }
 
 const UCCard: React.FC<DivProps> = ({
   children,
   title,
+  subTitle,
   className,
   ...rest
 }: DivProps) => {
@@ -26,8 +28,12 @@ const UCCard: React.FC<DivProps> = ({
   return (
     <div className="flex flex-col m-1">
       <div className="flex flex-row rounded-t bg-blue-950/90 px-2 py-1 text-white dark:bg-teal-600">
-        <div className="grow">{title}</div>
-        <div>
+        <div className="grow flex flex-col">
+          <div className="">{title}</div>
+          <div className="text-sm italic">{subTitle}</div>
+        </div>
+
+        <div className="content-center">
           <ChevronDoubleDownIcon className="h-4 w-4"></ChevronDoubleDownIcon>{" "}
         </div>
       </div>
