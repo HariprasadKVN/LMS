@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { boolean, string } from "zod";
+import UCCard from "../ui/card";
 
-const LeaveList: React.FC = ({}) => {
-  const [show, setShow] = useState<{[key:string]:boolean}>({});
+const LeaveList: React.FC = ({ }) => {
+  const [show, setShow] = useState<{ [key: string]: boolean }>({});
 
   const mockData = [
     {
@@ -33,7 +34,7 @@ const LeaveList: React.FC = ({}) => {
   ];
 
   const ExpandWindow = (leaveType: string) => {
-    const x = {...show,[leaveType]:!show[leaveType]};
+    const x = { ...show, [leaveType]: !show[leaveType] };
     //x.splice(index, 1, !show[index]);
     setShow(x);
     console.log(x);
@@ -42,43 +43,45 @@ const LeaveList: React.FC = ({}) => {
   return (
     <>
       {mockData.map((item, index) => (
-        <div className="rounded-lg border border-blue-700" key={index}>
-          <div className=" font-thick rounded-lg bg-blue-300 p-2 text-xl">
-            {item.type}
-            <button onClick={() => ExpandWindow(item.type)}>+</button>
-            <div className="text-sm">
-              {" "}
-              Alloted-{item.Allotted} Utilized-{item.Utilized} Balance-
-              {item.Balance}{" "}
+        <UCCard key={index} title={item.type} subTitle={`Alloted-${item.Allotted} Utilized-${item.Utilized} Balance-${item.Balance}`}>
+          <table className="table-auto divide-y divide-slate-500 rounded dark:bg-slate-50 w-full">
+            <thead className="rounded dark:bg-teal-500/60">
+              <tr className="text-left">
+                <th className="px-4 py-2 text-left text-xs font-medium titlecase tracking-wider text-gray-900">Start Date</th>
+                <th className="px-4 py-2 text-left text-xs font-medium titlecase tracking-wider text-gray-900">End Date</th>
+                <th className="px-4 py-2 text-left text-xs font-medium titlecase tracking-wider text-gray-900">Day</th>
+                <th className="px-4 py-2 text-left text-xs font-medium titlecase tracking-wider text-gray-900">Reason</th>
+                <th className="px-4 py-2 text-left text-xs font-medium titlecase tracking-wider text-gray-900">Cancel</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-300 ">
+              {item.details?.map((detail, index) => (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-2 py-1 text-sm text-gray-500">{detail.StartDate}</td>
+                  <td className="whitespace-nowrap px-2 py-1 text-sm text-gray-500">{detail.EndDate}</td>
+                  <td className="whitespace-nowrap px-2 py-1 text-sm text-gray-500">{detail.Day}</td>
+                  <td className="whitespace-nowrap px-2 py-1 text-sm text-gray-500">{detail.Reason}</td>
+                  <td className="whitespace-nowrap px-2 py-1 text-sm text-gray-500"></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* <div className="rounded-lg border border-blue-700" key={index}>
+            <div className=" font-thick rounded-lg bg-blue-300 p-2 text-xl">
+              {item.type}
+              <button onClick={() => ExpandWindow(item.type)}>+</button>
+              <div className="text-sm">
+                Alloted-{item.Allotted} Utilized-{item.Utilized} Balance-
+                {item.Balance}
+              </div>
             </div>
-          </div>
-          {show[item.type] && (
-            <div className="ml-4">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left">
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Day</th>
-                    <th>Reason</th>
-                    <th>Cancel</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {item.details?.map((detail, index) => (
-                    <tr key={index}>
-                      <td>{detail.StartDate}</td>
-                      <td>{detail.EndDate}</td>
-                      <td>{detail.Day}</td>
-                      <td>{detail.Reason}</td>
-                      <td></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+            {show[item.type] && (
+              <div className="ml-4">
+                
+              </div>
+            )}
+          </div> */}
+        </UCCard>
       ))}
       {/* <div className="border rounded-lg">
         <div className="m-2 bg-blue-300 font-thick text-xl">
