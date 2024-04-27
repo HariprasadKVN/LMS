@@ -12,12 +12,13 @@ const UCCheckbox: React.FC<InputProps> = ({
 }: InputProps) => {
   
   return (
-    <>
+    <div className="flex flex-row m-1 content-center">
+      <label className="text-thin text-sm mr-1 italic">{label}</label>
       <UCInput
         {...rest}
-        type="checkbox"
-      /><label>{label}</label>
-    </>
+        type="checkbox"     
+      />
+    </div>
   );
 };
 

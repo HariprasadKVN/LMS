@@ -10,7 +10,7 @@ const UCSelect: React.FC<SelectProps> = ({ label, options, className, ...rest }:
     const { name } = { ...rest }
     const display = label ? label : name;
 
-    return <>
+    return <div className="m-1">
         <UCLabel caption={display}></UCLabel>
         <select
             autoComplete='off'
@@ -19,7 +19,7 @@ const UCSelect: React.FC<SelectProps> = ({ label, options, className, ...rest }:
             className={clsx("dark:bg-inherit border border-slate-400/50 rounded-md px-2 py-0.5 content-center", className)} >
             {options.map((item, index) => <option key={index}>{item}</option>)}
         </select>
-    </>
+    </div>
 }
 
 export default UCSelect

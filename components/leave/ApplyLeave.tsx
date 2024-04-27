@@ -52,27 +52,30 @@ const ApplyLeave: React.FC = ({ }) => {
   return (
 
     <form>
-      <div className="flex flex-row  content-center justify-center">
-        <div className="bg-blue-200">
-          <UCSelect
-            options={['Casual', 'Optional', 'Special']}
-            label="Leave Type"
-            onChange={(e) => setType(e.target.value)}>
-          </UCSelect></div>
-        <div className="bg-blue-300 h-36">
-          <UCDate
-            name="Start Date"
-            onChange={(e) => setStartDate(new Date(e.target.value))}>
-          </UCDate>
+
+      <div className="md:hidden flex flex-col">
+        <div className="flex flex-row">
+          <div>
+            <UCSelect
+              options={['Casual', 'Optional', 'Special']}
+              label="Leave Type"
+              onChange={(e) => setType(e.target.value)}>
+            </UCSelect>
+          </div>
+          <div>
+            <UCDate
+              name="Start Date"
+              onChange={(e) => setStartDate(new Date(e.target.value))}>
+            </UCDate>
+          </div>
+          <div>
+            <UCDate
+              name="End Date"
+              onChange={(e) => setEndDate(new Date(e.target.value))}>
+            </UCDate>
+          </div>
         </div>
-        <div className="bg-blue-400">
-          <UCDate
-            name="End Date"
-            className="outline-none"
-            onChange={(e) => setEndDate(new Date(e.target.value))}>
-          </UCDate>
-        </div>
-        <div className="bg-blue-500">
+        <div>
           <UCCheckbox
             value="Half"
             name="Halfday"
@@ -80,30 +83,87 @@ const ApplyLeave: React.FC = ({ }) => {
             onChange={() => setDuration("half")}
           />
         </div>
-        <div className="grow bg-blue-600">
-          <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
-        </div>
-        <div className="bg-blue-700">
-          <UCButton
-            type="button"
-            onClick={() => {
-              applyLeave("Hari", [
-                {
-                  type: type,
-                  start: startDate,
-                  end: endDate,
-                  duration: duration,
-                  description: reason,
-                },
-              ]);
-            }}
-          >
-            Apply Leave
-          </UCButton>
+        <div className="flex flex-row">
+          <div className="grow">
+            <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
+          </div>
+          <div>
+            <UCButton
+              type="button"
+              onClick={() => {
+                applyLeave("Hari", [
+                  {
+                    type: type,
+                    start: startDate,
+                    end: endDate,
+                    duration: duration,
+                    description: reason,
+                  },
+                ]);
+              }}
+            >
+              Apply Leave
+            </UCButton>
+          </div>
         </div>
       </div>
+      <div className="hidden md:block">
+        <div className="flex flex-col">
+          <div className="flex flex-row  content-center justify-center">
+            <div className="content-end">
+              <UCSelect
+                options={['Casual', 'Optional', 'Special']}
+                label="Leave Type"
+                onChange={(e) => setType(e.target.value)}>
+              </UCSelect></div>
+            <div className="content-end">
+              <UCDate
+                name="Start Date"
+                onChange={(e) => setStartDate(new Date(e.target.value))}>
+              </UCDate>
+            </div>
+            <div className="content-end">
+              <UCDate
+                name="End Date"
+                className="outline-none"
+                onChange={(e) => setEndDate(new Date(e.target.value))}>
+              </UCDate>
+            </div>
+
+            <div className="grow content-end">
+              <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
+            </div>
+            <div className="content-end">
+              <UCButton
+                type="button"
+                onClick={() => {
+                  applyLeave("Hari", [
+                    {
+                      type: type,
+                      start: startDate,
+                      end: endDate,
+                      duration: duration,
+                      description: reason,
+                    },
+                  ]);
+                }}
+              >
+                Apply Leave
+              </UCButton>
+            </div>
+          </div>
+          <div>
+            <UCCheckbox
+              value="Half"
+              name="Halfday"
+              label="Apply for Half a Day"
+              onChange={() => setDuration("half")}
+            />
+          </div>
+        </div>
 
 
+      </div>
 
 
 
