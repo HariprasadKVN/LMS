@@ -128,10 +128,18 @@ const ApplyLeave: React.FC = ({ }) => {
                 onChange={(e) => setEndDate(new Date(e.target.value))}>
               </UCDate>
             </div>
-
+            <div className="content-end">
+              <UCCheckbox
+                value="Half"
+                name="Halfday"
+                label="Apply for Half a Day"
+                onChange={() => setDuration("half")}
+              />
+            </div>
             <div className="grow content-end">
               <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
             </div>
+            
             <div className="content-end">
               <UCButton
                 type="button"
@@ -150,24 +158,9 @@ const ApplyLeave: React.FC = ({ }) => {
                 Apply Leave
               </UCButton>
             </div>
-          </div>
-          <div>
-            <UCCheckbox
-              value="Half"
-              name="Halfday"
-              label="Apply for Half a Day"
-              onChange={() => setDuration("half")}
-            />
-          </div>
+          </div>          
         </div>
-
-
       </div>
-
-
-
-
-
     </form>
   );
 };
