@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import IAllocation from "@/models/allocation"; // Import the interface for allocation data
 import Button from "@/components/ui/button";
-import { getDate } from "date-fns";
-import { date } from "zod";
 import { logTime } from "@/lib/timesheetActions";
 import { TimeSheet } from "@/models/TimeSheet";
+import UCTable from "../ui/table/table";
+import UCTableHeader from "../ui/table/thead";
+import UCTableBody from "../ui/table/tbody";
+import UCTableRow from "../ui/table/tr";
+import UCTableCell from "../ui/table/td";
+import UCTableHeaderCell from "../ui/table/th";
 
 interface effort {
   date: Date;
@@ -21,62 +23,24 @@ interface Task {
 
 interface TimeSheetProps {
   currentWeek: Date;
+  timeSheetData: TimeSheet[];
 }
 
-const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
+  const [tasks, setTasks] = useState<TimeSheet[]>([]); // State to store tasks
 
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
-  const [hours, setHours] = useState<number[][]>([]);
-  const [dayindexnew, setDayindexnew] = useState<number>(1); // State to store hours for each task
-  let timeSheets: TimeSheet[]=[];
+  let timeSheets: TimeSheet[] = [];
   useEffect(() => {
     const getAllocations = async () => {
       try {
-        const response = await axios.get<{
-          success: boolean;
-          data: IAllocation[];
-        }>("/api/Gajanan/tasks"); // Fetch allocation data
-        const allocationData = response.data.data; // Extract the allocation data array
-        if (Array.isArray(allocationData)) {
-          const filteredTasks = allocationData
-            .filter((allocation) => allocation.status === "in progress") // Filter tasks with status "in progress"
-            .map((allocation) => ({
-              taskId: allocation._id,
-              taskName: allocation.task_desc || "",
-              status: false,
-              efforts: [],
-            })); // Map allocation data to Task interface
-          setTasks(filteredTasks); // Set tasks state
-          setHours(
-            Array.from({ length: filteredTasks.length }, () =>
-              Array(7).fill(0),
-            ),
-          ); // Initialize hours state with 0 values
-        } else {
-          console.error("Response data is not an array:", allocationData);
-        }
+        console.log(timeSheetData);
+        setTasks(timeSheetData);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
     getAllocations();
-  }, []); // Fetch tasks on component mount
+  }, [timeSheetData]); // Fetch tasks on component mount
 
   // Function to get the current week's weekdays
   const getWeekdays = () => {
@@ -100,10 +64,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
     day: Date,
   ) => {
     const newtask = [...tasks];
-    console.log("day", day);
-    console.log("index", taskIndex);
-
-    const newtaskindex = newtask[taskIndex].efforts.findIndex(
+    const newtaskindex = newtask[taskIndex].effort.findIndex(
       (effort) =>
         effort.date.getDate() === day.getDate() &&
         effort.date.getMonth() === day.getMonth() &&
@@ -111,11 +72,9 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
     );
     console.log("indexfind", newtaskindex);
     if (newtaskindex === -1) {
-      newtask[taskIndex].efforts.push({ date: day, effort: value });
+      newtask[taskIndex].effort.push({ date: day, effort: value });
     } else {
-      setDayindexnew(newtaskindex);
-
-      newtask[taskIndex].efforts[newtaskindex].effort = value;
+      newtask[taskIndex].effort[newtaskindex].effort = value;
     }
     console.log("newtask", newtask);
     setTasks(newtask);
@@ -128,21 +87,17 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
     const newTasks = [...tasks];
     newTasks[taskIndex] = {
       ...newTasks[taskIndex],
-      status: !newTasks[taskIndex].status,
+      status:
+        newTasks[taskIndex].status === "in progress"
+          ? "completed"
+          : "in progress",
     };
     setTasks(newTasks);
   };
 
   // Function to submit logs
   const submitLog = async () => {
-    tasks.forEach((task) => {
-      timeSheets.push({
-        taskId: task.taskId,
-        status: task.status === true ? "completed" : "in progress",
-        effort: task.efforts,
-      });
-    });
-    const updatedTasks = await logTime(timeSheets);
+    const updatedTasks = await logTime(tasks);
     console.log(updatedTasks);
   };
 
@@ -150,75 +105,75 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek }) => {
   const renderColumnHeadings = () => {
     const weekDays = getWeekdays();
     return (
-      <tr className="border-b bg-blue-400/50 text-center  ">
-        <th className="whitespace-nowrap border border-gray-400 px-4  py-2 text-center">
+      <UCTableRow>
+        <UCTableHeaderCell>
           Task
-        </th>
+        </UCTableHeaderCell>
         {weekDays.map((day, index) => (
-          <th
+          <UCTableHeaderCell
             key={index}
-            className="whitespace-nowrap border border-gray-400 px-4 py-2 text-center"
           >
-            {day.getDate()} {monthNames[day.getMonth()]} <br />{" "}
-            {weekdays[day.getDay()]}
-          </th>
+            {day.toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              weekday: "short",
+            })}
+          </UCTableHeaderCell>
         ))}
-        <th className="whitespace-nowrap border border-gray-400 px-4 py-2 text-center">
+        <UCTableHeaderCell>
           Action
-        </th>
-      </tr>
+        </UCTableHeaderCell>
+      </UCTableRow>
     );
   };
 
   // Function to render task grid
   const renderTaskGrid = () => {
-    const weekDays = getWeekdays(); // Get weekdays for the selected week
-
     return tasks.map((task, taskIndex) => (
-      <tr className="border-b text-center" key={task.taskId}>
-        <td className="whitespace-nowrap border border-gray-400 px-4 py-2 text-center">
+      <UCTableRow key={task.taskId}>
+        <UCTableCell>
           {task.taskName}
-        </td>
-        {weekDays.map((day, dayIndex) => (
-          <td
-            className="whitespace-nowrap border border-gray-400 px-4  py-2 text-center"
+        </UCTableCell>
+        {task.effort.map((day, dayIndex) => (
+          <UCTableCell
             key={dayIndex}
           >
-            <input
-              type="number"
-              value={tasks[taskIndex].efforts[dayIndex]?.effort ?? 0}
-              onChange={(e) => {
-                const inputValue = parseInt(e.target.value);
-                if (inputValue <= 9) {
-                  handleTextChange(taskIndex, dayIndex, inputValue, day);
-                }
-              }}
-              className="w-12"
-              max="9"
-              min="0"
-            />
-          </td>
+            <>
+              <input
+                type="number"
+                value={day.effort.toString()}
+                onChange={(e) => {
+                  const inputValue = parseInt(e.target.value);
+                  if (inputValue <= 9) {
+                    handleTextChange(taskIndex, dayIndex, inputValue, day.date);
+                  }
+                }}
+                className="w-12"
+                max="9"
+                min="0"
+              />
+            </>
+          </UCTableCell>
         ))}
-        <td className="whitespace-nowrap border border-gray-400 px-4  py-2 text-center">
+        <UCTableCell>
           <input
             type="checkbox"
-            checked={task.status || false}
+            checked={task.status === "in progress" ? false : true}
             onChange={() => handleCheckboxChange(taskIndex)}
           />
-        </td>
-      </tr>
+        </UCTableCell>
+      </UCTableRow>
     ));
   };
 
   return (
     <div className="overflow-x-auto">
-      <h2>Time Sheet</h2>
-      <table className="w-full text-sm">
-        <thead>{renderColumnHeadings()}</thead>
-        <tbody>{renderTaskGrid()}</tbody>
-      </table>
+      <UCTable>
+        <UCTableHeader>{renderColumnHeadings()}</UCTableHeader>
+        <UCTableBody>{renderTaskGrid()}</UCTableBody>
+      </UCTable>
       <div className="whitespace-nowrap px-4 py-2 text-right ">
-        <Button onClick={submitLog}>Submit Tasks</Button>
+        <Button onClick={submitLog}>Submit</Button>
       </div>
     </div>
   );
