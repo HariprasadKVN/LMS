@@ -7,7 +7,7 @@ interface TBodyProps extends React.TableHTMLAttributes<HTMLTableSectionElement> 
 const UCTableBody: React.FC<TBodyProps> = ({ children, className, ...rest }: TBodyProps) => {
     return <tbody
         {...rest}
-        className={clsx("divide-y divide-slate-300 text-sm text-gray-500",className)}>
+        className={clsx("divide-y divide-slate-600/50 text-sm text-gray-500",className)}>
         {children}
     </tbody>
 }
