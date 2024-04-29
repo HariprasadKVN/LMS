@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { ChevronDoubleDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDoubleDownIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 export interface DivProps
   extends React.DetailedHTMLProps<
@@ -8,30 +8,35 @@ export interface DivProps
   > {
   children: React.ReactNode;
   title: string;
+  subTitle?: string;
 }
 
 const UCCard: React.FC<DivProps> = ({
   children,
   title,
+  subTitle,
   className,
   ...rest
 }: DivProps) => {
-  // return <div
-  //     {...rest}
-  //     className={clsx("border dark:border-teal-300 dark:bg-teal-500 dark:hover:bg-teal-700 dark:active:bg-teal-500 border-blue-950/90 bg-blue-700/50 hover:bg-blue-700 hover:text-white/50 active:bg-blue-700/50 active:text-inherit m-1 px-2 py-1 rounded-md", className)} >
-  //     <div>{title}</div>
-  //     {children}
-  // </div>
+
+  const [expanded, setExpanded] = useState<boolean>(false)
 
   return (
     <div className="flex flex-col m-1">
       <div className="flex flex-row rounded-t bg-blue-950/90 px-2 py-1 text-white dark:bg-teal-600">
-        <div className="grow">{title}</div>
-        <div>
-          <ChevronDoubleDownIcon className="h-4 w-4"></ChevronDoubleDownIcon>{" "}
+        <div className="grow flex flex-col">
+          <div className="">{title}</div>
+          <div className="text-sm italic">{subTitle}</div>
+        </div>
+
+        <div className="content-center m-2 rounded 
+          hover:dark:bg-teal-300 hover:dark:text-slate-600 active:dark:bg-teal-800 active:dark:text-white
+          hover:bg-blue-300 hover:text-slate-700 active:bg-blue-950/90 active:text-white">
+          {expanded && <ChevronDoubleUpIcon className="h-4 w-4" onClick={()=>setExpanded(false)}></ChevronDoubleUpIcon>}
+          {!expanded && <ChevronDoubleDownIcon className="h-4 w-4" onClick={()=>setExpanded(true)}></ChevronDoubleDownIcon>}
         </div>
       </div>
-      <div className="p-2 border border-blue-950/90 dark:border-teal-600/90" >{children}</div>
+      {expanded && <div className="p-2 border border-blue-950/90 dark:border-teal-600/90" >{children}</div>}
     </div>
   );
 };

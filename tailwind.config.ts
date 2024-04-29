@@ -13,8 +13,21 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      filter: {
+        invert: "invert(1)",
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: { addUtilities: Function }) {
+      const newUtilities = {
+        ".filter-invert": {
+          filter: "invert(1)",
+        },
+      };
+
+      addUtilities(newUtilities, ["dark"]);
+    },
+  ],
 };
 export default config;

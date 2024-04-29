@@ -5,6 +5,7 @@ import UCCheckbox from "../ui/checkbox";
 import UCSelect from "../ui/select";
 import UCInput from "../ui/input";
 import UCCard from "../ui/card";
+import UCButton from "../ui/button";
 
 const ApplyLeave: React.FC = ({ }) => {
   const [type, setType] = useState("Casual");
@@ -49,50 +50,90 @@ const ApplyLeave: React.FC = ({ }) => {
     }
   };
   return (
-    <div className="p-2">
-      <form>
 
-        <div className="flex flex-col md:flex-row">
-          <div className="flex flex-row items-end">
-            <div className="pr-1">
+    <form>
+      <div className="md:hidden flex flex-col">
+        <div className="flex flex-row">
+          <div>
+            <UCSelect
+              options={['Casual', 'Optional', 'Special']}
+              label="Leave Type"
+              onChange={(e) => setType(e.target.value)}>
+            </UCSelect>
+          </div>
+          <div>
+            <UCDate
+              name="Start Date"
+              onChange={(e) => setStartDate(new Date(e.target.value))}>
+            </UCDate>
+          </div>
+          <div>
+            <UCDate
+              name="End Date"
+              onChange={(e) => setEndDate(new Date(e.target.value))}>
+            </UCDate>
+          </div>
+        </div>
+        <div>
+          <UCCheckbox
+            value="Half"
+            name="Halfday"
+            label="Apply for Half a Day"
+            onChange={() => setDuration("half")}
+          />
+        </div>
+        <div className="flex flex-row">
+          <div className="grow">
+            <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
+          </div>
+          <div className="content-end">
+            <UCButton
+              type="button"
+              onClick={() => {
+                applyLeave("Hari", [
+                  {
+                    type: type,
+                    start: startDate,
+                    end: endDate,
+                    duration: duration,
+                    description: reason,
+                  },
+                ]);
+              }}
+            >
+              Apply Leave
+            </UCButton>
+          </div>
+        </div>
+      </div>
+      <div className="hidden md:block">
+        <div className="flex flex-col">
+          <div className="flex flex-row  content-center justify-center">
+            <div className="content-end">
               <UCSelect
                 options={['Casual', 'Optional', 'Special']}
                 label="Leave Type"
                 onChange={(e) => setType(e.target.value)}>
-              </UCSelect>
-            </div>
-
-            <div className="pr-1">
+              </UCSelect></div>
+            <div className="content-end">
               <UCDate
                 name="Start Date"
                 onChange={(e) => setStartDate(new Date(e.target.value))}>
               </UCDate>
             </div>
-            <div className="pr-1">
+            <div className="content-end">
               <UCDate
                 name="End Date"
+                className="outline-none"
                 onChange={(e) => setEndDate(new Date(e.target.value))}>
               </UCDate>
             </div>
-            {/* <div className="items-center justify-center">
-              <UCCheckbox
-                value="Half"
-                name="Halfday"
-                label="Apply for Half a Day"
-                onChange={() => setDuration("half")}
-              />
-              
-            </div> */}
-          </div>
 
-          <div className="flex flex-row items-end">
-            <div>
-              <UCInput label="Reason" onChange={(e) => setReason(e.target.value)}></UCInput>
+            <div className="grow content-end">
+              <UCInput label="Reason" className="w-full" onChange={(e) => setReason(e.target.value)}></UCInput>
             </div>
-
-            <div className="col-span-1 content-around">
-              <button
-                className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
+            <div className="content-end">
+              <UCButton
                 type="button"
                 onClick={() => {
                   applyLeave("Hari", [
@@ -107,15 +148,27 @@ const ApplyLeave: React.FC = ({ }) => {
                 }}
               >
                 Apply Leave
-              </button>
+              </UCButton>
             </div>
           </div>
-
+          <div>
+            <UCCheckbox
+              value="Half"
+              name="Halfday"
+              label="Apply for Half a Day"
+              onChange={() => setDuration("half")}
+            />
+          </div>
         </div>
 
-      </form>
-    </div>
 
+      </div>
+
+
+
+
+
+    </form>
   );
 };
 
