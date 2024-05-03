@@ -38,46 +38,40 @@ export async function create(formData: {
 
 export const getEmployee = async () => {
   await dbConnect();
-  const x = await Employee.findOne({ empId: "Hari" });
-  console.log(x);
-
-  // x[0]["leaves"]["casual"]["total"] = 10;
-  // x[0].markModified("leaves");
-  // const s = await x[0].save();
-  // console.log(s);
-
-  // const y = await Employee.find();
-  // console.log(y[0]);
-
-  // const {leaves} = x[0];
-  // const {casual} = leaves;
-  // const {total, applied} = casual;
-  // console.log(new Date(applied[0]).toLocaleDateString());
+  const x = await Employee.findOne({ empId: "test" });
+  return x;
 };
 
 export const applyLeave = async (
   employeeID: string,
   leaves: {
-    type: string;
     start: Date;
     end: Date;
-    description?: string;
+    type: string;
     duration: "half" | "full";
+    reason: string;
   }[],
 ) => {
-  //Get the employee details
+  await dbConnect();
   const employee = await Employee.findOne({ empId: employeeID });
 
-  let c = employee["leaves"][leaves[0].type];
-  const dates = generateDates(leaves[0].start, leaves[0].end);
-  dates.forEach(element => {
-    c = {...c,[element]:`${leaves[0].duration}|${leaves[0].description}`}
-  });
+  const leave = leaves[0];
 
-  employee["leaves"][leaves[0].type] = c;
+  const startDateKey = convertDatetoKey(leave.start);
+  const endDateKey = convertDatetoKey(leave.end);
+  const noOfDays = leave.end.getDate() - leave.start.getDate() + 1;
+
+  const leaveEntry = `${endDateKey}|${leave.type}|${noOfDays}|${leave.duration}|${leave.reason}`;
+
+  if (!employee.leaves.hasOwnProperty(startDateKey)) {
+    employee.leaves[startDateKey] = leaveEntry;
+  } else {
+    console.log("Already exist", employee.leaves[startDateKey]);
+  }
+
   employee.markModified("leaves");
-  const s = await employee.save();
-  console.log(s);
+  const savedEmployee = await employee.save();
+  return { success: true, leaveEntry };
 };
 
 const convertDatetoKey = (date: Date) => {
@@ -85,14 +79,32 @@ const convertDatetoKey = (date: Date) => {
   return key;
 };
 
-function generateDates(startDate: Date, endDate: Date): string[] {
-  const dates: string[] = [];
-  let currentDate = new Date(startDate);
+export const deleteLeave = async (employeeID: string, date: string) => {
+  try {
+    await dbConnect();
+    const employee = await Employee.findOne({ empId: employeeID });
+    console.log(employee);
 
-  while (currentDate <= endDate) {
-    dates.push(convertDatetoKey(new Date(currentDate)));
-    currentDate.setDate(currentDate.getDate() + 1);
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+
+    const leaves = employee.leaves;
+    console.log(leaves);
+
+    if (leaves[date]) {
+      delete leaves[date];
+      employee.markModified("leaves");
+      await employee.save();
+      return { success: true };
+    } else {
+      return {
+        success: false,
+        error: "Leave entry not found for the specified date",
+      };
+    }
+  } catch (error) {
+    console.error("Error deleting leave:", error);
+    return { success: false, error };
   }
-
-  return dates;
-}
+};
