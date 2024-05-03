@@ -2,9 +2,11 @@
 import { Effort } from "@/models/Effort";
 import Task from "@/models/Task";
 import { TimeSheet } from "@/models/TimeSheet";
+import dbConnect from "@/store/dbConnect";
 
 export async function logTime(timeSheets: TimeSheet[]) {
   try {
+    await dbConnect();
     timeSheets.forEach(async (timeSheet) => {
       let taskToUpdate = await Task.findById(timeSheet.taskId);
       if (taskToUpdate) {
@@ -56,15 +58,15 @@ const convertEffortObject = (efforts: any, keys: string[]) => {
   let taskEfforts: Effort[] = [];
   //const effortKeys = Object.keys(efforts);
   keys.forEach((key) => {
-    const effort = efforts[key] ? efforts[key] : 0;
+    const effort = efforts !== undefined ? efforts[key] ? efforts[key] : 0 : 0;
     taskEfforts.push({ date: convertDateKeyToDate(key), effort: effort });
   });
   return taskEfforts;
 };
 
 export async function getInprogressTasks(currentWeek: Date) {
+  await dbConnect();
   const keys = getWeekdayKeys(currentWeek);
-
   let filteredTasks: TimeSheet[] = [];
   try {
     const tasks = await Task.find();
