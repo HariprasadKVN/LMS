@@ -109,11 +109,12 @@ function Task() {
 
   return (
     <>
-      <AddTask handleSubmit={handleSubmit}></AddTask>
-      <TaskList
+    {/* handleSubmit={handleSubmit} */}
+      <AddTask ></AddTask>
+      {/* <TaskList
         tasks={tasks}
         setStatus={setStatus}
-      ></TaskList>
+      ></TaskList> */}
     </>
   );
 }

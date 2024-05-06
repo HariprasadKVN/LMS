@@ -2,17 +2,17 @@
 import React, { useState } from "react";
 import UCSelect from "../ui/select";
 import { useFormState } from "react-dom";
-import validateDate from "@/lib/taskAction";
 import UCDate from "../ui/date";
+import addTask from "@/lib/taskAction";
 
 interface Props {
-  handleSubmit: (data: any) => void;
+  handleSubmit?: (data: any) => void;
 }
 
 const AddTask: React.FC<Props> = ({ handleSubmit }) => {
   const [taskData, setTaskData] = useState({
     taskId: "",
-    description: "",
+    taskDesc: "",
     startDate: "",
     endDate: "",
     estimate: "",
@@ -20,7 +20,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
     assignedTo:"",
     status: "assigned",
   });
-  const [errorMessage, dispatchf] = useFormState(validateDate,undefined);
+  const [errorMessage, dispatchf] = useFormState(addTask,undefined);
 
   const handleChange = (e: any) => {
     const formData = { ...taskData, [e.target.name]: e.target.value };
@@ -50,17 +50,17 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
           <div className="col-span-3">
             <label
               className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="grid-description"
+              htmlFor="taskDesc"
             >
               Description
             </label>
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-              id="grid-description"
+              id="taskDesc"
               type="text"
               placeholder="Please enter task description"
-              value={taskData.description}
-              name="description"
+              value={taskData.taskDesc}
+              name="taskDesc"
               onChange={handleChange}
             />
           </div>
@@ -73,7 +73,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
                onChange={handleChange}
               >
             </UCDate>
-            <p className="text-xs text-red-600">{errorMessage?.startDate}</p>
+            <p className="text-xs text-red-600">{errorMessage?.startDate?.toLocaleDateString()}</p>
           </div>
           <div className=" col-span-2">
             <UCDate
@@ -84,7 +84,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
                onChange={handleChange}
               >
             </UCDate>
-            <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
+            <p className="text-xs text-red-600">{errorMessage?.endDate?.toLocaleDateString()}</p>
           </div>
           <div className="col-span-2">
             <label
@@ -126,8 +126,8 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
           <div className="col-span-1 content-around">
             <button
               className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
-              type="button"
-              onClick={() => handleSubmit(taskData)}
+              type="submit"
+              // onClick={() => handleSubmit(taskData)}
             >
               Add Task
             </button>
