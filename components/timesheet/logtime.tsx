@@ -8,6 +8,7 @@ import UCTableBody from "../ui/table/tbody";
 import UCTableRow from "../ui/table/tr";
 import UCTableCell from "../ui/table/td";
 import UCTableHeaderCell from "../ui/table/th";
+import toast from "react-hot-toast";
 
 interface effort {
   date: Date;
@@ -99,6 +100,9 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   const submitLog = async () => {
     const updatedTasks = await logTime(tasks);
     console.log(updatedTasks);
+    toast.success("Timesheet data has been submitted sucessfully", {
+      duration: 5000,
+    });
   };
 
   // Function to render column headings
@@ -106,13 +110,9 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
     const weekDays = getWeekdays();
     return (
       <UCTableRow>
-        <UCTableHeaderCell>
-          Task
-        </UCTableHeaderCell>
+        <UCTableHeaderCell>Task</UCTableHeaderCell>
         {weekDays.map((day, index) => (
-          <UCTableHeaderCell
-            key={index}
-          >
+          <UCTableHeaderCell key={index}>
             {day.toLocaleDateString("en-IN", {
               day: "2-digit",
               month: "short",
@@ -120,9 +120,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
             })}
           </UCTableHeaderCell>
         ))}
-        <UCTableHeaderCell>
-          Action
-        </UCTableHeaderCell>
+        <UCTableHeaderCell>Action</UCTableHeaderCell>
       </UCTableRow>
     );
   };
@@ -131,13 +129,9 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   const renderTaskGrid = () => {
     return tasks.map((task, taskIndex) => (
       <UCTableRow key={task.taskId}>
-        <UCTableCell>
-          {task.taskName}
-        </UCTableCell>
+        <UCTableCell>{task.taskName}</UCTableCell>
         {task.effort.map((day, dayIndex) => (
-          <UCTableCell
-            key={dayIndex}
-          >
+          <UCTableCell key={dayIndex}>
             <>
               <input
                 type="number"
