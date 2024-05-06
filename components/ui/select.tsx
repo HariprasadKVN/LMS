@@ -7,11 +7,11 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const UCSelect: React.FC<SelectProps> = ({ label, options, className, ...rest }: SelectProps) => {
-    const { name } = { ...rest }
+    const { name, id } = { ...rest }
     const display = label ? label : name;
 
     return <div className="m-1">
-        <UCLabel caption={display}></UCLabel>
+        <UCLabel htmlFor= {id} caption={display}></UCLabel>
         <select
             autoComplete='off'
             {...rest}

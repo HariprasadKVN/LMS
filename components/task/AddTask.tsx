@@ -1,4 +1,9 @@
+'use client'
 import React, { useState } from "react";
+import UCSelect from "../ui/select";
+import { useFormState } from "react-dom";
+import validateDate from "@/lib/taskAction";
+import UCDate from "../ui/date";
 
 interface Props {
   handleSubmit: (data: any) => void;
@@ -11,10 +16,11 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
     startDate: "",
     endDate: "",
     estimate: "",
-    assignedTo: "",
     createdBy: "Hari",
+    assignedTo:"",
     status: "assigned",
   });
+  const [errorMessage, dispatchf] = useFormState(validateDate,undefined);
 
   const handleChange = (e: any) => {
     const formData = { ...taskData, [e.target.name]: e.target.value };
@@ -22,7 +28,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
   };
   return (
     <>
-      <form>
+      <form  action={dispatchf}>
         <div className="grid grid-cols-12 gap-1">
           <div className="col-span-1">
             <label
@@ -58,39 +64,29 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
               onChange={handleChange}
             />
           </div>
-          <div className="col-span-2">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="grid-start-date"
-            >
-              Start Date
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-              id="grid-start-date"
-              type="Date"
-              value={taskData.startDate}
-              onChange={handleChange}
+          <div className=" col-span-2">
+            <UCDate
+              label="Start Date"
+              id="startDate"
               name="startDate"
-            />
+               value={taskData.startDate}
+               onChange={handleChange}
+              >
+            </UCDate>
+            <p className="text-xs text-red-600">{errorMessage?.startDate}</p>
+          </div>
+          <div className=" col-span-2">
+            <UCDate
+              label="End Date"
+              id ="endDate"
+              name="endDate"
+               value={taskData.endDate}
+               onChange={handleChange}
+              >
+            </UCDate>
+            <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
           </div>
           <div className="col-span-2">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="grid-end-date"
-            >
-              End Date
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-              id="grid-end-date"
-              type="Date"
-              value={taskData.endDate}
-              onChange={handleChange}
-              name="endDate"
-            />
-          </div>
-          <div className="col-span-1">
             <label
               className="block text-xs font-bold uppercase tracking-wide text-gray-700"
               htmlFor="estimate"
@@ -107,21 +103,26 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
             />
           </div>
           <div className="col-span-2">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="assignedTo"
-            >
-              Assigned To
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+            <UCSelect
+              options={[
+                "Hari",
+                "Gajanan",
+                "Suhaib",
+                "Jishna",
+                "Madhu",
+                "Guddi",
+                "Neha",
+                "Bhuvaneshari",
+                "Rushi",
+              ]}
+              label="Assigned To"
               id="assignedTo"
-              type="text"
-              value={taskData.assignedTo}
-              onChange={handleChange}
               name="assignedTo"
-            />
+               value={taskData.assignedTo}
+               onChange={handleChange}
+            ></UCSelect>
           </div>
+
           <div className="col-span-1 content-around">
             <button
               className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
