@@ -57,23 +57,23 @@ function Task() {
     const taskIndex = tasks.findIndex(
       (allocations) => allocations._id === taskId,
     );
-    const updatedTasks = [...tasks];
-    updatedTasks[taskIndex] = {
-      ...updatedTasks[taskIndex],
-      current: false,
-      status: status,
-    };
+    // const updatedTasks = [...tasks];
+    // updatedTasks[taskIndex] = {
+    //   ...updatedTasks[taskIndex],
+    //   current: false,
+    //   status: status,
+    // };
 
-    const res = fetch("/api/hari/tasks", {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedTasks[taskIndex]),
-    })
-      .then(() => setTasks(updatedTasks))
-      .catch((err) => console.log(err));
+    // const res = fetch("/api/hari/tasks", {
+    //   method: "PUT",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(updatedTasks[taskIndex]),
+    // })
+    //   .then(() => setTasks(updatedTasks))
+    //   .catch((err) => console.log(err));
   };
 
   const handleSubmit = async (data: any) => {

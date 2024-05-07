@@ -1,5 +1,7 @@
 import { create } from "@/store/taskStore";
 import { z, ZodType } from "zod";
+import Task from "@/models/Task";
+import dbConnect from "@/store/dbConnect";
 
 type FormData1 = {
   createdBy?: string;
@@ -43,8 +45,8 @@ async function addTask(
         taskDesc?: string;
         estimate?: number;
         status?: string;
-        startDate?: Date;
-        endDate?: Date;
+        startDate?: string;
+        endDate?: string;
       }
     | undefined,
   formData: FormData,
@@ -55,8 +57,8 @@ async function addTask(
   taskDesc?: string;
   estimate?: number;
   status?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
 }> {
   const result = dateSchema.safeParse({
     createdBy: formData.get("createdBy"),
@@ -68,18 +70,19 @@ async function addTask(
     startDate: formData.get("startDate"),
     endDate: formData.get("endDate"),
   });
+  console.log(result);
   try {
     if (!result.success) {
       console.log(result.error.formErrors.fieldErrors);
       const { startDate, endDate, taskDesc } = result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
-        resolve({taskDesc:taskDesc?taskDesc[0]:""});
+        resolve({endDate:endDate?endDate[0]:""});
       });
     } else {
       await create({...result.data,status:"assigned", createdBy:"hari"});
       return({})
     }
-  } catch (error) {
+    } catch (error) {
     console.log(error);
     throw error;
   }  
