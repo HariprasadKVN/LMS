@@ -126,8 +126,9 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
           <div className="col-span-1 content-around">
             <button
               className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
-              type="button"
-              onClick={() => handleSubmit(taskData)}
+              type="submit"
+             // onClick={() => handleSubmit(taskData)}
+
             >
               Add Task
             </button>

@@ -1,5 +1,7 @@
 import { resolve } from "path";
 import { z, ZodType } from "zod";
+import Task from "@/models/Task";
+import dbConnect from "@/store/dbConnect";
 
 type FormData1 = {
   startDate: Date;
@@ -40,21 +42,39 @@ async function validateDate(
     endDate: formData.get("endDate"),
     path: formData.get("path"),
   });
+  console.log(result);
   try {
     if (!result.success) {
       const { startDate, endDate } = result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
         resolve({
           startDate: startDate ? startDate[0] : "",
-          endDate: "End date cannot be earlier than start dateee",
+          endDate: endDate ? endDate[0] : "",
           path: getValue(formData.get("path")),
         });
       });
     }
+  //   else{
+  // await dbConnect();
+  // const x = await Task.create({
+  //   //taskId:"test",
+  //   createdBy: "jishna",
+  //   assignedTo: "Rushi",
+  //   taskId: "test",
+  //   taskDesc: "testing db connect",
+  //   estimate: 3,
+  //   status: "assignedto",
+  //   startDate: "04/05/2024",
+  //   endDate: "05/05/2024",
+  // });
+  //  console.log(x);
+  //   }
   } catch (error) {
     console.log(error);
   }
+
   return new Promise((resolve) => {
+  
     resolve({
       startDate: undefined,
       path: undefined,
