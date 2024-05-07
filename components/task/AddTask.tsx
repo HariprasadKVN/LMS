@@ -73,7 +73,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
                onChange={handleChange}
               >
             </UCDate>
-            <p className="text-xs text-red-600">{errorMessage?.startDate?.toLocaleDateString()}</p>
+            <p className="text-xs text-red-600">{errorMessage?.startDate}</p>
           </div>
           <div className=" col-span-2">
             <UCDate
@@ -84,7 +84,7 @@ const AddTask: React.FC<Props> = ({ handleSubmit }) => {
                onChange={handleChange}
               >
             </UCDate>
-            <p className="text-xs text-red-600">{errorMessage?.endDate?.toLocaleDateString()}</p>
+            <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
           </div>
           <div className="col-span-2">
             <label

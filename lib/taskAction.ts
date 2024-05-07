@@ -45,8 +45,8 @@ async function addTask(
         taskDesc?: string;
         estimate?: number;
         status?: string;
-        startDate?: Date;
-        endDate?: Date;
+        startDate?: string;
+        endDate?: string;
       }
     | undefined,
   formData: FormData,
@@ -57,8 +57,8 @@ async function addTask(
   taskDesc?: string;
   estimate?: number;
   status?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
 }> {
   const result = dateSchema.safeParse({
     createdBy: formData.get("createdBy"),
@@ -76,28 +76,13 @@ async function addTask(
       console.log(result.error.formErrors.fieldErrors);
       const { startDate, endDate, taskDesc } = result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
-        resolve({taskDesc:taskDesc?taskDesc[0]:""});
+        resolve({endDate:endDate?endDate[0]:""});
       });
     } else {
       await create({...result.data,status:"assigned", createdBy:"hari"});
       return({})
     }
-  //   else{
-  // await dbConnect();
-  // const x = await Task.create({
-  //   //taskId:"test",
-  //   createdBy: "jishna",
-  //   assignedTo: "Rushi",
-  //   taskId: "test",
-  //   taskDesc: "testing db connect",
-  //   estimate: 3,
-  //   status: "assignedto",
-  //   startDate: "04/05/2024",
-  //   endDate: "05/05/2024",
-  // });
-  //  console.log(x);
-  //   }
-  } catch (error) {
+    } catch (error) {
     console.log(error);
     throw error;
   }  
