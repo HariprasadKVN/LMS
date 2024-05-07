@@ -48,3 +48,5 @@ export async function create(data:ITask) {
   console.log(c);
   return c;
 }
+
+export default store;
