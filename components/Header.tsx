@@ -2,8 +2,8 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { auth, signOut } from "../lib/actions";
-import UCButton from "./ui/button";
 import { Session } from "next-auth";
+import { PowerIcon } from "@heroicons/react/24/outline";
 
 const Header: React.FC = () => {
 
@@ -29,17 +29,12 @@ const Header: React.FC = () => {
           REALM
           <p className="text-xs font-thin tracking-wide">your playground...!</p>
         </div>
-        <div>
-          {/* <Link href="/">
-            <span className="mx-4 text-white">Dashboard</span>
-          </Link> */}
-          {/* <Link href="/login">
-            <span className="text-white">Login</span>
-          </Link> */}
-          {session?.user &&  <UCButton onClick={handleClick}>
-            Logout
-          </UCButton>}
+        <div className="flex flex-row gap-1 text-white">
+          {session?.user && <span className="italic">{session?.user.name}</span>}
+          {session?.user && <PowerIcon className="w-6 h-6 cursor-pointer" onClick={handleClick}>
+          </PowerIcon>}
         </div>
+
       </div>
     </nav>
   );
