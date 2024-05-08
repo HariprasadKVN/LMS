@@ -1,12 +1,11 @@
 'use client'
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormState } from 'react-dom';
 import { authenticate } from '@/lib/actions';
 import {
     AtSymbolIcon,
     KeyIcon,
     ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
-import Input from '@/components/ui/input';
 import UCPassword from '@/components/ui/password';
 import Link from 'next/link';
 import UCEmail from '@/components/ui/email';
