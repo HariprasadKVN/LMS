@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
-import { logTime } from "@/lib/timesheetActions";
+import { SubmitTimesheet} from "@/lib/timesheetActions";
 import { TimeSheet } from "@/models/TimeSheet";
 import UCTable from "../ui/table/table";
 import UCTableHeader from "../ui/table/thead";
@@ -9,6 +9,7 @@ import UCTableRow from "../ui/table/tr";
 import UCTableCell from "../ui/table/td";
 import UCTableHeaderCell from "../ui/table/th";
 import toast from "react-hot-toast";
+import { TaskEffort } from "@/models/taskEffort";
 
 interface effort {
   date: Date;
@@ -24,7 +25,7 @@ interface Task {
 
 interface TimeSheetProps {
   currentWeek: Date;
-  timeSheetData: TimeSheet[];
+  timeSheetData: TaskEffort;
 }
 
 const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
@@ -35,7 +36,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
     const getAllocations = async () => {
       try {
         console.log(timeSheetData);
-        setTasks(timeSheetData);
+        setTasks(timeSheetData.tasks!);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -98,7 +99,13 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
 
   // Function to submit logs
   const submitLog = async () => {
-    const updatedTasks = await logTime(tasks);
+    let taskEffort: TaskEffort = {
+      status: "submitted",
+      tasks: tasks,
+      startDate: currentWeek,
+    };
+    console.log(taskEffort);
+    const updatedTasks = await SubmitTimesheet(taskEffort); //await logTime(tasks);
     console.log(updatedTasks);
     toast.success("Timesheet data has been submitted sucessfully", {
       duration: 5000,
@@ -127,7 +134,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
 
   // Function to render task grid
   const renderTaskGrid = () => {
-    return tasks.map((task, taskIndex) => (
+    return tasks?.map((task, taskIndex) => (
       <UCTableRow key={task.taskId}>
         <UCTableCell>{task.taskName}</UCTableCell>
         {task.effort.map((day, dayIndex) => (
