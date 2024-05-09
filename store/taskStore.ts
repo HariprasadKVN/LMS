@@ -3,9 +3,7 @@ import { ITask } from "@/models/Task";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
 
-interface Model extends ITask, mongoose.Document {
-  
-}
+interface Model extends ITask, mongoose.Document {}
 
 const ModelSchema = new mongoose.Schema<Model>({
   createdBy: {
@@ -36,17 +34,22 @@ const ModelSchema = new mongoose.Schema<Model>({
   },
   endDate: {
     type: Date,
-  }
+  },
 });
 
-const store =  mongoose.models.Task ||
-  mongoose.model<Model>("Task", ModelSchema);
+const store =
+  mongoose.models.Task || mongoose.model<Model>("Task", ModelSchema);
 
-export async function create(data:ITask) {
+export async function create(data: ITask) {
   await dbConnect();
-  const c =  await store.create(data);
+  const c = await store.create(data);
   console.log(c);
   return c;
 }
 
+export async function getTasks(empName: string) {
+  await dbConnect();
+  const tasks = await store.find();
+  return tasks.filter((task) => task.assignedTo === empName);
+}
 export default store;

@@ -5,6 +5,7 @@ import { object } from 'zod';
 interface Employee extends Document {
   empId:string,
   leaves: {[key:string]:{total:number, applied:[Date]}}
+  effort:{}
 }
  
 /* TaskSchema will correspond to a collection in your MongoDB database. */
@@ -19,6 +20,10 @@ const EmployeeSchema = new Schema<Employee>({
     type: mongoose.Schema.Types.Mixed,
     required: [false, "Please provide the creator's Object"],
   },
+  effort:{
+    type: mongoose.Schema.Types.Mixed,
+    required: [false, "Please provide the creator's Object"],
+  }
 });
  
 export default mongoose.models.Employee ||
