@@ -1,5 +1,3 @@
-import { Effort } from "./Effort";
-
 export interface TimeSheet {
   taskId?: string;
   taskName?: string;

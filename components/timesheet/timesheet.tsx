@@ -2,9 +2,8 @@
 import { useEffect, useState } from "react";
 import WeekView from "./Weekview";
 import LogTime from "./logtime";
-import { TimeSheet } from "@/models/TimeSheet";
 import { getInprogressTasks } from "@/lib/timesheetActions";
-import { toast } from 'react-hot-toast';
+import { TaskEffort } from "@/models/taskEffort";
 
 const TimeSheet = () => {
   const getStartOfWeek = (date: Date) => {
@@ -14,7 +13,7 @@ const TimeSheet = () => {
   };
   const week = getStartOfWeek(new Date());
   const [currentDate, setCurrentDate] = useState(week);
-  const [timeSheetTasks, setTimeSheetTasks] = useState<TimeSheet[]>([]);
+  const [timeSheetTasks, setTimeSheetTasks] = useState<TaskEffort>({});
 
   const handleDateChange = (newCurrentDate: Date) => {
     setCurrentDate(newCurrentDate);
