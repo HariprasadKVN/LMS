@@ -1,7 +1,6 @@
-import { create } from "@/store/taskStore";
+import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
-import Task from "@/models/Task";
-import dbConnect from "@/store/dbConnect";
+
 
 type FormData1 = {
   createdBy?: string;
@@ -88,4 +87,18 @@ async function addTask(
   }  
 }
 
-export default addTask;
+async function getTaskList(username:string|undefined){
+ const x= await getTasks(username);
+ console.log(x)
+ return x;
+}
+
+// const result = UpdateTaskList(
+//   const x= await updateTask(taskId: string, status: string, path: string, data:any);
+//   console.log(x)
+//   // employeeID,
+//   // `leaves.${year}.${leave.type}.${startDateKey}`,
+//   // leaveEntry,
+// );
+
+export  {addTask, getTaskList};
