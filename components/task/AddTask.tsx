@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import UCSelect from "../ui/select";
 import { useFormState } from "react-dom";
 import UCDate from "../ui/date";
-import addTask from "@/lib/taskAction";
+import {addTask} from "@/lib/taskAction";
 
-interface Props {
-  handleSubmit?: (data: any) => void;
-}
+// interface Props {
+//   handleSubmit?: (data: any) => void;
+// }
 
-const AddTask: React.FC<Props> = ({ handleSubmit }) => {
+//const AddTask: React.FC<Props> = ({ handleSubmit }) => {
+  const AddTask: React.FC = () => {
   const [taskData, setTaskData] = useState({
     taskId: "",
     taskDesc: "",

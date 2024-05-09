@@ -49,4 +49,38 @@ export async function create(data:ITask) {
   return c;
 }
 
-export default store;
+export const getTasks = async (username:string|undefined) => {
+  await dbConnect();
+  const x = await store.find({assignedTo:username});
+  console.log(x);
+  return x;
+};
+
+
+export async function updateTask(taskId: string, status: string, path: string, data:any) {
+  await dbConnect();
+  let root = await store.findOne({
+    taskId: taskId,
+  });
+ 
+  const pathArray = path.split(".");
+ 
+  const key = pathArray.pop() || "key";
+  const node = pathArray.pop() || "node";
+  const entityderived = pathArray[0];
+  let parent = root;
+ 
+  pathArray.forEach((element) => {
+    parent = parent[element];
+  });
+ 
+  const x = parent[node];
+  let y = { ...x, [key]: data };
+ 
+  parent[node] = y;
+ 
+  root.markModified(entityderived);
+  await root.save();
+}
+
+export default store; 
