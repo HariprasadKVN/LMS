@@ -4,6 +4,7 @@ import UCSelect from "../ui/select";
 import { useFormState } from "react-dom";
 import UCDate from "../ui/date";
 import {addTask} from "@/lib/taskAction";
+import UCInput from "../ui/input";
 
 // interface Props {
 //   handleSubmit?: (data: any) => void;
@@ -31,39 +32,27 @@ import {addTask} from "@/lib/taskAction";
     <>
       <form  action={dispatchf}>
         <div className="grid grid-cols-12 gap-1">
-          <div className="col-span-1">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="task-id"
-            >
-              Task Id
-            </label>
-            <input
-              className="block w-full appearance-none rounded border bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:bg-white focus:outline-none"
-              id="task-id"
+        <div className="grow">
+            <UCInput
+              label="Task Id"
               type="text"
-              placeholder="Please enter task id"
-              onChange={handleChange}
+              className="w-full"
+              placeholder="Task id"
               name="taskId"
               value={taskData.taskId}
-            />
-          </div>
-          <div className="col-span-3">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="taskDesc"
-            >
-              Description
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-              id="taskDesc"
-              type="text"
-              placeholder="Please enter task description"
-              value={taskData.taskDesc}
-              name="taskDesc"
               onChange={handleChange}
-            />
+            ></UCInput>
+          </div>
+          <div className="grow">
+            <UCInput
+              label="Description"
+              type="text"
+              className="w-full"
+              placeholder="Description"
+              name="taskDesc"
+              value={taskData.taskDesc}
+              onChange={handleChange}
+            ></UCInput>
           </div>
           <div className=" col-span-2">
             <UCDate
@@ -88,39 +77,32 @@ import {addTask} from "@/lib/taskAction";
             <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
           </div>
           <div className="col-span-2">
-            <label
-              className="block text-xs font-bold uppercase tracking-wide text-gray-700"
-              htmlFor="estimate"
-            >
-              Estimate
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-2 py-1 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-              id="estimate"
-              type="text"
-              value={taskData.estimate}
-              onChange={handleChange}
-              name="estimate"
-            />
+          <UCInput
+            label="Estimate"
+            className="w-full"
+            name="estimate"
+            value={taskData.estimate}
+            onChange={handleChange}
+          ></UCInput>
           </div>
           <div className="col-span-2">
             <UCSelect
               options={[
-                "Hari",
-                "Gajanan",
-                "Suhaib",
-                "Jishna",
-                "Madhu",
-                "Guddi",
-                "Neha",
-                "Bhuvaneshari",
-                "Rushi",
+                "Select",
+                "Bhuvaneshwari Murkhandi",
+                "Gajanan Tuppad",
+                "Guddi Kumari",
+                "HariPrasadVN",
+                "Jishna George",
+                "Madhu Gurukar",
+                "Neha Prakash",
+                "Rushikesh Thakre",
+                "Suhaib Kazmi",
               ]}
               label="Assigned To"
-              id="assignedTo"
               name="assignedTo"
-               value={taskData.assignedTo}
-               onChange={handleChange}
+              value={taskData.assignedTo}
+              onChange={handleChange}
             ></UCSelect>
           </div>
 
@@ -134,6 +116,7 @@ import {addTask} from "@/lib/taskAction";
             </button>
           </div>
         </div>
+      
       </form>
     </>
   );
