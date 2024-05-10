@@ -51,16 +51,33 @@ export const getEmployee = async (employeeID: string, path: string) => {
     await dbConnect();
     console.log(path);
     const employee = await store.findOne({ empId: employeeID }, { [path]: 1 });
-    const pathArray = path.split(".");
-    let parent = employee;
 
-    pathArray.forEach((element) => {
-      parent = parent[element];
-    });
-
-    return parent;
+    return employee;
   } catch (error) {
     console.error("Error getting employee week effort:", error);
     return { success: false, error };
   }
 };
+
+export async function Delete(empId: string, path: string) {
+  await dbConnect();
+  let root = await store.findOne({
+    empId: empId,
+  });
+
+  const pathArray = path.split(".");
+
+  const key = pathArray.pop() || "key";
+  const node = pathArray.pop() || "node";
+  const entityderived = pathArray[0];
+  let parent = root;
+
+  pathArray.forEach((element) => {
+    parent = parent[element];
+  });
+
+  delete parent[node][key];
+
+  root.markModified(entityderived);
+  await root.save();
+}

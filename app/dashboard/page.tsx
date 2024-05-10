@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Task from '@/components/task/Task';
-import LeaveDetails from "@/components/leave/LeaveDetails";
+import LeaveDetails from "@/components/leave/Leave";
 import TimeSheet from "@/components/timesheet/timesheet";
 import UCCard from "@/components/ui/card";
 import { signIn, signOut } from '../../lib/actions';
