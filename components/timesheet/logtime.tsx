@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/ui/button";
-import { SubmitTimesheet} from "@/lib/timesheetActions";
+import { SubmitTimesheet } from "@/lib/timesheetActions";
 import { TimeSheet } from "@/models/TimeSheet";
 import UCTable from "../ui/table/table";
 import UCTableHeader from "../ui/table/thead";
@@ -11,18 +11,6 @@ import UCTableHeaderCell from "../ui/table/th";
 import toast from "react-hot-toast";
 import { TaskEffort } from "@/models/taskEffort";
 
-interface effort {
-  date: Date;
-  effort: number;
-}
-
-interface Task {
-  taskId?: string;
-  taskName: string;
-  status: boolean;
-  efforts: Array<effort>;
-}
-
 interface TimeSheetProps {
   currentWeek: Date;
   timeSheetData: TaskEffort;
@@ -31,17 +19,9 @@ interface TimeSheetProps {
 const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   const [tasks, setTasks] = useState<TimeSheet[]>([]); // State to store tasks
 
-  let timeSheets: TimeSheet[] = [];
   useEffect(() => {
-    const getAllocations = async () => {
-      try {
-        console.log(timeSheetData);
-        setTasks(timeSheetData.tasks!);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-    getAllocations();
+    console.log(timeSheetData);
+    setTasks(timeSheetData.tasks!);
   }, [timeSheetData]); // Fetch tasks on component mount
 
   // Function to get the current week's weekdays
@@ -104,12 +84,26 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
       tasks: tasks,
       startDate: currentWeek,
     };
-    console.log(taskEffort);
-    const updatedTasks = await SubmitTimesheet(taskEffort); //await logTime(tasks);
-    console.log(updatedTasks);
-    toast.success("Timesheet data has been submitted sucessfully", {
-      duration: 5000,
-    });
+    const updatedTasks = await SubmitTimesheet(taskEffort);
+    if (updatedTasks) {
+      toast.success("Timesheet data has been submitted sucessfully", {
+        duration: 5000,
+      });
+    }
+  };
+
+  const saveLog = async () => {
+    let taskEffort: TaskEffort = {
+      status: "saved",
+      tasks: tasks,
+      startDate: currentWeek,
+    };
+    const updatedTasks = await SubmitTimesheet(taskEffort);
+    if (updatedTasks) {
+      toast.success("Timesheet data has been saved sucessfully", {
+        duration: 5000,
+      });
+    }
   };
 
   // Function to render column headings
@@ -174,6 +168,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
         <UCTableBody>{renderTaskGrid()}</UCTableBody>
       </UCTable>
       <div className="whitespace-nowrap px-4 py-2 text-right ">
+        <Button onClick={saveLog}>Save</Button>
         <Button onClick={submitLog}>Submit</Button>
       </div>
     </div>
