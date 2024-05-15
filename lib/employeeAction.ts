@@ -36,7 +36,11 @@ export async function create(formData: {
 }
 
 export const getEmployeeLeavesByType = async (empId: string, year: string) => {
-  const x = await getEmployee(empId, "leaves");
+  const x = await getEmployee(empId, `leaves.${year}`);
+
+  if (!x) {
+    return { leavesData: {}, utilizedAndAllotted: {} };
+  }
   let allLeavesList: Record<
     string,
     {
@@ -52,18 +56,18 @@ export const getEmployeeLeavesByType = async (empId: string, year: string) => {
     [type: string]: { allotted: number; utilized: number; balance: number };
   } = {};
 
-  for (const type in x.leaves[year]) {
+  for (const type in x) {
     allLeavesList[type] = [];
-    for (const entry in x.leaves[year][type]) {
+    for (const entry in x[type]) {
       if (entry == "allotted") {
         utilizedLeaves[type] = {
-          allotted: Number(x.leaves[year][type][entry]),
+          allotted: Number(x[type][entry]),
           utilized: 0,
           balance: 0,
         };
         continue;
       }
-      const splittedArray = x.leaves[year][type][entry].split("|");
+      const splittedArray = x[type][entry].split("|");
       allLeavesList[type].push({
         startDate: entry,
         endDate: splittedArray[0],

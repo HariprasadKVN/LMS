@@ -50,12 +50,21 @@ export const getEmployee = async (employeeID: string, path: string) => {
   try {
     await dbConnect();
     console.log(path);
-    const employee = await store.findOne({ empId: employeeID }, { [path]: 1 });
+    const employee = await store.findOne({ empId: employeeID });
+    if (!employee) {
+      return null;
+    }
+    const pathArray = path.split(".");
+    let parent = employee;
 
-    return employee;
+    pathArray.forEach((element) => {
+      parent = parent[element];
+    });
+
+    return parent;
   } catch (error) {
     console.error("Error getting employee week effort:", error);
-    return { success: false, error };
+    return { success: false, error: error };
   }
 };
 
