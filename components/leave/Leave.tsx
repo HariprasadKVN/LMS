@@ -25,7 +25,7 @@ const Leave: React.FC = ({}) => {
 
   const currentYear = new Date().getFullYear().toString();
 
-  const empId = "Hari";
+  const empId = "66333118e4f5f892879c69f8";
 
   const fetchLeaveData = async () => {
     const { leavesData, utilizedAndAllotted } = await getEmployeeLeavesByType(
