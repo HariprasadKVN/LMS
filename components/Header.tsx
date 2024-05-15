@@ -14,7 +14,9 @@ const Header: React.FC = () => {
       return await auth();
     }
 
-    getSession().then((s) => setSession(s))
+    getSession().then((s) => {
+      setSession(s);
+    })
 
   }, []);
 
@@ -31,6 +33,7 @@ const Header: React.FC = () => {
         </div>
         <div className="flex flex-row gap-1 text-white">
           {session?.user && <span className="italic">{session?.user.name}</span>}
+          {session?.user && <span className="italic">---|{session?.user.id}---</span>}
           {session?.user && <PowerIcon className="w-6 h-6 cursor-pointer" onClick={handleClick}>
           </PowerIcon>}
         </div>
