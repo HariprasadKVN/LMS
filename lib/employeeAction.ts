@@ -3,6 +3,7 @@
 import dbConnect from "@/store/dbConnect";
 import Employee from "@/models/Employee";
 import { Delete, Update, getEmployee } from "@/store/employeeStore";
+import { orgLeavesCount } from "@/mock-data/orgLeavesCount";
 
 export async function create(formData: {
   name: string;
@@ -40,7 +41,8 @@ export const getEmployeeLeavesByType = async (empId: string, year: string) => {
 
   if (!x) {
     return { leavesData: {}, utilizedAndAllotted: {} };
-  }
+}
+
   let allLeavesList: Record<
     string,
     {
@@ -113,7 +115,14 @@ export const applyLeave = async (
 
   const leaveEntry = `${endDateKey}|${noOfDays}|${leave.duration}|${leave.reason}`;
 
-  const result = Update(
+  const x = await getEmployee(employeeID, `leaves.${year}`);
+  if (!x.leaves || !x.leaves[year] || !x.leaves[year][leave.type]) {
+    await Update(employeeID, `leaves.${year}.${leave.type}`, {
+      allotted: orgLeavesCount[leave.type],
+    });
+  }
+
+  const result = await Update(
     employeeID,
     `leaves.${year}.${leave.type}.${startDateKey}`,
     leaveEntry,
