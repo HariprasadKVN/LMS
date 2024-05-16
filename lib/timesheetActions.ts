@@ -1,12 +1,10 @@
 "use server";
 import { Effort } from "@/models/Effort";
-import Employee from "@/models/Employee";
 import { TimeSheet } from "@/models/TimeSheet";
 import { TaskEffort } from "@/models/taskEffort";
 import dbConnect from "@/store/dbConnect";
 import { Update, getEmployee } from "@/store/employeeStore";
 import { getTasks } from "@/store/taskStore";
-import { stat } from "fs";
 
 export async function SubmitTimesheet(taskEffort: TaskEffort) {
   try {
@@ -23,8 +21,7 @@ export async function SubmitTimesheet(taskEffort: TaskEffort) {
         },
       };
     });
-    console.log(weekData);
-    await Update("Hari", `effort.${weekKey}`, weekData);
+    await Update(taskEffort.empId!, `effort.${weekKey}`, weekData);
   } catch (error) {
     if (error instanceof Error) {
       return "Something went wrong.";
@@ -67,7 +64,11 @@ const convertEffortArrayToObject = (efforts: any[], keys: string[]) => {
   return taskEfforts;
 };
 
-export async function getInprogressTasks(currentWeek: Date) {
+export async function getInprogressTasks(
+  currentWeek: Date,
+  empId: string,
+  empName: string,
+) {
   await dbConnect();
   const keys = getWeekdayKeys(currentWeek);
   const weekKey = convertDatetoKey(currentWeek);
@@ -76,21 +77,22 @@ export async function getInprogressTasks(currentWeek: Date) {
   let weekTaskEffort: TaskEffort = {};
   try {
     weekTaskEffort.startDate = currentWeek;
-    const empEfforts = await getEmployee("Hari", `effort.${weekKey}`);
-    if(!empEfforts){
-      return weekTaskEffort;
-    }
-    const { status } = empEfforts;
+    const empEfforts = await getEmployee(empId, `effort.${weekKey}`);
+    const status = empEfforts !== null ? empEfforts?.status : null;
     if (empEfforts) {
       const taskKeys = Object.keys(empEfforts);
-      console.log(taskKeys);
       taskKeys.forEach((taskkey) => {
         if (taskkey !== "status") {
           const taskObj = empEfforts[taskkey];
           const submittedTask = {
             taskId: taskkey,
             taskName: taskObj.description,
-            status: taskObj.done,
+            status:
+              taskObj.done !== undefined &&
+              taskObj.done !== null &&
+              taskObj.done
+                ? "completed"
+                : "in progress",
             effort: convertEffortArrayToObject(taskObj.efforts, keys),
           };
           submittedTasks.push(submittedTask);
@@ -102,9 +104,9 @@ export async function getInprogressTasks(currentWeek: Date) {
       weekTaskEffort.status = empEfforts.status;
       filteredTasks = [];
     } else {
-      const tasks = await getTasks("Madhu");
+      const tasks = await getTasks(empName);
       filteredTasks = tasks
-        .filter((task) => task.status === "in progress")
+        .filter((task) => task.status === "in progress" && (submittedTasks.length === 0 || (submittedTasks.length > 0 && submittedTasks!.includes(task.taskId))))
         .map((task) => ({
           taskId: task._id,
           taskName: task.taskDesc || "",

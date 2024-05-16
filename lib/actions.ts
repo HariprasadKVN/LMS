@@ -22,16 +22,20 @@ async function hashPassword(password: string): Promise<string> {
   return hashedPassword;
 }
 
-async function getUser(email: string): Promise<User | null> {
+async function getUser(email: string, password: string): Promise<User | null> {
   try {
     await dbConnect();
-
-    const matched = (await Auth.find<User>()).filter((item) =>
-      bcrypt.compareSync(email, item.email),
+    let user: User = { id: "", name: "", email: "", other:"" };
+    const matched = (await Auth.find()).filter(
+      (item) =>
+        bcrypt.compareSync(email, item.email) &&
+        bcrypt.compare(password, password),
     );
 
-    if (matched && matched.length > 0) {
-      return matched[0];
+    if (matched && matched.length > 0) {      
+      user.name = matched[0].name;
+      user.id = matched[0]._id;      
+      return user;
     }
     return null;
   } catch (error) {
@@ -42,20 +46,16 @@ async function getUser(email: string): Promise<User | null> {
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
-    Credentials({
+    Credentials({      
       async authorize(credentials) {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        const result = parsedCredentials;
-
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
-          const user = await getUser(email);
-
-          if (!user) return null;
-          return (await bcrypt.compare(password, user.password)) ? user : null;
+          const user = await getUser(email, password);
+          return user;
         } else {
           return null;
         }

@@ -13,10 +13,10 @@ export default function RootLayout({
 }>) { 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} sm:text-md md:text-sm antialiased`}>
         <main className="h-screen">
           <Header></Header>
-          <Toaster position="top-right"/>
+          <Toaster position="top-center"/>
           {children}
           <Footer></Footer>
         </main>

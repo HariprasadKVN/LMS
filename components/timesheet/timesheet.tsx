@@ -4,6 +4,7 @@ import WeekView from "./Weekview";
 import LogTime from "./logtime";
 import { getInprogressTasks } from "@/lib/timesheetActions";
 import { TaskEffort } from "@/models/taskEffort";
+import { auth } from "@/lib/actions";
 
 const TimeSheet = () => {
   const getStartOfWeek = (date: Date) => {
@@ -22,7 +23,9 @@ const TimeSheet = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const tasks = await getInprogressTasks(currentDate);
+        const user = await auth();
+        let tasks = await getInprogressTasks(currentDate,user?.user?.id!, user?.user?.name!);
+        tasks = { ...tasks, empId: user?.user?.id };
         setTimeSheetTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);

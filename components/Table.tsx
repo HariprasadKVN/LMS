@@ -37,6 +37,6 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
       </table>
     </div>
   );
-};
+}; 
 
 export default Table;
