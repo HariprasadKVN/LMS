@@ -43,8 +43,8 @@ const ApplyLeave: React.FC<Props> = ({
       return false;
     }
 
-    for (const type in leaveData) {
-      for (const leave of leaveData[type]) {
+    for (const leavetype in leaveData) {
+      for (const leave of leaveData[leavetype]) {
         const leaveStartDate = convertStringToDate(leave.startDate);
         const leaveEndDate = convertStringToDate(leave.endDate);
 
@@ -54,7 +54,7 @@ const ApplyLeave: React.FC<Props> = ({
           (leaveStartDate >= startDate && leaveEndDate <= endDate)
         ) {
           toast.error(
-            `Leave overlaps with existing leave for ${type} from ${leave.startDate} to ${leave.endDate}`,
+            `Leave overlaps with existing leave for ${leavetype} from ${leave.startDate} to ${leave.endDate}`,
             { duration: 5000 },
           );
           return false;
@@ -63,9 +63,9 @@ const ApplyLeave: React.FC<Props> = ({
         let diff = await getDiff(startDate, endDate);
         console.log("Diff", diff);
 
-        if (diff > utilizedLeavesCount[type].balance) {
+        if (type===leavetype && diff > utilizedLeavesCount[leavetype].balance) {
           toast.error(
-            `You only have ${utilizedLeavesCount[type].balance}balance leaves for ${type} but applying for ${diff} days`,
+            `You only have ${utilizedLeavesCount[leavetype].balance}balance leaves for ${leavetype} but applying for ${diff} days`,
             {
               duration: 5000,
             },

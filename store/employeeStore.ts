@@ -34,6 +34,9 @@ export async function Update(empId: string, path: string, data: any) {
   let parent = root;
 
   pathArray.forEach((element) => {
+    if (!parent[element]) {
+      parent[element] = {};
+    }
     parent = parent[element];
   });
 
@@ -49,10 +52,12 @@ export async function Update(empId: string, path: string, data: any) {
 export const getEmployee = async (employeeID: string, path: string) => {
   try {
     await dbConnect();
-    console.log(path);
     const employee = await store.findOne({ empId: employeeID });
     if (!employee) {
       return null;
+    }
+    if (path === "") {
+      return employee;
     }
     const pathArray = path.split(".");
     let parent = employee;
@@ -60,7 +65,6 @@ export const getEmployee = async (employeeID: string, path: string) => {
     pathArray.forEach((element) => {
       parent = parent[element];
     });
-
     return parent;
   } catch (error) {
     console.error("Error getting employee week effort:", error);
