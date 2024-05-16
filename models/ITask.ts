@@ -1,4 +1,5 @@
 export interface ITask {
+  pid?:string,
   createdBy?: string;
   assignedTo?: string;
   taskId?: string;

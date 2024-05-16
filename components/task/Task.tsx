@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import AddTask from "./AddTask";
 import TaskList from "./Tasklist";
-import { getTaskList } from "@/lib/taskAction";
-import { ITask } from "@/models/Task";
+import { getTaskList, updateTaskList } from "@/lib/taskAction";
+import { ITask } from "@/models/ITask";
 import { auth, signOut } from "../../lib/actions";
 import { Session } from "next-auth";
 
@@ -12,11 +12,11 @@ function Task() {
   //const username = "Madhu";
   useEffect(() => {
     // getTaskList(username).then((data) => {
-    //   setTasks(data);     
+    //   setTasks(data);
     // });
-    
+
     auth().then((s) => getTaskList((s?.user?.name)?s?.user?.name:"").then((data) => {
-      setTasks(data);     
+      setTasks(data);
     }))
   }, []);
 
@@ -25,13 +25,16 @@ function Task() {
   //   return response.data.data;
   // };
 
-  const setStatus = (taskId: string, status: string) => {
+  const setStatus = (primaryId: string, status: string) => {
     const taskIndex = tasks.findIndex(
-      (taskList) => taskList.taskId === taskId,
+      (taskList) => taskList.pid === primaryId,
     );
     const updatedTasks = [...tasks];
     updatedTasks[taskIndex] = { ...tasks[taskIndex], status: status };
     setTasks(updatedTasks);
+    const x =  updateTaskList(primaryId, status);
+    console.log(x);
+
   };
 
   /* const handleEditClick = (taskId: string) => {
@@ -119,7 +122,7 @@ function Task() {
       <TaskList
         tasks={tasks}
         setStatus={setStatus}
-       
+
       ></TaskList>
     </>
   );

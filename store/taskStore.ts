@@ -1,11 +1,14 @@
 "use server";
-import { ITask } from "@/models/Task";
+import { ITask } from "@/models/ITask";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
 
 interface Model extends ITask, mongoose.Document {}
 
 const ModelSchema = new mongoose.Schema<Model>({
+  pid:{
+    type:String
+  },
   createdBy: {
     type: String,
     // required: [true, "Please provide the creator's ID"],
@@ -47,40 +50,24 @@ export async function create(data: ITask) {
   return c;
 }
 
-export const getTasks = async (username:string|undefined) => {
+export const getTasks = async (username: string) => {
   await dbConnect();
-  const x = await store.find({assignedTo:username});
-  console.log(x);
-  return x;
+  return await store.find({ assignedTo: username });
 };
 
-
-export async function updateTask(taskId: string, status: string, path: string, data:any) {
+//export async function updateTask(taskId: string, status: string, path: string, data:any) {
+export async function updateTask(primaryId: string, status: string) {
   await dbConnect();
-  let root = await store.findOne({
-    taskId: taskId,
-  });
- 
-  const pathArray = path.split(".");
- 
-  const key = pathArray.pop() || "key";
-  const node = pathArray.pop() || "node";
-  const entityderived = pathArray[0];
-  let parent = root;
- 
-  pathArray.forEach((element) => {
-    parent = parent[element];
-  });
- 
-  const x = parent[node];
-  let y = { ...x, [key]: data };
- 
-  parent[node] = y;
- 
-  root.markModified(entityderived);
-  await root.save();
+  if (primaryId === "") {
+    console.log(primaryId);
+    return;
+  }
+
+  let root = await store.findByIdAndUpdate(primaryId, { status: status });
+  console.log(root);
+
+
+
 }
 
-export default store; 
-
-
+export default store;
