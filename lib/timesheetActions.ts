@@ -2,13 +2,11 @@
 import { Effort } from "@/models/Effort";
 import { TimeSheet } from "@/models/TimeSheet";
 import { TaskEffort } from "@/models/taskEffort";
-import dbConnect from "@/store/dbConnect";
 import { Update, getEmployee } from "@/store/employeeStore";
 import { getTasks } from "@/store/taskStore";
 
 export async function SubmitTimesheet(taskEffort: TaskEffort) {
   try {
-    await dbConnect();
     const weekKey = convertDatetoKey(taskEffort.startDate!);
     let weekData = {};
     taskEffort.tasks!.forEach((task) => {
@@ -68,8 +66,7 @@ export async function getInprogressTasks(
   currentWeek: Date,
   empId: string,
   empName: string,
-) {
-  await dbConnect();
+): Promise<TaskEffort> {
   const keys = getWeekdayKeys(currentWeek);
   const weekKey = convertDatetoKey(currentWeek);
   let filteredTasks: TimeSheet[] = [];
@@ -106,19 +103,19 @@ export async function getInprogressTasks(
     } else {
       const tasks = await getTasks(empName);
       filteredTasks = tasks
-        .filter((task) => task.status === "in progress" && (submittedTasks.length === 0 || (submittedTasks.length > 0 && submittedTasks!.includes(task.taskId))))
+        .filter((task) => task.status === "in progress")
         .map((task) => ({
-          taskId: task._id,
+          taskId: task.pid!,
           taskName: task.taskDesc || "",
           status: task.status,
-          effort: convertEffortObject(task.efforts, keys),
+          effort: []//convertEffortObject(task.efforts, keys),
         }));
     }
   } catch (error) {
     throw error;
   }
   weekTaskEffort.tasks = [...submittedTasks, ...filteredTasks];
-  return weekTaskEffort;
+  return weekTaskEffort; 
 }
 
 const getWeekdayKeys = (from: Date): string[] => {

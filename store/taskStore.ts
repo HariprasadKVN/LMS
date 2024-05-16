@@ -2,12 +2,13 @@
 import { ITask } from "@/models/ITask";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
+import { unstable_noStore as noStore } from 'next/cache';
 
 interface Model extends ITask, mongoose.Document {}
 
 const ModelSchema = new mongoose.Schema<Model>({
-  pid:{
-    type:String
+  pid: {
+    type: String,
   },
   createdBy: {
     type: String,
@@ -50,9 +51,21 @@ export async function create(data: ITask) {
   return c;
 }
 
-export const getTasks = async (username: string) => {
+export const getTasks = async (username: string): Promise<ITask[]> => {
+  noStore();
   await dbConnect();
-  return await store.find({ assignedTo: username });
+  const response = await store.find({ assignedTo: username });
+  return response.map((item) => ({
+    pid: item._id.toString(),
+    createdBy: item.createdBy,
+    assignedTo: item.assignedTo,
+    taskId: item.taskId,
+    taskDesc: item.taskDesc,
+    estimate: item.estimate,
+    status: item.status,
+    startDate: item.startDate,
+    endDate: item.endDate,
+  }));
 };
 
 //export async function updateTask(taskId: string, status: string, path: string, data:any) {
@@ -65,9 +78,6 @@ export async function updateTask(primaryId: string, status: string) {
 
   let root = await store.findByIdAndUpdate(primaryId, { status: status });
   console.log(root);
-
-
-
 }
 
 export default store;
