@@ -1,7 +1,6 @@
+import { ITask } from "@/models/ITask";
 import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
-
-
 type FormData1 = {
   createdBy?: string;
   assignedTo?: string;
@@ -73,32 +72,43 @@ async function addTask(
   try {
     if (!result.success) {
       console.log(result.error.formErrors.fieldErrors);
-      const { startDate, endDate, taskDesc } = result.error.formErrors.fieldErrors;
+      const { startDate, endDate, taskDesc } =
+        result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
-        resolve({endDate:endDate?endDate[0]:""});
+        resolve({ endDate: endDate ? endDate[0] : "" });
       });
     } else {
-      await create({...result.data,status:"assigned", createdBy:"hari"});
-      return({})
+      await create({ ...result.data, status: "assigned", createdBy: "hari" });
+      return {};
     }
-    } catch (error) {
+  } catch (error) {
     console.log(error);
     throw error;
-  }  
+  }
 }
 
-async function getTaskList(username:string|undefined){
- const x= await getTasks(username);
- console.log(x)
- return x;
+async function getTaskList(username: string): Promise<ITask[]> {
+  const x = await getTasks(username);
+  const r = x.map((item) => ({
+    pid: item._id,
+    createdBy: item.createdBy,
+    assignedTo: item.assignedTo,
+    taskId: item.taskId,
+    taskDesc: item.taskDesc,
+    estimate: item.estimate,
+    status: item.status,
+    startDate: item.startDate,
+    endDate: item.endDate,
+  }));
+  console.log("mapping task details to model");
+  console.log(r);
+  return r;
 }
 
-// const result = UpdateTaskList(
-//   const x= await updateTask(taskId: string, status: string, path: string, data:any);
-//   console.log(x)
-//   // employeeID,
-//   // `leaves.${year}.${leave.type}.${startDateKey}`,
-//   // leaveEntry,
-// );
+async function updateTaskList(primaryId: string, status: string) {
+  const x = await updateTask(primaryId, status);
+  console.log("checking update action");
+  console.log(x);
+}
 
-export  {addTask, getTaskList};
+export { addTask, getTaskList, updateTaskList };
