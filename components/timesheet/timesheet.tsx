@@ -24,7 +24,8 @@ const TimeSheet = () => {
     const getTasks = async () => {
       try {
         const user = await auth();
-        const tasks = await getInprogressTasks(currentDate, user?.user?.name!);
+        let tasks = await getInprogressTasks(currentDate,user?.user?.id!, user?.user?.name!);
+        tasks = { ...tasks, empId: user?.user?.id };
         setTimeSheetTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
