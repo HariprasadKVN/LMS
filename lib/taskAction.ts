@@ -90,7 +90,7 @@ async function addTask(
 async function getTaskList(username: string): Promise<ITask[]> {
   const x = await getTasks(username);
   const r = x.map((item) => ({
-    pid: item._id,
+    pid: item.pid,
     createdBy: item.createdBy,
     assignedTo: item.assignedTo,
     taskId: item.taskId,

@@ -5,6 +5,7 @@ import LogTime from "./logtime";
 import { getInprogressTasks } from "@/lib/timesheetActions";
 import { TaskEffort } from "@/models/taskEffort";
 import { auth } from "@/lib/actions";
+import Loading from "@/app/loading";
 
 const TimeSheet = () => {
   const getStartOfWeek = (date: Date) => {
@@ -24,14 +25,14 @@ const TimeSheet = () => {
     const getTasks = async () => {
       try {
         const user = await auth();
-        let tasks = await getInprogressTasks(currentDate,user?.user?.id!, user?.user?.name!);
-        tasks = { ...tasks, empId: user?.user?.id };
+        let tasks = await getInprogressTasks(currentDate, user?.user?.id!, user?.user?.name!);
+        tasks = { ...tasks, empId: user?.user?.id! };
         setTimeSheetTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
-    getTasks();
+    getTasks(); 
   }, [currentDate]);
 
   return (

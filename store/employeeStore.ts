@@ -2,6 +2,7 @@
 import { IEmployee } from "@/models/IEmployee";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
+import { unstable_noStore as noStore } from 'next/cache';
 
 interface Model extends IEmployee, mongoose.Document {}
 
@@ -50,7 +51,9 @@ export async function Update(empId: string, path: string, data: any) {
 }
 
 export const getEmployee = async (employeeID: string, path: string) => {
+  noStore();
   try {
+
     await dbConnect();
     const employee = await store.findOne({ empId: employeeID });
     if (!employee) {
