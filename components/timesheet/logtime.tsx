@@ -80,6 +80,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   // Function to submit logs
   const submitLog = async () => {
     let taskEffort: TaskEffort = {
+      empId: timeSheetData.empId,
       status: "submitted",
       tasks: tasks,
       startDate: currentWeek,
@@ -94,6 +95,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
 
   const saveLog = async () => {
     let taskEffort: TaskEffort = {
+      empId: timeSheetData.empId,
       status: "saved",
       tasks: tasks,
       startDate: currentWeek,
