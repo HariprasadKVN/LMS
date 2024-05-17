@@ -1,11 +1,11 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,25 +31,14 @@ body {
     text-wrap: balance;
   }
 }
-
-/* input[type="date"] {
-  -webkit-appearance: none;
-  margin: 0;
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply m-0 appearance-none;
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    @apply m-0 appearance-none;
+  }
 }
-input:focus {
-  outline: none !important;
-} */
-/* input[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 1;
-  display: block;
-  color: aliceblue;
-  background: url(https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png) no-repeat; 
-  width: 20px;
-  height: 20px;
-  border-width: thin;
-} */
-
 input[type="date"]::-webkit-calendar-picker-indicator {
-  /*filter: invert(1);  Invert the color of the calendar icon */
   @apply dark:filter-invert;
 }

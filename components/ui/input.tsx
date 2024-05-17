@@ -14,9 +14,9 @@ const UCInput: React.FC<InputProps> = ({ label, className, ...rest }: InputProps
         {type != "checkbox" && <UCLabel htmlFor= {id} caption={display}></UCLabel>}
         <input autoComplete="off"
             {...rest}
-            className={clsx("dark:bg-inherit border border-slate-400/50 rounded-md px-2 outline-none",
+            className={clsx("dark:bg-inherit border border-slate-400/50 rounded-md px-2 py-px outline-none",
                 {
-                    "appearance-none": type === "text",
+                    "appearance-none": type === "text" || type === "number",
                 }, className)} />
     </div>
 }
