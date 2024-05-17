@@ -2,12 +2,11 @@ import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
   callbacks: {
     jwt({ token, user }) {
-      if (user) {
-        // User is available during sign-in
+      if (user) {        
         token.id = user.id;
       }
       return token;
@@ -32,5 +31,5 @@ export const authConfig = {
       return true;
     },
   },
-  providers: [], // Add providers with an empty array for now
+  providers: [],
 } satisfies NextAuthConfig;
