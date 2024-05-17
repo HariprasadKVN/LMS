@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "@/store/dbConnect";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { User } from "@/store/definitions";
+import { User } from "@/models/User";
 import Auth from "@/models/userAuth";
 import NextAuth from "next-auth";
 import { authConfig } from "@/app/../auth.config";
