@@ -1,18 +1,100 @@
-import { applyLeave } from "@/lib/employeeAction";
+import { applyLeave, getDiff } from "@/lib/employeeAction";
 import { useState } from "react";
 import UCDate from "../ui/date";
 import UCCheckbox from "../ui/checkbox";
 import UCSelect from "../ui/select";
 import UCInput from "../ui/input";
-import UCCard from "../ui/card";
 import UCButton from "../ui/button";
+import toast from "react-hot-toast";
+import { Leave, LeaveAllottedUtilized } from "./Leave";
 
-const ApplyLeave: React.FC = ({}) => {
+interface Props {
+  leaveData: Record<string, Leave[]>;
+  empId: string;
+  utilizedLeavesCount: Record<string, LeaveAllottedUtilized>;
+  fetchLeaveData: () => void;
+}
+
+const ApplyLeave: React.FC<Props> = ({
+  leaveData,
+  empId,
+  utilizedLeavesCount,
+  fetchLeaveData,
+}) => {
   const [type, setType] = useState("Casual");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [reason, setReason] = useState("");
   const [duration, setDuration] = useState<"half" | "full">("full");
+
+  const convertStringToDate = (dateString: string) => {
+    const year = Number(dateString.slice(0, 4));
+    const month = Number(dateString.slice(4, 6)) - 1;
+    const day = Number(dateString.slice(6));
+
+    return new Date(year, month, day);
+  };
+
+  const validateLeave = async () => {
+    if (startDate > endDate) {
+      toast.error("Start date should not be greater than end date", {
+        duration: 5000,
+      });
+      return false;
+    }
+
+    for (const leavetype in leaveData) {
+      for (const leave of leaveData[leavetype]) {
+        const leaveStartDate = convertStringToDate(leave.startDate);
+        const leaveEndDate = convertStringToDate(leave.endDate);
+
+        if (
+          (startDate >= leaveStartDate && startDate <= leaveEndDate) ||
+          (endDate >= leaveStartDate && endDate <= leaveEndDate) ||
+          (leaveStartDate >= startDate && leaveEndDate <= endDate)
+        ) {
+          toast.error(
+            `Leave overlaps with existing leave for ${leavetype} from ${leave.startDate} to ${leave.endDate}`,
+            { duration: 5000 },
+          );
+          return false;
+        }
+
+        let diff = await getDiff(startDate, endDate);
+        console.log("Diff", diff);
+
+        if (type===leavetype && diff > utilizedLeavesCount[leavetype].balance) {
+          toast.error(
+            `You only have ${utilizedLeavesCount[leavetype].balance}balance leaves for ${leavetype} but applying for ${diff} days`,
+            {
+              duration: 5000,
+            },
+          );
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const validateandapplyLeave = async () => {
+    if (!(await validateLeave())) return;
+
+    const result = await applyLeave(empId, {
+      type: type,
+      start: startDate,
+      end: endDate,
+      duration: duration,
+      reason: reason,
+    });
+
+    if (result.success) {
+      toast.success("Leave Applied", { duration: 5000 });
+      fetchLeaveData();
+    } else {
+      toast.error("Something went wrong", { duration: 5000 });
+    }
+  };
 
   return (
     <form>
@@ -29,6 +111,7 @@ const ApplyLeave: React.FC = ({}) => {
             <UCDate
               name="Start Date"
               onChange={(e) => setStartDate(new Date(e.target.value))}
+              required
             ></UCDate>
           </div>
           <div>
@@ -52,23 +135,11 @@ const ApplyLeave: React.FC = ({}) => {
               label="Reason"
               className="w-full"
               onChange={(e) => setReason(e.target.value)}
+              required
             ></UCInput>
           </div>
           <div className="content-end">
-            <UCButton
-              type="button"
-              onClick={() => {
-                applyLeave("test", [
-                  {
-                    type: type,
-                    start: startDate,
-                    end: endDate,
-                    duration: duration,
-                    reason: reason,
-                  },
-                ]);
-              }}
-            >
+            <UCButton type="button" onClick={validateandapplyLeave}>
               Apply Leave
             </UCButton>
           </div>
@@ -112,22 +183,8 @@ const ApplyLeave: React.FC = ({}) => {
                 onChange={(e) => setReason(e.target.value)}
               ></UCInput>
             </div>
-
             <div className="content-end">
-              <UCButton
-                type="button"
-                onClick={() => {
-                  applyLeave("test", [
-                    {
-                      type: type,
-                      start: startDate,
-                      end: endDate,
-                      duration: duration,
-                      reason: reason,
-                    },
-                  ]);
-                }}
-              >
+              <UCButton type="button" onClick={validateandapplyLeave}>
                 Apply Leave
               </UCButton>
             </div>

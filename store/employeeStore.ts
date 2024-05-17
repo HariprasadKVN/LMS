@@ -2,6 +2,7 @@
 import { IEmployee } from "@/models/IEmployee";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
+import { unstable_noStore as noStore } from 'next/cache';
 
 interface Model extends IEmployee, mongoose.Document {}
 
@@ -34,6 +35,9 @@ export async function Update(empId: string, path: string, data: any) {
   let parent = root;
 
   pathArray.forEach((element) => {
+    if (!parent[element]) {
+      parent[element] = {};
+    }
     parent = parent[element];
   });
 
@@ -47,20 +51,49 @@ export async function Update(empId: string, path: string, data: any) {
 }
 
 export const getEmployee = async (employeeID: string, path: string) => {
+  noStore();
   try {
+
     await dbConnect();
-    console.log(path);
-    const employee = await store.findOne({ empId: employeeID }, { [path]: 1 });
+    const employee = await store.findOne({ empId: employeeID });
+    if (!employee) {
+      return null;
+    }
+    if (path === "") {
+      return employee;
+    }
     const pathArray = path.split(".");
     let parent = employee;
 
     pathArray.forEach((element) => {
       parent = parent[element];
     });
-
     return parent;
   } catch (error) {
     console.error("Error getting employee week effort:", error);
-    return { success: false, error };
+    return { success: false, error: error };
   }
 };
+
+export async function Delete(empId: string, path: string) {
+  await dbConnect();
+  let root = await store.findOne({
+    empId: empId,
+  });
+
+  const pathArray = path.split(".");
+
+  const key = pathArray.pop() || "key";
+  const node = pathArray.pop() || "node";
+  const entityderived = pathArray[0];
+  let parent = root;
+
+  pathArray.forEach((element) => {
+    parent = parent[element];
+  });
+
+  delete parent[node][key];
+
+  root.markModified(entityderived);
+  await root.save();
+}

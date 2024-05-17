@@ -2,10 +2,14 @@
 import { ITask } from "@/models/ITask";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
+import { unstable_noStore as noStore } from 'next/cache';
 
 interface Model extends ITask, mongoose.Document {}
 
 const ModelSchema = new mongoose.Schema<Model>({
+  pid: {
+    type: String,
+  },
   createdBy: {
     type: String,
     // required: [true, "Please provide the creator's ID"],
@@ -59,40 +63,33 @@ export async function create(data: ITask) {
   return c;
 }
 
-export const getTasks = async (username:string|undefined) => {
+export const getTasks = async (username: string): Promise<ITask[]> => {
+  noStore();
   await dbConnect();
-  const x = await store.find({assignedTo:username});
-  console.log(x);
-  return x;
+  const response = await store.find({ assignedTo: username });
+  return response.map((item) => ({
+    pid: item._id.toString(),
+    createdBy: item.createdBy,
+    assignedTo: item.assignedTo,
+    taskId: item.taskId,
+    taskDesc: item.taskDesc,
+    estimate: item.estimate,
+    status: item.status,
+    startDate: item.startDate,
+    endDate: item.endDate,
+  }));
 };
 
-
-export async function updateTask(taskId: string, status: string, path: string, data:any) {
+//export async function updateTask(taskId: string, status: string, path: string, data:any) {
+export async function updateTask(primaryId: string, status: string) {
   await dbConnect();
-  let root = await store.findOne({
-    taskId: taskId,
-  });
- 
-  const pathArray = path.split(".");
- 
-  const key = pathArray.pop() || "key";
-  const node = pathArray.pop() || "node";
-  const entityderived = pathArray[0];
-  let parent = root;
- 
-  pathArray.forEach((element) => {
-    parent = parent[element];
-  });
- 
-  const x = parent[node];
-  let y = { ...x, [key]: data };
- 
-  parent[node] = y;
- 
-  root.markModified(entityderived);
-  await root.save();
+  if (primaryId === "") {
+    console.log(primaryId);
+    return;
+  }
+
+  let root = await store.findByIdAndUpdate(primaryId, { status: status });
+  console.log(root);
 }
 
-export default store; 
-
-
+export default store;

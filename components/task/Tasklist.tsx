@@ -13,7 +13,7 @@ interface tasksList extends ITask {
 
 interface Props {
   tasks: tasksList[];
-  setStatus: (taskId: string, status: string) => void;
+  setStatus: (primaryId: string, status: string) => void;
 }
 
 const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
@@ -35,7 +35,7 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
     // Add more rows as needed
   ]; */
 
-  console.log(tasks);
+  // console.log(tasks);
 
   return (
     <>
@@ -83,7 +83,7 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
                       hover:cursor-pointer 
                       hover:text-blue-500"
                       onClick={() =>
-                        setStatus(task.taskId ? task.taskId : "", "in progress")
+                        setStatus(task.pid ? task.pid :"", "in progress")
                       }
                     ></RocketLaunchIcon>
                   )}
@@ -92,13 +92,13 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
                       <CheckIcon
                         className="h-4 w-4 hover:text-green-700"
                         onClick={() =>
-                          setStatus(task.taskId ? task.taskId : "", "completed")
+                          setStatus(task.pid ? task.pid : "", "completed")
                         }
                       ></CheckIcon>
                       <XMarkIcon
                         className="h-4 w-4 hover:text-red-700"
                         onClick={() =>
-                          setStatus(task.taskId ? task.taskId : "", "aborted")
+                          setStatus(task.pid ? task.pid : "", "aborted")
                         }
                       ></XMarkIcon>
                     </>
