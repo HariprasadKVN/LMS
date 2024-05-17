@@ -2,6 +2,7 @@
 import { ITask } from "@/models/ITask";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
+import { string } from "zod";
 
 interface Model extends ITask, mongoose.Document {}
 
@@ -15,6 +16,9 @@ const ModelSchema = new mongoose.Schema<Model>({
   status: { type: String },
   startDate: { type: Date },
   endDate: { type: Date },
+  project: { type: String },
+  sprint: { type: String },
+  taskType: { type: String },
 });
 
 const store =
@@ -39,6 +43,9 @@ const getTasks = async (username: string): Promise<ITask[]> => {
     status: item.status,
     startDate: item.startDate,
     endDate: item.endDate,
+    project: item.project,
+    sprint: item.sprint,
+    taskType: item.taskType,
   }));
 };
 
