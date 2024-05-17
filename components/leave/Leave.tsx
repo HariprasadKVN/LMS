@@ -63,6 +63,7 @@ const Leave: React.FC = ({}) => {
             utilizedLeavesCount={utilized}
             empId={empId}
             fetchLeaveData={fetchLeaveData}
+            year={currentYear}
           ></LeaveList>{" "}
         </>
       )}
