@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AddTask from "./AddTask";
 import TaskList from "./Tasklist";
 import { getTaskList } from "@/lib/taskAction";
-import { ITask } from "@/models/Task";
+import { ITask } from "@/models/ITask";
 import { auth, signOut } from "../../lib/actions";
 import { Session } from "next-auth";
 

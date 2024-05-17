@@ -5,7 +5,7 @@ import {
   XMarkIcon,
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
-import { ITask } from "@/models/Task";
+import { ITask } from "@/models/ITask";
 
 interface tasksList extends ITask {
  // current?: boolean;

@@ -1,5 +1,5 @@
 "use server";
-import { ITask } from "@/models/Task";
+import { ITask } from "@/models/ITask";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
 
