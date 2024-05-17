@@ -2,7 +2,7 @@
 import { IEmployee } from "@/models/IEmployee";
 import dbConnect from "@/store/dbConnect";
 import mongoose from "mongoose";
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 
 interface Model extends IEmployee, mongoose.Document {}
 
@@ -21,7 +21,16 @@ const ModelSchema = new mongoose.Schema<Model>({
 const store =
   mongoose.models.Employee || mongoose.model<Model>("Employee", ModelSchema);
 
-export async function Update(empId: string, path: string, data: any) {
+export const Create = async (empId: string) => {
+  await dbConnect();
+  const res = await store.create({ empId: empId });
+  if (res) {
+    return { success: true, res };
+  }
+  return { success: false, res };
+};
+
+export const Update = async (empId: string, path: string, data: any) => {
   await dbConnect();
   let root = await store.findOne({
     empId: empId,
@@ -48,12 +57,11 @@ export async function Update(empId: string, path: string, data: any) {
 
   root.markModified(entityderived);
   await root.save();
-}
+};
 
 export const getEmployee = async (employeeID: string, path: string) => {
   noStore();
   try {
-
     await dbConnect();
     const employee = await store.findOne({ empId: employeeID });
     if (!employee) {
@@ -75,7 +83,7 @@ export const getEmployee = async (employeeID: string, path: string) => {
   }
 };
 
-export async function Delete(empId: string, path: string) {
+export const Delete = async (empId: string, path: string) => {
   await dbConnect();
   let root = await store.findOne({
     empId: empId,
@@ -96,4 +104,4 @@ export async function Delete(empId: string, path: string) {
 
   root.markModified(entityderived);
   await root.save();
-}
+};

@@ -9,6 +9,7 @@ import Auth from "@/models/userAuth";
 import NextAuth from "next-auth";
 import { authConfig } from "@/app/../auth.config";
 import Credentials from "next-auth/providers/credentials";
+import { createEmployee } from "./employeeAction";
 
 const authUserSchema = z.object({
   name: z.string().min(8),
@@ -25,16 +26,16 @@ async function hashPassword(password: string): Promise<string> {
 async function getUser(email: string, password: string): Promise<User | null> {
   try {
     await dbConnect();
-    let user: User = { id: "", name: "", email: "", other:"" };
+    let user: User = { id: "", name: "", email: "", other: "" };
     const matched = (await Auth.find()).filter(
       (item) =>
         bcrypt.compareSync(email, item.email) &&
         bcrypt.compare(password, password),
     );
 
-    if (matched && matched.length > 0) {      
+    if (matched && matched.length > 0) {
       user.name = matched[0].name;
-      user.id = matched[0]._id;      
+      user.id = matched[0]._id;
       return user;
     }
     return null;
@@ -46,7 +47,7 @@ async function getUser(email: string, password: string): Promise<User | null> {
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
-    Credentials({      
+    Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
@@ -130,7 +131,8 @@ export async function register(
         });
       });
     } else {
-      await Auth.create(userAuth);
+      const authObj = await Auth.create(userAuth);
+      await createEmployee(authObj._id.toString());
       redirect("/login");
     }
   } else {
