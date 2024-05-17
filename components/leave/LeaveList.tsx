@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { deleteLeave } from "@/lib/employeeAction";
 import UCCard from "../ui/card";
 import UCTable from "../ui/table/table";
@@ -15,6 +14,7 @@ export interface Props {
   utilizedLeavesCount: Record<string, LeaveAllottedUtilized>;
   empId: string;
   fetchLeaveData: () => void;
+  year: string;
 }
 
 const LeaveList: React.FC<Props> = ({
@@ -22,13 +22,8 @@ const LeaveList: React.FC<Props> = ({
   utilizedLeavesCount,
   empId,
   fetchLeaveData,
+  year,
 }) => {
-  const currentYear = new Date().getFullYear().toString();
-
-  useEffect(() => {
-    fetchLeaveData();
-  }, []);
-
   const handleDeleteLeave = async (path: string) => {
     await deleteLeave(empId, path);
     fetchLeaveData();
@@ -72,7 +67,7 @@ const LeaveList: React.FC<Props> = ({
                             className="h-4 w-4 cursor-pointer hover:text-red-700"
                             onClick={() =>
                               handleDeleteLeave(
-                                `leaves.${currentYear}.${type}.${leave.startDate}`,
+                                `leaves.${year}.${type}.${leave.startDate}`,
                               )
                             }
                           />
@@ -88,7 +83,6 @@ const LeaveList: React.FC<Props> = ({
       )}
     </>
   );
-  
 };
 
 export default LeaveList;
