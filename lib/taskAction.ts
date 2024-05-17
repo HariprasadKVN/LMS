@@ -1,14 +1,11 @@
+import { ITask } from "@/models/ITask";
 import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
-
 type FormData1 = {
   createdBy?: string;
   assignedTo?: string;
-  project?: string;
-  sprint?: string;
   taskId?: string;
   taskDesc: string;
-  taskType: string;
   estimate?: number;
   status?: string;
   startDate?: Date;
@@ -20,11 +17,8 @@ const dateSchema: ZodType<FormData1> = z
   .object({
     createdBy: z.coerce.string(),
     assignedTo: z.coerce.string(),
-    project:z.coerce.string(),
-    sprint:z.coerce.string(),
     taskId: z.coerce.string(),
     taskDesc: z.coerce.string().min(1),
-    taskType: z.coerce.string(),
     estimate: z.coerce.number(),
     status: z.coerce.string(),
     startDate: z.coerce.date(),
@@ -43,13 +37,10 @@ const getValue = (data: FormDataEntryValue | null): string => {
 async function addTask(
   prevState:
     | {
-        project?: string;
-        sprint?: string;
         createdBy?: string;
         assignedTo?: string;
         taskId?: string;
         taskDesc?: string;
-        taskType?: string;
         estimate?: number;
         status?: string;
         startDate?: string;
@@ -60,11 +51,8 @@ async function addTask(
 ): Promise<{
   createdBy?: string;
   assignedTo?: string;
-  project?: string;
-  sprint?: string;
   taskId?: string;
   taskDesc?: string;
-  taskType?: string;
   estimate?: number;
   status?: string;
   startDate?: string;
@@ -73,11 +61,8 @@ async function addTask(
   const result = dateSchema.safeParse({
     createdBy: formData.get("createdBy"),
     assignedTo: formData.get("assignedTo"),
-    project: formData.get("project"),
-    sprint: formData.get("sprint"),
     taskId: formData.get("taskId"),
     taskDesc: formData.get("taskDesc"),
-    taskType: formData.get("taskType"),
     estimate: formData.get("estimate"),
     status: formData.get("status"),
     startDate: formData.get("startDate"),
@@ -102,18 +87,28 @@ async function addTask(
   }
 }
 
-async function getTaskList(username: string | undefined) {
+async function getTaskList(username: string): Promise<ITask[]> {
   const x = await getTasks(username);
-  console.log(x);
-  return x;
+  const r = x.map((item) => ({
+    pid: item.pid,
+    createdBy: item.createdBy,
+    assignedTo: item.assignedTo,
+    taskId: item.taskId,
+    taskDesc: item.taskDesc,
+    estimate: item.estimate,
+    status: item.status,
+    startDate: item.startDate,
+    endDate: item.endDate,
+  }));
+  console.log("mapping task details to model");
+  console.log(r);
+  return r;
 }
 
-// const result = UpdateTaskList(
-//   const x= await updateTask(taskId: string, status: string, path: string, data:any);
-//   console.log(x)
-//   // employeeID,
-//   // `leaves.${year}.${leave.type}.${startDateKey}`,
-//   // leaveEntry,
-// );
+async function updateTaskList(primaryId: string, status: string) {
+  const x = await updateTask(primaryId, status);
+  console.log("checking update action");
+  console.log(x);
+}
 
-export { addTask, getTaskList };
+export { addTask, getTaskList, updateTaskList };
