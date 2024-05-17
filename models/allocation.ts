@@ -8,8 +8,11 @@ export default interface IAllocation {
   _id?: string;
   created_by?: string;
   assigned_to?: string;
+  project?:string;
+  sprint?:string;
   task_id?: string;
   task_desc?: string;
+  task_type?:string;
   estimate?: string;
   start_date?: string;
   end_date?: string;
