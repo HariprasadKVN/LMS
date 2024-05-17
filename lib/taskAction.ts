@@ -1,12 +1,14 @@
 import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
 
-
 type FormData1 = {
   createdBy?: string;
   assignedTo?: string;
+  project?: string;
+  sprint?: string;
   taskId?: string;
   taskDesc: string;
+  taskType: string;
   estimate?: number;
   status?: string;
   startDate?: Date;
@@ -18,8 +20,11 @@ const dateSchema: ZodType<FormData1> = z
   .object({
     createdBy: z.coerce.string(),
     assignedTo: z.coerce.string(),
+    project:z.coerce.string(),
+    sprint:z.coerce.string(),
     taskId: z.coerce.string(),
     taskDesc: z.coerce.string().min(1),
+    taskType: z.coerce.string(),
     estimate: z.coerce.number(),
     status: z.coerce.string(),
     startDate: z.coerce.date(),
@@ -38,10 +43,13 @@ const getValue = (data: FormDataEntryValue | null): string => {
 async function addTask(
   prevState:
     | {
+        project?: string;
+        sprint?: string;
         createdBy?: string;
         assignedTo?: string;
         taskId?: string;
         taskDesc?: string;
+        taskType?: string;
         estimate?: number;
         status?: string;
         startDate?: string;
@@ -52,8 +60,11 @@ async function addTask(
 ): Promise<{
   createdBy?: string;
   assignedTo?: string;
+  project?: string;
+  sprint?: string;
   taskId?: string;
   taskDesc?: string;
+  taskType?: string;
   estimate?: number;
   status?: string;
   startDate?: string;
@@ -62,8 +73,11 @@ async function addTask(
   const result = dateSchema.safeParse({
     createdBy: formData.get("createdBy"),
     assignedTo: formData.get("assignedTo"),
+    project: formData.get("project"),
+    sprint: formData.get("sprint"),
     taskId: formData.get("taskId"),
     taskDesc: formData.get("taskDesc"),
+    taskType: formData.get("taskType"),
     estimate: formData.get("estimate"),
     status: formData.get("status"),
     startDate: formData.get("startDate"),
@@ -73,24 +87,25 @@ async function addTask(
   try {
     if (!result.success) {
       console.log(result.error.formErrors.fieldErrors);
-      const { startDate, endDate, taskDesc } = result.error.formErrors.fieldErrors;
+      const { startDate, endDate, taskDesc } =
+        result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
-        resolve({endDate:endDate?endDate[0]:""});
+        resolve({ endDate: endDate ? endDate[0] : "" });
       });
     } else {
-      await create({...result.data,status:"assigned", createdBy:"hari"});
-      return({})
+      await create({ ...result.data, status: "assigned", createdBy: "hari" });
+      return {};
     }
-    } catch (error) {
+  } catch (error) {
     console.log(error);
     throw error;
-  }  
+  }
 }
 
-async function getTaskList(username:string|undefined){
- const x= await getTasks(username);
- console.log(x)
- return x;
+async function getTaskList(username: string | undefined) {
+  const x = await getTasks(username);
+  console.log(x);
+  return x;
 }
 
 // const result = UpdateTaskList(
@@ -101,4 +116,4 @@ async function getTaskList(username:string|undefined){
 //   // leaveEntry,
 // );
 
-export  {addTask, getTaskList};
+export { addTask, getTaskList };

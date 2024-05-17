@@ -40,10 +40,13 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
   return (
     <>
      {/*  <Table columns={columns} data={tasks} /> */}
-      <table className="w-full text-sm">
+      <table className="w-full text-sm ">
         <thead>
           <tr className="border-b">
+            <th>Project</th>
+            <th>Sprint</th>
             <th>Task</th>
+            <th>Task Type</th>
             <th>Assigned to</th>
             <th>Estimate</th>
             <th>Start by</th>
@@ -55,15 +58,20 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
         <tbody>
           {tasks.map((task, index) => (
             <tr key={index} className="border-b text-center">
+              <td className="text-left">{task.project}</td>
+              <td className="w-24">{task.sprint}</td>
               <td className="text-left">
                 {task.taskId} - {task.taskDesc}
               </td>
-              <td>{task.assignedTo}</td>
+              <td className="text-left">
+                {task.taskType}
+              </td>
+              <td className="text-left">{task.assignedTo}</td>
               <td className="text-center">{task.estimate}</td>
-              <td>
+              <td className="w-24">
                 {format(task.startDate ? task.startDate : "", "MMM dd, yyyy")}
               </td>
-              <td>
+              <td className="w-24">
                 {format(task.endDate ? task.endDate : "", "MMM dd, yyyy")}
               </td>
               <td>{task.status}</td>

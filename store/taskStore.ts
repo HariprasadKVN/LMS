@@ -14,11 +14,23 @@ const ModelSchema = new mongoose.Schema<Model>({
     type: String,
     // required: [true, "Please provide the assigned to ID"],
   },
+  project: {
+    type: String,
+    // required: [true, "Please provide the assigned to ID"],
+  },
+  sprint: {
+    type: String,
+    // required: [true, "Please provide the assigned to ID"],
+  },
   taskId: {
     type: String,
     // required: [true, "Please specify the task ID."],
   },
   taskDesc: {
+    type: String,
+    // required: [true, "Please provide the task description"],
+  },
+  taskType: {
     type: String,
     // required: [true, "Please provide the task description"],
   },
