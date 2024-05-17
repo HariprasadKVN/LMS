@@ -8,4 +8,7 @@ export interface ITask {
   status?: string;
   startDate?: Date;
   endDate?: Date;
+  project?:string;
+  sprint?:string;
+  taskType?:string;
 }
