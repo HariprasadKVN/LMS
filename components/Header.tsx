@@ -31,12 +31,11 @@ const Header: React.FC = () => {
           REALM
           <p className="text-xs font-thin tracking-wide">your playground...!</p>
         </div>
-        <div className="flex flex-row gap-1 text-white">
-          {session?.user && <span className="italic">{session?.user.name}</span>}
-          {session?.user && <span className="italic">---|{session?.user.id}---</span>}
-          {session?.user && <PowerIcon className="w-6 h-6 cursor-pointer" onClick={handleClick}>
-          </PowerIcon>}
-        </div>
+        {session?.user && <div className="flex flex-row gap-1 text-white">
+          <span className="italic">{session?.user.name}</span>
+          <PowerIcon className="w-6 h-6 cursor-pointer" onClick={handleClick}>
+          </PowerIcon>
+        </div>}
 
       </div>
     </nav>
