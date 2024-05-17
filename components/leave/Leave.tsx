@@ -2,6 +2,7 @@ import { getEmployeeLeavesByType } from "@/lib/employeeAction";
 import ApplyLeave from "./ApplyLeave";
 import LeaveList from "./LeaveList";
 import { useEffect, useState } from "react";
+import { auth } from "@/lib/actions";
 
 export interface Leave {
   startDate: string;
@@ -18,14 +19,13 @@ export interface LeaveAllottedUtilized {
 }
 const Leave: React.FC = ({}) => {
   const [leaveData, setLeaveData] = useState<Record<string, Leave[]>>({});
+  const [empId, setEmpId] = useState("");
 
   const [utilized, setUtilized] = useState<
     Record<string, LeaveAllottedUtilized>
   >({});
 
   const currentYear = new Date().getFullYear().toString();
-
-  const empId = "66333118e4f5f892879c69f8";
 
   const fetchLeaveData = async () => {
     const { leavesData, utilizedAndAllotted } = await getEmployeeLeavesByType(
@@ -37,23 +37,35 @@ const Leave: React.FC = ({}) => {
   };
 
   useEffect(() => {
-    fetchLeaveData();
-  }, []);
+    auth().then((data) => {
+      const userId = data?.user?.id;
+      if (userId) {
+        setEmpId(userId);
+        fetchLeaveData();
+      }
+    });
+  }, [empId]);
 
   return (
     <>
-      <ApplyLeave
-        empId={empId}
-        leaveData={leaveData}
-        utilizedLeavesCount={utilized}
-        fetchLeaveData={fetchLeaveData}
-      ></ApplyLeave>
-      <LeaveList
-        leaveData={leaveData}
-        utilizedLeavesCount={utilized}
-        empId={empId}
-        fetchLeaveData={fetchLeaveData}
-      ></LeaveList>
+      {empId == "" ? (
+        <p>Loading</p>
+      ) : (
+        <>
+          <ApplyLeave
+            empId={empId}
+            leaveData={leaveData}
+            utilizedLeavesCount={utilized}
+            fetchLeaveData={fetchLeaveData}
+          ></ApplyLeave>
+          <LeaveList
+            leaveData={leaveData}
+            utilizedLeavesCount={utilized}
+            empId={empId}
+            fetchLeaveData={fetchLeaveData}
+          ></LeaveList>{" "}
+        </>
+      )}
     </>
   );
 };

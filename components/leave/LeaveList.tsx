@@ -25,10 +25,6 @@ const LeaveList: React.FC<Props> = ({
 }) => {
   const currentYear = new Date().getFullYear().toString();
 
-  useEffect(() => {
-    fetchLeaveData();
-  }, []);
-
   const handleDeleteLeave = async (path: string) => {
     await deleteLeave(empId, path);
     fetchLeaveData();
@@ -88,7 +84,6 @@ const LeaveList: React.FC<Props> = ({
       )}
     </>
   );
-  
 };
 
 export default LeaveList;

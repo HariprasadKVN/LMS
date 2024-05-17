@@ -1,48 +1,21 @@
 "use server";
-
 import dbConnect from "@/store/dbConnect";
-import Employee from "@/models/Employee";
-import { Delete, Update, getEmployee } from "@/store/employeeStore";
+import { Create, Delete, Update, getEmployee } from "@/store/employeeStore";
 import { orgLeavesCount } from "@/mock-data/orgLeavesCount";
 
-export async function create(formData: {
-  name: string;
-  email: string;
-  password: string;
-}): Promise<{
-  name: string | undefined;
-  email: string | undefined;
-  password: string | undefined;
-}> {
+export const createEmployee = async (empId: string) => {
   await dbConnect();
+  const x = await Create(empId);
 
-  const userAuth = {
-    name: "tst",
-    email: formData.email,
-    password: formData.password,
-  };
-
-  const x = await Employee.create({
-    empId: "Hari",
-    leaves: { casual: { total: 5, applied: [new Date(2024, 0, 27)] } },
-  });
-
-  return new Promise((resolve) => {
-    resolve({
-      name: undefined,
-      email: "Email already exists. Please user another email",
-      password: undefined,
-    });
-  });
-}
+  return x;
+};
 
 export const getEmployeeLeavesByType = async (empId: string, year: string) => {
-  const x = await getEmployee(empId, `leaves.${year}`);
-
-  if (!x) {
+  let x = await getEmployee(empId, "");
+  if (!x || !x.leaves) {
     return { leavesData: {}, utilizedAndAllotted: {} };
-}
-
+  }
+  x = x.leaves[year];
   let allLeavesList: Record<
     string,
     {
@@ -115,7 +88,7 @@ export const applyLeave = async (
 
   const leaveEntry = `${endDateKey}|${noOfDays}|${leave.duration}|${leave.reason}`;
 
-  const x = await getEmployee(employeeID, `leaves.${year}`);
+  const x = await getEmployee(employeeID, "");
   if (!x.leaves || !x.leaves[year] || !x.leaves[year][leave.type]) {
     await Update(employeeID, `leaves.${year}.${leave.type}`, {
       allotted: orgLeavesCount[leave.type],
@@ -136,7 +109,7 @@ const convertDatetoKey = (date: Date) => {
 };
 
 //this function calculates diff and also excludes saturday and sunday
-export async function getDiff(startDate: Date, endDate: Date) {
+export const getDiff = async (startDate: Date, endDate: Date) => {
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
   let totalDays = Math.round(
     Math.abs((startDate.getTime() - endDate.getTime()) / oneDay),
@@ -155,7 +128,7 @@ export async function getDiff(startDate: Date, endDate: Date) {
   totalDays -= satSunCount;
 
   return totalDays + 1;
-}
+};
 
 export const deleteLeave = async (employeeID: string, path: string) => {
   const res = await Delete(employeeID, path);
