@@ -108,7 +108,7 @@ export async function getInprogressTasks(
           taskId: task.pid!,
           taskName: task.taskDesc || "",
           status: task.status,
-          effort: []//convertEffortObject(task.efforts, keys),
+          effort: convertEffortObject(undefined, keys),
         }));
     }
   } catch (error) {
