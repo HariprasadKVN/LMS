@@ -10,6 +10,9 @@ type FormData1 = {
   status?: string;
   startDate?: Date;
   endDate?: Date;
+  project?: string;
+  sprint?: string;
+  taskType?: string;
 };
 // This will be the schema for the form, it'll be used to validate the form when submitting.
 //z.coerce.date() is used to convert the string to a date object.
@@ -23,6 +26,9 @@ const dateSchema: ZodType<FormData1> = z
     status: z.coerce.string(),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
+    project: z.coerce.string(),
+    sprint: z.coerce.string(),
+    taskType: z.coerce.string(),
   })
   .refine((data) => data.endDate > data.startDate, {
     message: "End date cannot be earlier than start date.",
@@ -45,6 +51,9 @@ async function addTask(
         status?: string;
         startDate?: string;
         endDate?: string;
+        project?: string;
+        sprint?: string;
+        taskType?: string;
       }
     | undefined,
   formData: FormData,
@@ -57,6 +66,9 @@ async function addTask(
   status?: string;
   startDate?: string;
   endDate?: string;
+  project?: string;
+  sprint?: string;
+  taskType?: string;
 }> {
   const result = dateSchema.safeParse({
     createdBy: formData.get("createdBy"),
@@ -67,6 +79,9 @@ async function addTask(
     status: formData.get("status"),
     startDate: formData.get("startDate"),
     endDate: formData.get("endDate"),
+    project: formData.get("project"),
+    sprint: formData.get("sprint"),
+    taskType: formData.get("taskType"),
   });
   console.log(result);
   try {
@@ -99,6 +114,9 @@ async function getTaskList(username: string): Promise<ITask[]> {
     status: item.status,
     startDate: item.startDate,
     endDate: item.endDate,
+    project: item.project,
+    sprint: item.sprint,
+    taskType: item.taskType,
   }));
   console.log("mapping task details to model");
   console.log(r);
