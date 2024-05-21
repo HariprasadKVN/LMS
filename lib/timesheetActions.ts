@@ -3,7 +3,7 @@ import { Effort } from "@/models/Effort";
 import { TimeSheet } from "@/models/TimeSheet";
 import { TaskEffort } from "@/models/taskEffort";
 import { Update, getEmployee } from "@/store/employeeStore";
-import { getTasks } from "@/store/taskStore";
+import { getTasks, updateTask } from "@/store/taskStore";
 
 export async function SubmitTimesheet(taskEffort: TaskEffort) {
   try {
@@ -16,10 +16,21 @@ export async function SubmitTimesheet(taskEffort: TaskEffort) {
         [task.taskId!]: {
           description: task.taskName,
           efforts: task.effort.map((item) => item.effort),
+          status: task.status,
         },
       };
     });
-    await Update(taskEffort.empId!, `effort.${weekKey}`, weekData);
+    const updated = await Update(
+      taskEffort.empId!,
+      `effort.${weekKey}`,
+      weekData,
+    );
+    if (updated) {
+      taskEffort.tasks?.forEach(async (task) => {
+        await updateTask(task.taskId!, task.status!);
+      });
+    }
+    return updated;
   } catch (error) {
     if (error instanceof Error) {
       return "Something went wrong.";
@@ -85,10 +96,8 @@ export async function getInprogressTasks(
             taskId: taskkey,
             taskName: taskObj.description,
             status:
-              taskObj.done !== undefined &&
-              taskObj.done !== null &&
-              taskObj.done
-                ? "completed"
+              taskObj.status !== undefined && taskObj.status !== null
+                ? taskObj.status
                 : "in progress",
             effort: convertEffortArrayToObject(taskObj.efforts, keys),
           };
@@ -102,20 +111,25 @@ export async function getInprogressTasks(
       filteredTasks = [];
     } else {
       const tasks = await getTasks(empName);
-      filteredTasks = tasks
-        .filter((task) => task.status === "in progress")
-        .map((task) => ({
-          taskId: task.pid!,
-          taskName: task.taskDesc || "",
-          status: task.status,
-          effort: convertEffortObject(undefined, keys),
-        }));
+      const inprogressTasks = tasks.filter(
+        (task) => task.status === "in progress",
+      );
+      inprogressTasks.forEach((task) => {
+        if (submittedTasks.findIndex((a) => a.taskId === task.pid) === -1) {
+          filteredTasks.push({
+            taskId: task.pid!,
+            taskName: task.taskDesc || "",
+            status: task.status,
+            effort: convertEffortObject(undefined, keys),
+          });
+        }
+      });
     }
   } catch (error) {
     throw error;
   }
   weekTaskEffort.tasks = [...submittedTasks, ...filteredTasks];
-  return weekTaskEffort; 
+  return weekTaskEffort;
 }
 
 const getWeekdayKeys = (from: Date): string[] => {

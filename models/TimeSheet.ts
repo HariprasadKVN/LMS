@@ -1,6 +1,6 @@
 export interface TimeSheet {
   taskId?: string;
   taskName?: string;
-  status?: String;
+  status?: string;
   effort: {date:Date,effort:Number}[];
 }
