@@ -35,8 +35,8 @@ const AddTask: React.FC = () => {
   return (
     <>
       <form action={dispatchf}>
-        <div className="flex flex-wrap  space-y-0 text-sm pl-3 pb-4">
-          <div className="m-0 flex flex-row space-x-1">
+        <div className="flex flex-wrap space-y-0 pb-1 pt-0 text-sm">
+          <div className="m-0 flex flex-row space-x-0">
             <div>
               <UCSelect
                 options={["Select", "Decom", "Essette"]}
@@ -44,14 +44,15 @@ const AddTask: React.FC = () => {
                 name="project"
                 value={taskData.project}
                 onChange={handleChange}
-                className="w-80"
+                className="w-44"
               ></UCSelect>
             </div>
             <div>
               <UCInput
                 label="Sprint"
+                maxLength={4}
                 type="text"
-                className="w-40"
+                className="w-46"
                 placeholder="Sprint"
                 name="sprint"
                 value={taskData.sprint}
@@ -62,16 +63,15 @@ const AddTask: React.FC = () => {
               <UCInput
                 label="Task Id"
                 type="text"
-                className="w-96"
+                maxLength={8}
+                className="w-32"
                 placeholder="Task id"
                 name="taskId"
                 value={taskData.taskId}
                 onChange={handleChange}
               ></UCInput>
             </div>
-          </div>
-          <div  className="mb-4 flex flex-row space-x-1">
-          <div>
+            <div>
               <UCSelect
                 options={[
                   "Select",
@@ -88,40 +88,9 @@ const AddTask: React.FC = () => {
                 name="taskType"
                 value={taskData.taskType}
                 onChange={handleChange}
-                className="w-80"
+                className="w-38"
               ></UCSelect>
             </div>
-            <div className="col-span-2">
-              <UCInput
-                label="Estimate(Hrs)"
-                type="number"
-                min="0"
-                className="w-40"
-                placeholder="Estimate"
-                name="estimate"
-                value={taskData.estimate}
-                onChange={handleChange}
-              ></UCInput>
-            </div>
-            <div className=" col-span-2">
-              <UCInput
-                label="Description"
-                /* label={
-                  <>
-                    <span style={{ color: "red" }}>*</span> Description
-                  </>
-                } */
-                type="text"
-                className="w-96"
-                placeholder="Description"
-                name="taskDesc"
-                required
-                value={taskData.taskDesc}
-                onChange={handleChange}
-              ></UCInput>
-            </div>           
-          </div>
-          <div className="mb-4 flex flex-row space-x-1">
             <div className="col-span-2">
               <UCSelect
                 options={[
@@ -137,16 +106,42 @@ const AddTask: React.FC = () => {
                   "Suhaib Kazmi",
                 ]}
                 label="Assigned To"
-                className="w-80"
+                className="w-60"
                 name="assignedTo"
                 value={taskData.assignedTo}
                 onChange={handleChange}
               ></UCSelect>
             </div>
+          </div>
+          <div className="mb-4 flex flex-row space-x-0">
+            <div className=" col-span-2">
+              <UCInput
+                label="Description"
+                type="text"
+                className="w-96"
+                placeholder="Description"
+                name="taskDesc"
+                required
+                value={taskData.taskDesc}
+                onChange={handleChange}
+              ></UCInput>
+            </div>
+            <div className="col-span-2">
+              <UCInput
+                label="Estimate(Hrs)"
+                type="number"
+                min="0"
+                className="w-32"
+                placeholder="Estimate"
+                name="estimate"
+                value={taskData.estimate}
+                onChange={handleChange}
+              ></UCInput>
+            </div>
             <div className=" col-span-2">
               <UCDate
                 label="Start Date"
-                className="w-40"
+                className="w-38"
                 id="startDate"
                 name="startDate"
                 value={taskData.startDate}
@@ -157,7 +152,7 @@ const AddTask: React.FC = () => {
             <div className=" col-span-2">
               <UCDate
                 label="End Date"
-                className="w-44"
+                className="w-48"
                 id="endDate"
                 name="endDate"
                 value={taskData.endDate}
@@ -166,7 +161,9 @@ const AddTask: React.FC = () => {
               <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
             </div>
             <div className="content-end">
-              <UCButton type="submit" className="w-48">Add Task</UCButton>
+              <UCButton type="submit" className="w-10">
+                +
+              </UCButton>
             </div>
           </div>
         </div>
