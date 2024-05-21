@@ -56,7 +56,7 @@ export const Update = async (empId: string, path: string, data: any) => {
   parent[node] = y;
 
   root.markModified(entityderived);
-  await root.save();
+  return await root.save();
 };
 
 export const getEmployee = async (employeeID: string, path: string) => {
