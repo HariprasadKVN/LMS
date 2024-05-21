@@ -1,3 +1,4 @@
+'use client'
 import { ChevronDoubleDownIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 

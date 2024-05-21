@@ -24,6 +24,7 @@ const TimeSheet = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         const user = await auth();
         let tasks = await getInprogressTasks(currentDate, user?.user?.id!, user?.user?.name!);
         tasks = { ...tasks, empId: user?.user?.id! };
