@@ -40,43 +40,33 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
   return (
     <>
      {/*  <Table columns={columns} data={tasks} /> */}
-      <table className="w-full text-sm ">
-        <thead>
+      <table className="w-full text-sm table-auto">
+        <thead className="text-sm">
           <tr className="border-b">
             <th>Project</th>
-            <th>Sprint</th>
             <th>Task</th>
             <th>Task Type</th>
-            <th>Assigned to</th>
-            <th>Estimate</th>
-            <th>Start by</th>
             <th>End Before</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="w-full text-xs">
           {tasks.map((task, index) => (
             <tr key={index} className="border-b text-center">
-              <td className="text-left">{task.project}</td>
-              <td className="w-24">{task.sprint}</td>
+              <td className="text-left w-24">{task.project} - {task.sprint}</td>
               <td className="text-left">
                 {task.taskId} - {task.taskDesc}
               </td>
-              <td className="text-left">
-                {task.taskType}
-              </td>
-              <td className="text-left">{task.assignedTo}</td>
-              <td className="text-center">{task.estimate}</td>
-              <td className="w-24">
+              <td className="text-center w-24">
                 {format(task.startDate ? task.startDate : "", "MMM dd, yyyy")}
               </td>
-              <td className="w-24">
+              <td className="text-center w-24">
                 {format(task.endDate ? task.endDate : "", "MMM dd, yyyy")}
               </td>
-              <td>{task.status}</td>
+              <td className="text-left">{task.status}</td>
               <td>
-                <div className="flex flex-row">
+                <div className="flex flex-row justify-center">
                   {task.status === "assigned" && (
                     <RocketLaunchIcon
                       className="h-4 w-4 
