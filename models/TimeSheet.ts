@@ -2,5 +2,6 @@ export interface TimeSheet {
   taskId?: string;
   taskName?: string;
   status?: string;
-  effort: {date:Date,effort:Number}[];
+  done: boolean;
+  effort: { date: Date; effort: Number }[];
 }

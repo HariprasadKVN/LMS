@@ -115,7 +115,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
       <UCTableRow>
         <UCTableHeaderCell>Task</UCTableHeaderCell>
         {weekDays.map((day, index) => (
-          <UCTableHeaderCell key={index} >
+          <UCTableHeaderCell key={index}>
             {day.toLocaleDateString("en-IN", {
               day: "2-digit",
               // month: "short",
@@ -123,7 +123,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
             })}
           </UCTableHeaderCell>
         ))}
-        <UCTableHeaderCell>Action</UCTableHeaderCell>
+        <UCTableHeaderCell>Done</UCTableHeaderCell>
       </UCTableRow>
     );
   };
@@ -132,9 +132,9 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   const renderTaskGrid = () => {
     return tasks?.map((task, taskIndex) => (
       <UCTableRow key={task.taskId}>
-        <UCTableCell >{task.taskName}</UCTableCell>
+        <UCTableCell>{task.taskName}</UCTableCell>
         {task.effort.map((day, dayIndex) => (
-          <UCTableCell key={dayIndex} className=" w-16 " >
+          <UCTableCell key={dayIndex} className=" w-16 ">
             <>
               <input
                 type="number"
@@ -148,17 +148,24 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
                 className="w-full text-center "
                 max="24"
                 min="0"
-                disabled= {timeSheetData.status=="submitted"}
+                disabled={
+                  timeSheetData.status == "submitted" ||
+                  task.status === "completed"
+                }
               />
             </>
           </UCTableCell>
         ))}
         <UCTableCell className=" w-16 ">
-          <input  className="w-full text-center"
+          <input
+            className="w-full text-center"
             type="checkbox"
             checked={task.status === "in progress" ? false : true}
-           onChange={() => handleCheckboxChange(taskIndex)}
-            disabled= {timeSheetData.status=="submitted"}
+            onChange={() => handleCheckboxChange(taskIndex)}
+            disabled={
+              timeSheetData.status === "submitted" ||
+              (task.status === "completed" && task.done === true)
+            }
           />
         </UCTableCell>
       </UCTableRow>
@@ -172,8 +179,18 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
         <UCTableBody>{renderTaskGrid()}</UCTableBody>
       </UCTable>
       <div className="whitespace-nowrap px-4 py-2 text-right ">
-        <Button onClick={saveLog} hidden={timeSheetData.status==="submitted" ? true : false}>Save</Button>
-        <Button onClick={submitLog}  hidden={timeSheetData.status==="submitted" ? true : false}>Submit</Button>
+        <Button
+          onClick={saveLog}
+          hidden={timeSheetData.status === "submitted" ? true : false}
+        >
+          Save
+        </Button>
+        <Button
+          onClick={submitLog}
+          hidden={timeSheetData.status === "submitted" ? true : false}
+        >
+          Submit
+        </Button>
       </div>
     </div>
   );
