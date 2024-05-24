@@ -60,9 +60,9 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
         <UCTableBody className="w-full text-xs">
           {tasks.map((task, index) => (
             <UCTableRow key={index} className="border-b text-center ">
-              <UCTableCell className="text-left">{task.project} - {task.sprint}</UCTableCell>
+              <UCTableCell className="text-left">{task.project}|{task.sprint}|{task.taskId} </UCTableCell>
               <UCTableCell className="text-left text-wrap">
-                {task.taskId} - {task.taskDesc}
+                {task.taskDesc}
               </UCTableCell>
               <UCTableCell className="text-center">
                 {format(task.startDate ? task.startDate : "", "MMM dd, yyyy")}
