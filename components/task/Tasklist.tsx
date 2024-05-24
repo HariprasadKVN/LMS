@@ -6,6 +6,12 @@ import {
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import { ITask } from "@/models/ITask";
+import UCTable from "../ui/table/table";
+import UCTableHeader from "../ui/table/thead";
+import UCTableBody from "../ui/table/tbody";
+import UCTableRow from "../ui/table/tr";
+import UCTableHeaderCell from "../ui/table/th";
+import UCTableCell from "../ui/table/td";
 
 interface tasksList extends ITask {
  // current?: boolean;
@@ -38,38 +44,38 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
   // console.log(tasks);
 
   return (
-    <>
+    <div className="overflow-x-auto ">
      {/*  <Table columns={columns} data={tasks} /> */}
-      <table className="w-full text-sm table-auto">
-        <thead className="text-sm">
-          <tr className="border-b">
-            <th>Project</th>
-            <th>Task</th>
-            <th>Task Type</th>
-            <th>End Before</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody className="w-full text-xs">
+      <UCTable className="w-full text-sm table-auto">
+        <UCTableHeader className="text-sm w-full">
+          <UCTableRow className="border-b w-full">
+            <UCTableHeaderCell >Project</UCTableHeaderCell>
+            <UCTableHeaderCell >Task</UCTableHeaderCell>
+            <UCTableHeaderCell >Start By</UCTableHeaderCell>
+            <UCTableHeaderCell >End Before</UCTableHeaderCell>
+            <UCTableHeaderCell >Status</UCTableHeaderCell>
+            <UCTableHeaderCell >Action</UCTableHeaderCell>
+          </UCTableRow>
+        </UCTableHeader>
+        <UCTableBody className="w-full text-xs">
           {tasks.map((task, index) => (
-            <tr key={index} className="border-b text-center">
-              <td className="text-left w-24">{task.project} - {task.sprint}</td>
-              <td className="text-left">
+            <UCTableRow key={index} className="border-b text-center ">
+              <UCTableCell className="text-left">{task.project} - {task.sprint}</UCTableCell>
+              <UCTableCell className="text-left text-wrap">
                 {task.taskId} - {task.taskDesc}
-              </td>
-              <td className="text-center w-24">
+              </UCTableCell>
+              <UCTableCell className="text-center">
                 {format(task.startDate ? task.startDate : "", "MMM dd, yyyy")}
-              </td>
-              <td className="text-center w-24">
+              </UCTableCell>
+              <UCTableCell className="text-center">
                 {format(task.endDate ? task.endDate : "", "MMM dd, yyyy")}
-              </td>
-              <td className="text-left">{task.status}</td>
-              <td>
+              </UCTableCell>
+              <UCTableCell className="text-center">{task.status}</UCTableCell>
+              <UCTableCell>
                 <div className="flex flex-row justify-center">
                   {task.status === "assigned" && (
                     <RocketLaunchIcon
-                      className="h-4 w-4 
+                      className="h-4
                       hover:cursor-pointer 
                       hover:text-blue-500"
                       onClick={() =>
@@ -80,13 +86,13 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
                   {task.status === "in progress" && (
                     <>
                       <CheckIcon
-                        className="h-4 w-4 hover:text-green-700"
+                        className="h-4 hover:text-green-700"
                         onClick={() =>
                           setStatus(task.pid ? task.pid : "", "completed")
                         }
                       ></CheckIcon>
                       <XMarkIcon
-                        className="h-4 w-4 hover:text-red-700"
+                        className="h-4 hover:text-red-700"
                         onClick={() =>
                           setStatus(task.pid ? task.pid : "", "aborted")
                         }
@@ -94,12 +100,12 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
                     </>
                   )}
                 </div>
-              </td>
-            </tr>
+              </UCTableCell>
+            </UCTableRow>
           ))}
-        </tbody>
-      </table>
-    </>
+        </UCTableBody>
+      </UCTable>
+    </div>
   );
 };
 
