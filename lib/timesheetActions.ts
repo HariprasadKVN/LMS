@@ -100,6 +100,12 @@ export async function getInprogressTasks(
                 ? taskObj.status
                 : "in progress",
             effort: convertEffortArrayToObject(taskObj.efforts, keys),
+            done:
+              taskObj.status !== undefined &&
+              taskObj.status !== null &&
+              taskObj.status === "completed"
+                ? true
+                : false,
           };
           submittedTasks.push(submittedTask);
         }
@@ -121,6 +127,7 @@ export async function getInprogressTasks(
             taskName: task.taskDesc || "",
             status: task.status,
             effort: convertEffortObject(undefined, keys),
+            done: task.status === "completed" ? true : false,
           });
         }
       });
