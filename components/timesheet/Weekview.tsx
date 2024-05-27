@@ -37,8 +37,7 @@ const WeekView: React.FC<Props> = ({ handleDateChange }) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-row bg-blue-950/90 dark:bg-teal-600 p-2 rounded">
+      <div className="flex flex-row bg-blue-950/90 dark:bg-teal-600 p-2 rounded select-none">
         <div className="flex-none content-center text-center text-white">
           <ChevronLeftIcon
             onClick={goToPreviousWeek}
@@ -55,7 +54,6 @@ const WeekView: React.FC<Props> = ({ handleDateChange }) => {
           />
         </div>
       </div>
-    </div>
   );
 };
 

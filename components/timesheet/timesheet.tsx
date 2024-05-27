@@ -5,7 +5,6 @@ import LogTime from "./logtime";
 import { getInprogressTasks } from "@/lib/timesheetActions";
 import { TaskEffort } from "@/models/taskEffort";
 import { auth } from "@/lib/actions";
-import Loading from "@/app/loading";
 
 const TimeSheet = () => {
   const getStartOfWeek = (date: Date) => {

@@ -173,7 +173,7 @@ const LogTime: React.FC<TimeSheetProps> = ({ currentWeek, timeSheetData }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto select-none">
       <UCTable>
         <UCTableHeader>{renderColumnHeadings()}</UCTableHeader>
         <UCTableBody>{renderTaskGrid()}</UCTableBody>
