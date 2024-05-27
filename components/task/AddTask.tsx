@@ -1,50 +1,31 @@
 "use client";
-import React, { useState } from "react";
-import UCSelect from "../ui/select";
 import { useFormState } from "react-dom";
-import UCDate from "../ui/date";
 import { addTask } from "@/lib/taskAction";
 import UCInput from "../ui/input";
 import UCButton from "../ui/button";
+import UCSelect from "../ui/select";
+import UCDate from "../ui/date";
 
-// interface Props {
-//   handleSubmit?: (data: any) => void;
-// }
+interface props{
+  userId:string;
+  post:(data:any)=>void
+}
 
-//const AddTask: React.FC<Props> = ({ handleSubmit }) => {
-const AddTask: React.FC = () => {
-  const [taskData, setTaskData] = useState({
-    taskId: "",
-    project: "",
-    sprint: "",
-    taskDesc: "",
-    taskType: "",
-    startDate: "",
-    endDate: "",
-    estimate: "",
-    createdBy: "Hari",
-    assignedTo: "",
-    status: "assigned",
-  });
-  const [errorMessage, dispatchf] = useFormState(addTask, undefined);
+const AddTask: React.FC<props> = ({userId,post}) => {
+  const [errorMessage, dispatch] = useFormState(addTask, undefined);
 
-  const handleChange = (e: any) => {
-    const formData = { ...taskData, [e.target.name]: e.target.value };
-    setTaskData(formData);
-  };
   return (
     <>
-      <form action={dispatchf}>
+      <form action={()=>{dispatch; post("Testing")}}>
         <div className="flex flex-col content-center justify-center space-y-0 pb-1 pt-0 text-sm">
           <div className="m-0 flex w-full flex-row space-x-0">
+            <UCInput hidden name="createdBy" value={userId}></UCInput>
             <div className="w-1/3">
               <UCSelect
                 options={["Select", "Decom", "Essette"]}
                 className="w-full"
                 label="Project"
                 name="project"
-                value={taskData.project}
-                onChange={handleChange}
               ></UCSelect>
             </div>
             <div className="w-1/6">
@@ -55,8 +36,6 @@ const AddTask: React.FC = () => {
                 className="w-full"
                 placeholder="Sprint"
                 name="sprint"
-                value={taskData.sprint}
-                onChange={handleChange}
               ></UCInput>
             </div>
             <div className="w-1/5">
@@ -67,8 +46,6 @@ const AddTask: React.FC = () => {
                 className="w-full"
                 placeholder="Task id"
                 name="taskId"
-                value={taskData.taskId}
-                onChange={handleChange}
               ></UCInput>
             </div>
             <div className="w-1/4">
@@ -86,8 +63,6 @@ const AddTask: React.FC = () => {
                 ]}
                 label="Task Type"
                 name="taskType"
-                value={taskData.taskType}
-                onChange={handleChange}
                 className="w-full"
               ></UCSelect>
             </div>
@@ -108,8 +83,6 @@ const AddTask: React.FC = () => {
                 label="Assigned To"
                 className="w-full"
                 name="assignedTo"
-                value={taskData.assignedTo}
-                onChange={handleChange}
               ></UCSelect>
             </div>
           </div>
@@ -122,8 +95,6 @@ const AddTask: React.FC = () => {
                 placeholder="Description"
                 name="taskDesc"
                 required
-                value={taskData.taskDesc}
-                onChange={handleChange}
               ></UCInput>
             </div>
             <div className="col-span-2 w-1/5">
@@ -134,8 +105,6 @@ const AddTask: React.FC = () => {
                 className="w-full"
                 placeholder="Estimate"
                 name="estimate"
-                value={taskData.estimate}
-                onChange={handleChange}
               ></UCInput>
             </div>
             <div className=" col-span-2 w-1/4">
@@ -144,8 +113,6 @@ const AddTask: React.FC = () => {
                 className="w-full"
                 id="startDate"
                 name="startDate"
-                value={taskData.startDate}
-                onChange={handleChange}
               ></UCDate>
               <p className="text-xs text-red-600">{errorMessage?.startDate}</p>
             </div>
@@ -156,8 +123,6 @@ const AddTask: React.FC = () => {
                   className="w-full"
                   id="endDate"
                   name="endDate"
-                  value={taskData.endDate}
-                  onChange={handleChange}
                 ></UCDate>
                 <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
               </div>

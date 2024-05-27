@@ -14,7 +14,6 @@ import UCTableHeaderCell from "../ui/table/th";
 import UCTableCell from "../ui/table/td";
 
 interface tasksList extends ITask {
- // current?: boolean;
 }
 
 interface Props {
@@ -23,29 +22,8 @@ interface Props {
 }
 
 const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
-  // const [selected, setSelected] = useState(false);
-  // const columns = [
-  //   { header: "TaskId", key: "task_id"},
-  //   { header: "Description", key: "task_desc"},
-  //   { header: "Assigned to", key: "assigned_to" },
-  //   { header: "Estimate", key: "estimate"},
-  //   { header: "Start by", key: "start_date"},
-  //   { header: "End Before", key: "end_date"},
-  //   { header: "Status", key: "status"},
-  //   { header: "Action", key: "status"},
-  // ];
-
-  /* const data = [
-    { name: "John Doe", age: 30, email: "john@example.com" },
-    { name: "Jane Smith", age: 25, email: "jane@example.com" },
-    // Add more rows as needed
-  ]; */
-
-  // console.log(tasks);
-
   return (
     <div className="overflow-x-auto ">
-     {/*  <Table columns={columns} data={tasks} /> */}
       <UCTable className="w-full text-sm table-auto">
         <UCTableHeader className="text-sm w-full">
           <UCTableRow className="border-b w-full">
@@ -82,22 +60,6 @@ const TaskList: React.FC<Props> = ({ tasks, setStatus }) => {
                         setStatus(task.pid ? task.pid :"", "in progress")
                       }
                     ></RocketLaunchIcon>
-                  )}
-                  {task.status === "in progress" && (
-                    <>
-                      <CheckIcon
-                        className="h-4 hover:text-green-700"
-                        onClick={() =>
-                          setStatus(task.pid ? task.pid : "", "completed")
-                        }
-                      ></CheckIcon>
-                      <XMarkIcon
-                        className="h-4 hover:text-red-700"
-                        onClick={() =>
-                          setStatus(task.pid ? task.pid : "", "aborted")
-                        }
-                      ></XMarkIcon>
-                    </>
                   )}
                 </div>
               </UCTableCell>
