@@ -83,7 +83,6 @@ async function addTask(
     sprint: formData.get("sprint"),
     taskType: formData.get("taskType"),
   });
-  console.log(result);
   try {
     if (!result.success) {
       console.log(result.error.formErrors.fieldErrors);
@@ -93,8 +92,8 @@ async function addTask(
         resolve({ endDate: endDate ? endDate[0] : "" });
       });
     } else {
-      await create({ ...result.data, status: "assigned", createdBy: "hari" });
-      return {};
+       await create({ ...result.data, status: "assigned",createdBy:result.data.createdBy} );  
+       return {};         
     }
   } catch (error) {
     console.log(error);
