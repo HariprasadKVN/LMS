@@ -1,25 +1,30 @@
 "use client";
 import { useFormState } from "react-dom";
-import { addTask } from "@/lib/taskAction";
+import { addTask, addTask1 } from "@/lib/taskAction";
 import UCInput from "../ui/input";
 import UCButton from "../ui/button";
 import UCSelect from "../ui/select";
 import UCDate from "../ui/date";
 
-interface props{
-  userId:string;
-  post:(data:any)=>void
+interface props {
+  userId: string;
+  post: (data: any) => void
 }
 
-const AddTask: React.FC<props> = ({userId,post}) => {
+const AddTask: React.FC<props> = ({ userId, post }) => {
   const [errorMessage, dispatch] = useFormState(addTask, undefined);
+
+  const add = (payload: FormData) => {
+    dispatch(payload);
+    post(errorMessage)
+  }
 
   return (
     <>
-      <form action={()=>{dispatch; post("Testing")}}>
+      <form action={add}>
         <div className="flex flex-col content-center justify-center space-y-0 pb-1 pt-0 text-sm">
           <div className="m-0 flex w-full flex-row space-x-0">
-            <UCInput hidden name="createdBy" value={userId}></UCInput>
+            <input hidden name="createdBy" value={userId} readOnly></input>
             <div className="w-1/3">
               <UCSelect
                 options={["Select", "Decom", "Essette"]}
@@ -114,7 +119,7 @@ const AddTask: React.FC<props> = ({userId,post}) => {
                 id="startDate"
                 name="startDate"
               ></UCDate>
-              <p className="text-xs text-red-600">{errorMessage?.startDate}</p>
+              <p className="text-xs text-red-600">{errorMessage?.startDate?.toDateString()}</p>
             </div>
             <div className="flex w-1/4">
               <div className="w-3/4">
@@ -124,7 +129,7 @@ const AddTask: React.FC<props> = ({userId,post}) => {
                   id="endDate"
                   name="endDate"
                 ></UCDate>
-                <p className="text-xs text-red-600">{errorMessage?.endDate}</p>
+                <p className="text-xs text-red-600">{errorMessage?.endDate?.toDateString()}</p>
               </div>
               <div className="mr-2 w-1/4 content-end">
                 <UCButton type="submit" className="w-full">

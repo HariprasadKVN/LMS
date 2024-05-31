@@ -1,3 +1,4 @@
+"use server";
 import { ITask } from "@/models/ITask";
 import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
@@ -40,6 +41,10 @@ const getValue = (data: FormDataEntryValue | null): string => {
   else return data.toString();
 };
 
+const addTask1 = (prevState:{startDate: Date, endDate: Date}, payload: FormData): {startDate: Date, endDate: Date} | Promise<{startDate: Date, endDate: Date}> => {
+  return { startDate: new Date(), endDate: new Date() };
+};
+
 async function addTask(
   prevState:
     | {
@@ -49,8 +54,8 @@ async function addTask(
         taskDesc?: string;
         estimate?: number;
         status?: string;
-        startDate?: string;
-        endDate?: string;
+        startDate?: Date;
+        endDate?: Date;
         project?: string;
         sprint?: string;
         taskType?: string;
@@ -64,8 +69,8 @@ async function addTask(
   taskDesc?: string;
   estimate?: number;
   status?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
   project?: string;
   sprint?: string;
   taskType?: string;
@@ -89,11 +94,29 @@ async function addTask(
       const { startDate, endDate, taskDesc } =
         result.error.formErrors.fieldErrors;
       return new Promise((resolve) => {
-        resolve({ endDate: endDate ? endDate[0] : "" });
+        resolve({ endDate: new Date() });
       });
     } else {
-       await create({ ...result.data, status: "assigned",createdBy:result.data.createdBy} );  
-       return {};         
+      const {
+        createdBy,
+        assignedTo,
+        taskId,
+        taskDesc,
+        estimate,
+        status,
+        startDate,
+        endDate,
+        project,
+        sprint,
+        taskType,
+        id,
+      } = await create({
+        ...result.data,
+        status: "assigned",
+        createdBy: result.data.createdBy,
+      });
+
+      return { };
     }
   } catch (error) {
     console.log(error);
@@ -117,8 +140,6 @@ async function getTaskList(username: string): Promise<ITask[]> {
     sprint: item.sprint,
     taskType: item.taskType,
   }));
-  console.log("mapping task details to model");
-  console.log(r);
   return r;
 }
 
@@ -128,4 +149,4 @@ async function updateTaskList(primaryId: string, status: string) {
   console.log(x);
 }
 
-export { addTask, getTaskList, updateTaskList };
+export { addTask,addTask1, getTaskList, updateTaskList };

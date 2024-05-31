@@ -3,8 +3,7 @@ import AddTask from "./AddTask";
 import TaskList from "./Tasklist";
 import { getTaskList, updateTaskList } from "@/lib/taskAction";
 import { ITask } from "@/models/ITask";
-import { auth, signOut } from "../../lib/actions";
-import { Session } from "next-auth";
+import { auth } from "../../lib/actions";
 
 function Task() {
   const [tasks, setTasks] = useState<ITask[]>([]);
@@ -26,7 +25,13 @@ function Task() {
     updateTaskList(primaryId, status);
   };
 
-  const post=(data:any)=>{console.log(data)}
+  const post=(data:any)=>{
+    console.log(data);
+    // const updatedTasks = [...tasks];
+    // updatedTasks.push(data);
+    // setTasks(updatedTasks);  
+  }
+
   return (
     <>
       <AddTask userId={userId} post={post}></AddTask>
