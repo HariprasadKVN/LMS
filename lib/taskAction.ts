@@ -1,4 +1,5 @@
 import { ITask } from "@/models/ITask";
+import { IUITask } from "@/models/IUITask";
 import { create, getTasks, updateTask } from "@/store/taskStore";
 import { z, ZodType } from "zod";
 type FormData1 = {
@@ -92,14 +93,42 @@ async function addTask(
         resolve({ endDate: endDate ? endDate[0] : "" });
       });
     } else {
-       await create({ ...result.data, status: "assigned",createdBy:result.data.createdBy} );  
-       return {};         
+      await create({
+        ...result.data,
+        status: "assigned",
+        createdBy: result.data.createdBy,
+      });
+      return {};
     }
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
+
+const addTaskAsync = async (taskData: ITask): Promise<IUITask> => {
+  const result = dateSchema.safeParse(taskData);
+  try {
+    if (!result.success) {
+      console.log(result.error.formErrors.fieldErrors);
+      const { startDate, endDate, taskDesc } =
+        result.error.formErrors.fieldErrors;
+      return new Promise((resolve) => {
+        resolve({
+          errors: { endDate: endDate ? endDate[0] : "" },
+          created: false,
+        });
+      });
+    } else {
+      const task = await create(taskData);
+      const createdTask = {...task,pid:task._id};
+      return {...createdTask,created: true };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 async function getTaskList(username: string): Promise<ITask[]> {
   const x = await getTasks(username);
@@ -128,4 +157,4 @@ async function updateTaskList(primaryId: string, status: string) {
   console.log(x);
 }
 
-export { addTask, getTaskList, updateTaskList };
+export { addTask, getTaskList, updateTaskList, addTaskAsync };
