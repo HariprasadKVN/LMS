@@ -17,13 +17,8 @@ import TaskContext from "@/store/taskContext";
 
 interface tasksList extends ITask {}
 
-interface Props {
-  tasks: tasksList[];
-  setStatus: (primaryId: string, status: string) => void;
-}
-
 const TaskList: React.FC = () => {
-  let { tasks } = useContext(TaskContext);
+  let { tasks,setStatus } = useContext(TaskContext);
 
   return (
     <div className="overflow-x-auto ">
@@ -61,9 +56,9 @@ const TaskList: React.FC = () => {
                       className="h-4
                       hover:cursor-pointer 
                       hover:text-blue-500"
-                      // onClick={() =>
-                      //   setStatus(task.pid ? task.pid :"", "in progress")
-                      // }
+                      onClick={() =>
+                        setStatus(task.pid ? task.pid :"", "in progress")
+                      }
                     ></RocketLaunchIcon>
                   )}
                 </div>
