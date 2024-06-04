@@ -1,3 +1,4 @@
+"use server";
 import { ITask } from "@/models/ITask";
 import { IUITask } from "@/models/IUITask";
 import { create, getTasks, updateTask } from "@/store/taskStore";
@@ -121,8 +122,22 @@ const addTaskAsync = async (taskData: ITask): Promise<IUITask> => {
       });
     } else {
       const task = await create(taskData);
-      const createdTask = {...task,pid:task._id};
-      return {...createdTask,created: true };
+      const createdTask = {
+        createdBy: task.createdBy,
+        assignedTo: task.assignedTo,
+        taskId: task.taskId,
+        taskDesc: task.taskDesc,
+        estimate: task.estimate,
+        status: task.status,
+        startDate: task.startDate,
+        endDate: task.endDate,
+        project: task.project,
+        sprint: task.sprint,
+        taskType: task.taskType,
+        pid: task._id.toString(),
+        created: true,
+      };
+      return createdTask;
     }
   } catch (error) {
     console.log(error);
@@ -146,8 +161,6 @@ async function getTaskList(username: string): Promise<ITask[]> {
     sprint: item.sprint,
     taskType: item.taskType,
   }));
-  console.log("mapping task details to model");
-  console.log(r);
   return r;
 }
 

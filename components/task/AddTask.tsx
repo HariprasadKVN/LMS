@@ -1,6 +1,4 @@
 "use client";
-import { useFormState } from "react-dom";
-import { addTask } from "@/lib/taskAction";
 import UCInput from "../ui/input";
 import UCButton from "../ui/button";
 import UCSelect from "../ui/select";
@@ -8,13 +6,7 @@ import UCDate from "../ui/date";
 import { useContext } from "react";
 import TaskContext from "@/store/taskContext";
 
-interface props {
-  userId: string;
-  post: (data: any) => void;
-}
-
 const AddTask: React.FC = () => {
-  /* const [errorMessage, dispatch] = useFormState(addTask, undefined); */
   let { onAddTask, taskModel, onTextChange } = useContext(TaskContext);
 
   return (

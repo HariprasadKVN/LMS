@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import AddTask from "./AddTask";
 import TaskList from "./Tasklist";
 import { addTaskAsync, getTaskList, updateTaskList } from "@/lib/taskAction";
-import { ITask } from "@/models/ITask";
 import { auth, signOut } from "../../lib/actions";
-import { Session } from "next-auth";
 import TaskContext from "@/store/taskContext";
 import { IUITask } from "@/models/IUITask";
+import { ITask } from "@/models/ITask";
 
 function Task() {
-  const [tasks, setTasks] = useState<{}[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
   const [task, setTask] = useState<IUITask>({
     created: false,
     status: "assigned",
@@ -25,23 +24,21 @@ function Task() {
     });
   }, []);
 
-  // const setStatus = (primaryId: string, status: string) => {
-  //   const taskIndex = tasks.findIndex((taskList) => taskList.pid === primaryId);
-  //   const updatedTasks = [...tasks];
-  //   updatedTasks[taskIndex] = { ...tasks[taskIndex], status: status };
-  //   setTasks(updatedTasks);
-  //   updateTaskList(primaryId, status);
-  // };
+  const setStatus = (primaryId: string, status: string) => {
+    const taskIndex = tasks.findIndex((taskList) => taskList.pid === primaryId);
+    const updatedTasks = [...tasks];
+    updatedTasks[taskIndex] = { ...tasks[taskIndex], status: status };
+    setTasks(updatedTasks);
+    updateTaskList(primaryId, status);
+  };
 
   const onAddTask = async () => {
     const createdTask = await addTaskAsync({ ...task, createdBy: userId });
-    console.log(createdTask);
-    if (createdTask.created) {
+    if (createdTask?.created) {
       const clearTaskModel = { created: false };
       setTask(clearTaskModel);
       const x = [...tasks];
       x.push(createdTask);
-      console.log(x);
       setTasks(x);
     } else {
       setTask({ ...createdTask });
@@ -59,6 +56,7 @@ function Task() {
         onAddTask: onAddTask,
         taskModel: task,
         onTextChange: onTextboxChange,
+        setStatus: setStatus,
       }}
     >
       <AddTask></AddTask>
