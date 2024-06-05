@@ -4,10 +4,10 @@ import UCButton from "../ui/button";
 import UCSelect from "../ui/select";
 import UCDate from "../ui/date";
 import { useContext } from "react";
-import TaskContext from "@/store/taskContext";
+import LMSContext from "@/store/lmsContext";
 
 const AddTask: React.FC = () => {
-  let { onAddTask, taskModel, onTextChange } = useContext(TaskContext);
+  let { onAddTask, taskModel, onTextChange } = useContext(LMSContext);
 
   return (
     <>

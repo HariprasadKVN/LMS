@@ -9,7 +9,6 @@ import {
 import UCPassword from '@/components/ui/password';
 import Link from 'next/link';
 import UCEmail from '@/components/ui/email';
-import Loading from '@/app/loading';
 
 const LoginComponent: React.FC = () => {
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);

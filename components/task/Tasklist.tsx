@@ -13,12 +13,12 @@ import UCTableRow from "../ui/table/tr";
 import UCTableHeaderCell from "../ui/table/th";
 import UCTableCell from "../ui/table/td";
 import { useContext } from "react";
-import TaskContext from "@/store/taskContext";
+import LMSContext from "@/store/lmsContext";
 
 interface tasksList extends ITask {}
 
 const TaskList: React.FC = () => {
-  let { tasks,setStatus } = useContext(TaskContext);
+  let { tasks, setStatus } = useContext(LMSContext);
 
   return (
     <div className="overflow-x-auto ">
@@ -57,7 +57,7 @@ const TaskList: React.FC = () => {
                       hover:cursor-pointer 
                       hover:text-blue-500"
                       onClick={() =>
-                        setStatus(task.pid ? task.pid :"", "in progress")
+                        setStatus(task.pid ? task.pid : "", "in progress")
                       }
                     ></RocketLaunchIcon>
                   )}
