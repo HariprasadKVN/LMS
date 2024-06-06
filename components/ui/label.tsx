@@ -13,9 +13,10 @@ const UCLabel: React.FC<LabelProps> = ({
     <label
       className="block 
                 pl-1 text-xs font-semibold 
+                dark:font-medium
                 capitalize tracking-wide
                 text-slate-950/90
-                dark:text-slate-200/80"
+                dark:text-blue-100"
       htmlFor={htmlFor}
     >
       {caption}

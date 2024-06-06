@@ -7,7 +7,7 @@ interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
 const UCTable: React.FC<TableProps> = ({ children, className, ...rest }: TableProps) => {
     return <table
         {...rest}
-        className={clsx("w-full divide-y divide-blue-950 dark:divide-teal-600 bg-slate-200 dark:bg-slate-50", className)}>
+        className={clsx("w-full divide-y divide-blue-950 dark:divide-teal-600 bg-slate-200 dark:bg-slate-50 border", className)}>
         {children}
     </table>
 }

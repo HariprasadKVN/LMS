@@ -7,7 +7,7 @@ interface TableCellProps extends React.HTMLAttributes<HTMLTableCellElement> {
 const UCTableCell: React.FC<TableCellProps> = ({ children, className, ...rest }: TableCellProps) => {
     return <td
         {...rest}
-        className={clsx("whitespace-nowrap px-2 py-1",className)}>
+        className={clsx("whitespace-nowrap px-2 py-1 bg-black",className)}>
         {children}
     </td>
 }

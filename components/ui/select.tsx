@@ -16,7 +16,7 @@ const UCSelect: React.FC<SelectProps> = ({ label, options, className, ...rest }:
             autoComplete='off'
             {...rest}
             appearance-none="none"
-            className={clsx("outline-none dark:bg-inherit border border-slate-400/50 rounded-md px-2 py-0.5 content-center", className)} >
+            className={clsx("outline-none dark:bg-inherit border border-slate-400/50 dark:border-teal-100 rounded-md px-2 py-0.5 content-center", className)} >
             {options.map(
                 (item, index) =>
                     <option key={index} 
